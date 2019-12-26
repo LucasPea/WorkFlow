@@ -418,9 +418,8 @@ class FlowDiagarm extends React.Component {
                     this.addNodeToCy('', 0, lb_trg, trg, trg, 1);
                 }
             }
-            debugger;
             var auxy = this.setOrderNode(jsn);
-            var htmlNodes = this.renderCy(jsn,'', '');
+            var htmlNodes = this.renderCy(jsn, '', '', auxy, true);
             //Order array
             htmlNodes = this.orderArray(htmlNodes, '');
             var obj = 0;
@@ -475,14 +474,14 @@ class FlowDiagarm extends React.Component {
             }
         }
     }
-    
+
     setOrderNode(jsn) {
         var arrayRet = new Array();
         var arrayKey = Object.keys(jsn);
         var first = true;
         while (arrayKey.length > 0) {
             var arrayAux = new Array();
-            for (var j = 0; j < arrayKey.length;j++) {
+            for (var j = 0; j < arrayKey.length; j++) {
                 if ((typeof Object.keys(jsn[arrayKey[j]].runAfter)[0] === "undefined" || Object.keys(jsn[arrayKey[j]].runAfter)[0] == '') && first) {
                     var pos = arrayRet.length;
                     arrayRet[pos] = arrayKey[j];
@@ -505,7 +504,7 @@ class FlowDiagarm extends React.Component {
                             var pos = arrayAux.length;
                             arrayAux[pos] = arrayKey[j];
                         }
-                    }                    
+                    }
                 }
             }
             arrayKey = arrayAux;
@@ -530,7 +529,9 @@ class FlowDiagarm extends React.Component {
                                 }
                                 var aux = document.getElementById('txt' + propArray[i][0] + '_' + propArray[i][1]);
                                 if (aux != null) {
-                                    this.setValue(txt_json.properties.definition.actions[prop], path, aux.value, false, '');
+                                    if (path != null) {
+                                        this.setValue(txt_json.properties.definition.actions[prop], path, aux.value, false, propArray[i][0]);
+                                    }
                                 }
                             }
                         } else if (propArray[i][2] == 'email') {
@@ -544,10 +545,29 @@ class FlowDiagarm extends React.Component {
                                             if (aux != null) {
                                                 var vl = true;
                                                 if (propN == 'To') {
-                                                    vl=validateEmail(aux.value);
+                                                    vl = validateEmail(aux.value);
                                                 }
                                                 if (vl) {
                                                     hasProperty.actions[propArray[i][0]].inputs.body[propN] = aux.value;
+                                                } else {
+                                                    return '';
+                                                }
+                                            }
+                                        }
+                                    }
+                                } else if (edgeArray[z][0] == propArray[i][0] && txt_json.properties.definition.actions[prop].actions.hasOwnProperty(edgeArray[z][1])) {
+                                    var hasProperty = this.renderAction(txt_json.properties.definition.actions[prop], propArray[i][0]);
+                                    if (typeof hasProperty != "undefined") {
+                                        path = this.getPath(txt_json.properties.definition.actions[prop], propArray[i][0], pathArray);
+                                        for (var propN in hasProperty[propArray[i][0]].inputs.body) {
+                                            var aux = document.getElementById('txt' + propArray[i][0] + '_' + propN);
+                                            if (aux != null) {
+                                                var vl = true;
+                                                if (propN == 'To') {
+                                                    vl = validateEmail(aux.value);
+                                                }
+                                                if (vl) {
+                                                    hasProperty[propArray[i][0]].inputs.body[propN] = aux.value;
                                                 } else {
                                                     return '';
                                                 }
@@ -596,7 +616,7 @@ class FlowDiagarm extends React.Component {
             }
             if (!expression) {
                 for (var propN in obj[path[i]]) {
-                    obj[path[i]][propN].inputs.body = value;
+                    if (propN == pp)obj[path[i]][propN].inputs.body = value;
                 }
             } else {
                 for (var j in obj[path[i]]) {
@@ -630,8 +650,26 @@ class FlowDiagarm extends React.Component {
                         pathArray[pos] = p;
                         hasProp = true;
                         return pathArray;
-                    }
-                break;
+                    }// else {
+                    //    for (var qj in jsonRes[p]) {
+                    //        if (jsonRes[p][qj].hasOwnProperty(prop)) {
+                    //            var pos = pathArray.length;
+                    //            pathArray[pos] = p;
+                    //            hasProp = true;
+                    //            return pathArray;
+                    //        } else {
+                    //            var test = this.getPath(jsonRes[p][qj], prop, pathArray);
+                    //            if (test != null) {
+                    //                var pos = pathArray.length;
+                    //                pathArray[pos] = qj;
+                    //                pos = pathArray.length;
+                    //                pathArray[pos] = p;
+                    //                return pathArray;
+                    //            }
+                    //        }
+                        //}
+                   // }
+                    break;
 
                 case 'else':
                     if (p === prop) {
@@ -644,8 +682,17 @@ class FlowDiagarm extends React.Component {
                         pathArray[pos] = 'actions';
                         hasProp = true;
                         return pathArray;
-                    }
-                break;
+                    }// else {
+                    //    var test = this.getPath(jsonRes[p], prop, pathArray);
+                    //    if (test != null) {
+                    //        var pth = new Array();
+                    //        pth[0] = p;
+                    //        pth = pth.concat(pathArray);
+                    //        console.log(pth);
+                    //        return pth;
+                    //    }
+                    //}
+                    break;
 
                 case 'inputs':
                     if (p === prop) {
@@ -657,7 +704,7 @@ class FlowDiagarm extends React.Component {
                         hasProp = true;
                         return pathArray;
                     }
-                break;
+                    break;
 
                 case 'expression':
                     if (p === prop) {
@@ -671,7 +718,7 @@ class FlowDiagarm extends React.Component {
                         hasProp = true;
                         return pathArray;
                     }
-                 break;
+                    break;
             }
         }
     }
@@ -714,42 +761,43 @@ class FlowDiagarm extends React.Component {
     }
 
     //generate the lbNode array
-    renderCy(jsn, nameFrom, nameMap) {
+    renderCy(jsn, nameFrom, nameMap, auxy, edge) {
         var lbNode = new Array();
-        for (var prop in jsn) {
-            var get = document.getElementById(prop);
+        for (var i = 0; i < auxy.length; i++) {
+            var get = document.getElementById(auxy[i]);
             if (get == null) {
-                for (var type in jsn[prop]) {
+                for (var type in jsn[auxy[i]]) {
                     switch (type) {
                         case 'inputs':
                             var indice = 1;
-                            var lb_msg = "<div id=" + prop + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + prop + "</b></div>";
+                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + auxy[i] + "</b></div>";
                             var poss = edgeArray.length;
                             var firstNode = false;
-                            if ((typeof Object.keys(jsn[prop].runAfter)[0] === "undefined" || Object.keys(jsn[prop].runAfter)[0] == '') && nameMap == '') {
+                            if ((typeof Object.keys(jsn[auxy[i]].runAfter)[0] === "undefined" || Object.keys(jsn[auxy[i]].runAfter)[0] == '') && edge) {
                                 edgeArray[poss] = new Array(2);
-                                edgeArray[poss][0] = prop;
+                                edgeArray[poss][0] = auxy[i];
                                 edgeArray[poss][1] = 'first_edge';
                                 firstNode = true;
+                                edge = false;
                             } else {
-                                for (var name in jsn[prop].runAfter) {
+                                for (var name in jsn[auxy[i]].runAfter) {
                                     edgeArray[poss] = new Array(2);
-                                    edgeArray[poss][0] = prop;
+                                    edgeArray[poss][0] = auxy[i];
                                     edgeArray[poss][1] = name;
                                 }
                             }
-                            var renderBody = this.renderAction(jsn[prop].inputs.body, 'Body');
+                            var renderBody = this.renderAction(jsn[auxy[i]].inputs.body, 'Body');
                             if (renderBody != null) {
-                                for (var propN in jsn[prop].inputs.body) {
+                                for (var propN in jsn[auxy[i]].inputs.body) {
                                     poss = propArray.length;
                                     propArray[poss] = new Array(3);
-                                    propArray[poss][0] = prop;
+                                    propArray[poss][0] = auxy[i];
                                     propArray[poss][1] = propN;
                                     propArray[poss][2] = 'email';
                                     if (this.checkPermission(propN)) {
-                                        lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + prop + "_" + propN + "' >" + jsn[prop].inputs.body[propN] + "</textarea>";
+                                        lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs.body[propN] + "</textarea>";
                                     } else {
-                                        lb_msg += "" + propN + ": <span style='width:100%' id='txt" + prop + "_" + propN + "'> " + jsn[prop].inputs.body[propN] + "</span>";
+                                        lb_msg += "" + propN + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs.body[propN] + "</span>";
                                     }
                                     indice++;
                                 }
@@ -758,23 +806,23 @@ class FlowDiagarm extends React.Component {
                                 template.innerHTML = lb_msg;
                                 var nodePoss = lbNode.length;
                                 lbNode[nodePoss] = new Array(5);
-                                lbNode[nodePoss][0] = prop;
+                                lbNode[nodePoss][0] = auxy[i];
                                 lbNode[nodePoss][1] = lb_msg;
                                 lbNode[nodePoss][2] = firstNode;
                                 lbNode[nodePoss][3] = indice;
                                 lbNode[nodePoss][4] = nameFrom;
                             } else {
-                                for (var propN in jsn[prop].inputs) {
+                                for (var propN in jsn[auxy[i]].inputs) {
                                     if (propN == 'body') {
                                         poss = propArray.length;
                                         propArray[poss] = new Array(3);
-                                        propArray[poss][0] = prop;
+                                        propArray[poss][0] = auxy[i];
                                         propArray[poss][1] = propN;
                                         propArray[poss][2] = 'inputs';
                                         if (this.checkPermission(propN)) {
-                                            lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + prop + "_" + propN + "' >" + jsn[prop].inputs[propN] + "</textarea>";
+                                            lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs[propN] + "</textarea>";
                                         } else {
-                                            lb_msg += "" + propN + ": <span style='width:100%' id='txt" + prop + "_" + propN + "'> " + jsn[prop].inputs[propN] + "</span>";
+                                            lb_msg += "" + propN + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs[propN] + "</span>";
                                         }
                                         indice++;
                                     }
@@ -784,7 +832,7 @@ class FlowDiagarm extends React.Component {
                                 template.innerHTML = lb_msg;
                                 var nodePoss = lbNode.length;
                                 lbNode[nodePoss] = new Array(5);
-                                lbNode[nodePoss][0] = prop;
+                                lbNode[nodePoss][0] = auxy[i];
                                 lbNode[nodePoss][1] = lb_msg;
                                 lbNode[nodePoss][2] = firstNode;
                                 lbNode[nodePoss][3] = indice;
@@ -795,30 +843,30 @@ class FlowDiagarm extends React.Component {
                             break;
 
                         case 'actions':
-                            for (var propN in jsn[prop]) {
-                                var elementExist = document.getElementById(prop);
+                            for (var propN in jsn[auxy[i]]) {
+                                var elementExist = document.getElementById(auxy[i]);
                                 if (elementExist == null) {
                                     switch (propN) {
                                         case 'expression':
                                             var indice = 1;
-                                            var lb_msg = "<div id=" + prop + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + prop + "</b></div>";
+                                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + auxy[i] + "</b></div>";
                                             var firstNode = false;
-                                            if ((typeof Object.keys(jsn[prop].runAfter)[0] === "undefined" || Object.keys(jsn[prop].runAfter)[0] == '') && nameMap == '') {
+                                            if ((typeof Object.keys(jsn[auxy[i]].runAfter)[0] === "undefined" || Object.keys(jsn[auxy[i]].runAfter)[0] == '') && nameMap == '') {
                                                 firstNode = true;
                                             }
-                                            for (var propNJ in jsn[prop][propN]) {
-                                                lb_msg += "" + propN + ": <span style='width:80%' id='txt" + prop + "_" + propN + "_" + propNJ + "'> " + propNJ + "</span><br />";
-                                                for (var porpNJPE in jsn[prop][propN][propNJ]) {
-                                                    for (var porpNJE in jsn[prop][propN][propNJ][porpNJPE]) {
+                                            for (var propNJ in jsn[auxy[i]][propN]) {
+                                                lb_msg += "" + propN + ": <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "_" + propNJ + "'> " + propNJ + "</span><br />";
+                                                for (var porpNJPE in jsn[auxy[i]][propN][propNJ]) {
+                                                    for (var porpNJE in jsn[auxy[i]][propN][propNJ][porpNJPE]) {
                                                         poss = propArray.length;
                                                         propArray[poss] = new Array(3);
-                                                        propArray[poss][0] = prop;
+                                                        propArray[poss][0] = auxy[i];
                                                         propArray[poss][1] = porpNJE;
                                                         propArray[poss][2] = 'expression';
                                                         if (this.checkPermission(porpNJE)) {
-                                                            lb_msg += "<span >" + jsn[prop][propN][propNJ][porpNJPE][porpNJE][0] + " " + porpNJE + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + prop + "_" + porpNJE + "' >" + jsn[prop][propN][propNJ][porpNJPE][porpNJE][1] + "</textarea><br /> ";
+                                                            lb_msg += "<span >" + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][0] + " " + porpNJE + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + porpNJE + "' >" + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][1] + "</textarea><br /> ";
                                                         } else {
-                                                            lb_msg += "" + propN + ": <span style='width:80%' id='txt" + prop + "_" + propN + "'> " + jsn[prop][propN] + "</span>";
+                                                            lb_msg += "" + propN + ": <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]][propN] + "</span>";
                                                         }
                                                         indice++;
                                                     }
@@ -826,16 +874,16 @@ class FlowDiagarm extends React.Component {
                                             }
                                             indice++;
                                             if (!this.checkPermission('type')) {
-                                                lb_msg += "<span >" + 'type' + ": </span><textarea class='input' style='width:80%;resize: none;overflow: hidden;' type='text' id='txt" + prop + "_" + "type" + "' >" + jsn[prop]["type"] + "</textarea>";
+                                                lb_msg += "<span >" + 'type' + ": </span><textarea class='input' style='width:80%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + "type" + "' >" + jsn[auxy[i]]["type"] + "</textarea>";
                                             } else {
-                                                lb_msg += "" + "type" + ": <span style='width:80%' id='txt" + prop + "_" + "type" + "'> " + jsn[prop]["type"] + "</span>";
+                                                lb_msg += "" + "type" + ": <span style='width:80%' id='txt" + auxy[i] + "_" + "type" + "'> " + jsn[auxy[i]]["type"] + "</span>";
                                             }
                                             lb_msg += "</div>";
                                             var template = document.createElement('template');
                                             template.innerHTML = lb_msg;
                                             var nodePoss = lbNode.length;
                                             lbNode[nodePoss] = new Array(5);
-                                            lbNode[nodePoss][0] = prop;
+                                            lbNode[nodePoss][0] = auxy[i];
                                             lbNode[nodePoss][1] = lb_msg;
                                             lbNode[nodePoss][2] = firstNode;
                                             lbNode[nodePoss][3] = indice;
@@ -846,15 +894,16 @@ class FlowDiagarm extends React.Component {
                                             var priority = 2;
                                             if (nameFrom == '') {
                                                 nameFrom = 'actions';
-                                                nameMap = prop;
+                                                nameMap = auxy[i];
                                                 priority = 1;
                                             }
                                             var poss = edgeArray.length;
                                             edgeArray[poss] = new Array(2);
-                                            edgeArray[poss][0] = Object.keys(jsn[prop][propN])[0];
+                                            edgeArray[poss][0] = Object.keys(jsn[auxy[i]][propN])[0];
                                             edgeArray[poss][1] = nameMap;
-                                            var arrayActions = this.renderCy(jsn[prop][propN], nameFrom, nameMap);
-                                            for (var i = 0; i < arrayActions.length; i++) {
+                                            var nodeArr = this.setOrderNode(jsn[auxy[i]][propN]);
+                                            var arrayActions = this.renderCy(jsn[auxy[i]][propN], nameFrom, nameMap, nodeArr, false);
+                                            for (let i = 0; i < arrayActions.length; i++) {
                                                 var nodePoss = lbNode.length;
                                                 lbNode[nodePoss] = new Array(5);
                                                 lbNode[nodePoss][0] = arrayActions[i][0];
@@ -869,9 +918,11 @@ class FlowDiagarm extends React.Component {
 
                                         case 'else':
                                             nameFrom = 'else';
-                                            nameMap = prop;
-                                            var arrayActions = this.renderCy(jsn[prop], nameFrom, nameMap);
-                                            for (var i = 0; i < arrayActions.length; i++) {
+                                            nameMap = auxy[i];
+                                            
+                                            var nodeArr = this.setOrderNode(jsn[auxy[i]][propN].actions);
+                                            var arrayActions = this.renderCy(jsn[auxy[i]][propN].actions, nameFrom, nameMap, nodeArr, false);
+                                            for (let i = 0; i < arrayActions.length; i++) {
                                                 var nodePoss = lbNode.length;
                                                 lbNode[nodePoss] = new Array(5);
                                                 lbNode[nodePoss][0] = arrayActions[i][0];
@@ -879,6 +930,18 @@ class FlowDiagarm extends React.Component {
                                                 lbNode[nodePoss][2] = arrayActions[i][2];
                                                 lbNode[nodePoss][3] = arrayActions[i][3];
                                                 lbNode[nodePoss][4] = arrayActions[i][4];
+                                                var exist = false;
+                                                for (let j = 0; j < edgeArray.length; j++) {
+                                                    if (edgeArray[j][0] == arrayActions[i][0]) {
+                                                        exist = true;
+                                                    }
+                                                }
+                                                if (!exist) {
+                                                    var poss = edgeArray.length;
+                                                    edgeArray[poss] = new Array(2);
+                                                    edgeArray[poss][0] = arrayActions[i][0];
+                                                    edgeArray[poss][1] = nameMap;
+                                                }
                                             }
                                             nameFrom = '';
                                             nameMap = '';
@@ -886,15 +949,16 @@ class FlowDiagarm extends React.Component {
 
                                         case 'runAfter':
                                             var poss = edgeArray.length;
-                                            if (typeof Object.keys(jsn[prop].runAfter)[0] === "undefined" || Object.keys(jsn[prop].runAfter)[0] == '' && nameMap == '') {
+                                            if (typeof Object.keys(jsn[auxy[i]].runAfter)[0] === "undefined" || Object.keys(jsn[auxy[i]].runAfter)[0] == '' && edge) {
                                                 edgeArray[poss] = new Array(2);
-                                                edgeArray[poss][0] = prop;
+                                                edgeArray[poss][0] = auxy[i];
                                                 edgeArray[poss][1] = 'first_edge';
+                                                edge = false;
                                             } else {
-                                                for (var name in jsn[prop].runAfter) {
+                                                for (var name in jsn[auxy[i]].runAfter) {
                                                     var poss = edgeArray.length;
                                                     edgeArray[poss] = new Array(2);
-                                                    edgeArray[poss][0] = prop;
+                                                    edgeArray[poss][0] = auxy[i];
                                                     edgeArray[poss][1] = name;
                                                 }
                                             }
@@ -907,6 +971,7 @@ class FlowDiagarm extends React.Component {
                 }
             }
         }
+
         return lbNode;
     }
 
