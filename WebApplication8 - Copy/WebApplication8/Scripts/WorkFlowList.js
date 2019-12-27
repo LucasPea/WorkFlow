@@ -325,7 +325,9 @@ class FlowDiagarm extends React.Component {
                 ],
                 layout: {
                     name: 'grid',
-                    rows: 10
+                    rows: 10,
+                    //avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
+                    //avoidOverlapPadding: 10, // extra spacing around nodes when avoidOverlap: true
                 }
             });
             cy.on('tap', 'node', function (evt) {
@@ -515,93 +517,23 @@ class FlowDiagarm extends React.Component {
     //generate the new json on save
     generateJson(text) {
         var txt_json = text;
-        for (var prop in txt_json.properties.definition.actions) {
-            if (txt_json.properties.definition.actions[prop].hasOwnProperty('expression')) {
-                for (var i = 0; i < propArray.length; i++) {
-                    var pathArray = new Array();
-                    var path = new Array();
-                    if (propArray[i][2] != 'expression') {
-                        if (propArray[i][2] == 'inputs') {
-                            var hasProperty = this.renderAction(txt_json.properties.definition.actions[prop], propArray[i][0]);
-                            if (typeof hasProperty != "undefined") {
-                                if (prop != propArray[i][0]) {
-                                    path = this.getPath(txt_json.properties.definition.actions[prop], propArray[i][0], pathArray);
-                                }
-                                var aux = document.getElementById('txt' + propArray[i][0] + '_' + propArray[i][1]);
-                                if (aux != null) {
-                                    if (path != null) {
-                                        this.setValue(txt_json.properties.definition.actions[prop], path, aux.value, false, propArray[i][0]);
-                                    }
-                                }
-                            }
-                        } else if (propArray[i][2] == 'email') {
-                            for (var z = 0; z < edgeArray.length; z++) {
-                                if (edgeArray[z][0] == propArray[i][0] && edgeArray[z][1] == prop) {
-                                    var hasProperty = this.renderAction(txt_json.properties.definition.actions[prop], propArray[i][0]);
-                                    if (typeof hasProperty != "undefined") {
-                                        path = this.getPath(txt_json.properties.definition.actions[prop], propArray[i][0], pathArray);
-                                        for (var propN in hasProperty.actions[propArray[i][0]].inputs.body) {
-                                            var aux = document.getElementById('txt' + propArray[i][0] + '_' + propN);
-                                            if (aux != null) {
-                                                var vl = true;
-                                                if (propN == 'To') {
-                                                    vl = validateEmail(aux.value);
-                                                }
-                                                if (vl) {
-                                                    hasProperty.actions[propArray[i][0]].inputs.body[propN] = aux.value;
-                                                } else {
-                                                    return '';
-                                                }
-                                            }
-                                        }
-                                    }
-                                } else if (edgeArray[z][0] == propArray[i][0] && txt_json.properties.definition.actions[prop].actions.hasOwnProperty(edgeArray[z][1])) {
-                                    var hasProperty = this.renderAction(txt_json.properties.definition.actions[prop], propArray[i][0]);
-                                    if (typeof hasProperty != "undefined") {
-                                        path = this.getPath(txt_json.properties.definition.actions[prop], propArray[i][0], pathArray);
-                                        for (var propN in hasProperty[propArray[i][0]].inputs.body) {
-                                            var aux = document.getElementById('txt' + propArray[i][0] + '_' + propN);
-                                            if (aux != null) {
-                                                var vl = true;
-                                                if (propN == 'To') {
-                                                    vl = validateEmail(aux.value);
-                                                }
-                                                if (vl) {
-                                                    hasProperty[propArray[i][0]].inputs.body[propN] = aux.value;
-                                                } else {
-                                                    return '';
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } else {
-                        path = this.getPath(txt_json.properties.definition.actions[prop], propArray[i][2], pathArray);
-                        var aux = document.getElementById('txt' + propArray[i][0] + '_' + propArray[i][1]);
-                        if (aux != null) {
-                            this.setValue(txt_json.properties.definition.actions[prop], path, aux.value, true, propArray[i][1]);
-                        }
-                    }
+        var email = true;
+        for (let k = 0; k < propArray.length; k++) {
+            var aux = document.getElementById('txt' + propArray[k][0] + '_' + propArray[k][1]);
+            
+            if (aux != null) {
+                if (propArray[k][1] == 'To') {
+                    email = validateEmail(aux.value);
+                    debugger;
                 }
-            } else {
-                for (var propN in txt_json.properties.definition.actions[prop].inputs.body) {
-                    var aux = document.getElementById('txt' + prop + '_' + propN);
-                    if (aux != null) {
-                        var vl = true;
-                        if (propN == 'To') {
-                            vl = validateEmail(aux.value);
-                        }
-                        if (vl) {
-                            txt_json.properties.definition.actions[prop].inputs.body[propN] = aux.value;
-                        } else {
-                            return '';
-                        }
-                    }
+                if (email) {
+                    var test = new Array();
+                    test = this.getPaths(txt_json.properties.definition.actions, propArray[k], test, aux.value);
+                } else {
+                    return '';
                 }
             }
-        }
+        }                                  
         return txt_json;
     }
 
@@ -636,89 +568,46 @@ class FlowDiagarm extends React.Component {
 
     //jsonRes is the actual json, prop is the property for search, and pathArray is the path of the json
     //to the prop
-    getPath(jsonRes, prop, pathArray) {
-        var hasProp = false;
-        var next = '';
-        for (var p in jsonRes) {
-            switch (p) {
-                case 'actions':
-                    if (p === prop) {
-                        hasProp = true;
-                        return pathArray;
-                    } else if (jsonRes[p].hasOwnProperty(prop)) {
-                        var pos = pathArray.length;
-                        pathArray[pos] = p;
-                        hasProp = true;
-                        return pathArray;
-                    }// else {
-                    //    for (var qj in jsonRes[p]) {
-                    //        if (jsonRes[p][qj].hasOwnProperty(prop)) {
-                    //            var pos = pathArray.length;
-                    //            pathArray[pos] = p;
-                    //            hasProp = true;
-                    //            return pathArray;
-                    //        } else {
-                    //            var test = this.getPath(jsonRes[p][qj], prop, pathArray);
-                    //            if (test != null) {
-                    //                var pos = pathArray.length;
-                    //                pathArray[pos] = qj;
-                    //                pos = pathArray.length;
-                    //                pathArray[pos] = p;
-                    //                return pathArray;
-                    //            }
-                    //        }
-                        //}
-                   // }
-                    break;
-
-                case 'else':
-                    if (p === prop) {
-                        hasProp = true;
-                        return pathArray;
-                    } else if (jsonRes[p]['actions'].hasOwnProperty(prop)) {
-                        var pos = pathArray.length;
-                        pathArray[pos] = p;
-                        pos = pathArray.length;
-                        pathArray[pos] = 'actions';
-                        hasProp = true;
-                        return pathArray;
-                    }// else {
-                    //    var test = this.getPath(jsonRes[p], prop, pathArray);
-                    //    if (test != null) {
-                    //        var pth = new Array();
-                    //        pth[0] = p;
-                    //        pth = pth.concat(pathArray);
-                    //        console.log(pth);
-                    //        return pth;
-                    //    }
-                    //}
-                    break;
-
-                case 'inputs':
-                    if (p === prop) {
-                        hasProp = true;
-                        return pathArray;
-                    } else if (jsonRes[p].hasOwnProperty(prop)) {
-                        var pos = pathArray.length;
-                        pathArray[pos] = p;
-                        hasProp = true;
-                        return pathArray;
+    getPaths(jsonRes, prop, path, value) {
+        for (let p in jsonRes) {
+            if (p != "runAfter") {
+                if (p == prop[0]) {
+                    var pos = path.length;
+                    path[pos] = p;
+                    this.setValueJson(jsonRes[p], prop, value);
+                    return path;
+                } else {
+                    if (jsonRes[p].hasOwnProperty(prop[0])) {
+                        var pos = path.length;
+                        path[pos] = p;
+                        this.setValueJson(jsonRes[p][prop[0]], prop, value);
+                        return path;
+                    } else if (jsonRes[p] instanceof Object && this.getPaths(jsonRes[p], prop, path, value)) {
+                        if (path == null) {
+                            path = new Array();
+                        } else {
+                            return path;
+                        }
                     }
-                    break;
+                }
+            }
+        }
+        return null;
+    }
 
-                case 'expression':
-                    if (p === prop) {
-                        var pos = pathArray.length;
-                        pathArray[pos] = p;
-                        hasProp = true;
-                        return pathArray;
-                    } else if (jsonRes[p].hasOwnProperty(prop)) {
-                        var pos = pathArray.length;
-                        pathArray[pos] = p;
-                        hasProp = true;
-                        return pathArray;
+    setValueJson(json, prop, value) {
+        console.log(prop);
+        if (prop[2] == 'inputs') {
+            json.inputs[prop[1]] = value;
+        } else if (prop[2] == 'email') {
+            json.inputs.body[prop[1]] = value;
+        } else if (prop[2] == 'expression') {
+            for (let j in json[prop[2]]) {
+                for (let k in json[prop[2]][j]) {
+                    for (let t in json[prop[2]][j][k]) {
+                        if (t == [prop[1]]) json[prop[2]][j][k][t][1] = value;
                     }
-                    break;
+                }
             }
         }
     }
@@ -897,10 +786,6 @@ class FlowDiagarm extends React.Component {
                                                 nameMap = auxy[i];
                                                 priority = 1;
                                             }
-                                            var poss = edgeArray.length;
-                                            edgeArray[poss] = new Array(2);
-                                            edgeArray[poss][0] = Object.keys(jsn[auxy[i]][propN])[0];
-                                            edgeArray[poss][1] = nameMap;
                                             var nodeArr = this.setOrderNode(jsn[auxy[i]][propN]);
                                             var arrayActions = this.renderCy(jsn[auxy[i]][propN], nameFrom, nameMap, nodeArr, false);
                                             for (let i = 0; i < arrayActions.length; i++) {
@@ -911,6 +796,18 @@ class FlowDiagarm extends React.Component {
                                                 lbNode[nodePoss][2] = arrayActions[i][2];
                                                 lbNode[nodePoss][3] = arrayActions[i][3];
                                                 lbNode[nodePoss][4] = arrayActions[i][4];
+                                                var exist = false;
+                                                for (let j = 0; j < edgeArray.length; j++) {
+                                                    if (edgeArray[j][0] == arrayActions[i][0]) {
+                                                        exist = true;
+                                                    }
+                                                }
+                                                if (!exist) {
+                                                    var poss = edgeArray.length;
+                                                    edgeArray[poss] = new Array(2);
+                                                    edgeArray[poss][0] = arrayActions[i][0];
+                                                    edgeArray[poss][1] = nameMap;
+                                                }
                                             }
                                             nameFrom = '';
                                             nameMap = '';
