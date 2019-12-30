@@ -118,6 +118,7 @@
 <body>
     <script>
         var token = "<%=acc_token%>";
+        var subscription = "<%=subscription%>";
     </script>
     <h1>POC Azure Logic Apps BPM1</h1>
 

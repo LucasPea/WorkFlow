@@ -1,6 +1,5 @@
-﻿
-var isTest = false;
-var subscriptions = "2cfa9727-222c-4740-9104-f061e82bfe33";
+﻿var isTest = false;
+var subscriptions = subscription;
 var subToken = token;
 var first = '.l2';
 var jsonPass = '';
@@ -58,14 +57,6 @@ async function getFocus(a) {
     await sleep(10);
     var fc = document.getElementById(a.id);
     if (fc != null) fc.focus();
-}
-
-function getTotal(array, value) {
-    var total = 0;
-    for (var i = 0; i < array.length; i++) {
-        if (value == array[i][1] && !array[i][1].includes('Response')) total++;
-    }
-    return total;
 }
 
 class WorkflowList extends React.Component {
@@ -193,8 +184,10 @@ class AddAlertButton extends React.Component {
         var id1 = document.getElementById('loaderId');
         var id2 = document.getElementById('cyId');
         var id3 = document.getElementById('exampleModal3Label');
+        var id4 = document.getElementById('btn_save');
         id2.removeAttribute("hidden");
         id1.setAttribute("hidden", true);
+        id4.removeAttribute("disabled");
         this.setState({
             data: this.props.jsonTxtAdd,
             jsonName: this.props.jsonName,
@@ -350,8 +343,6 @@ class FlowDiagarm extends React.Component {
             {
                 query: first,
                 tpl: function (data) {
-                    var isFocused = false;
-                    var id = 0;
                     var retu = data.label;
                     if (firstRes) {
                         resizeFlow(350);
@@ -377,11 +368,14 @@ class FlowDiagarm extends React.Component {
         }
     }
 
+    //Update Json
     jsonChangeHandler() {
         var id1 = document.getElementById('loaderId');
         var id2 = document.getElementById('cyId');
+        var id3 = document.getElementById('btn_save');
         id1.removeAttribute("hidden");
         id2.setAttribute("hidden", true);
+        id3.setAttribute("disabled", "disabled");
         var text = this.generateJson(jsonPass);
         if (text == '') {
             swal({
@@ -394,6 +388,7 @@ class FlowDiagarm extends React.Component {
             var id1 = document.getElementById('cyId');
             id1.removeAttribute("hidden");
             id2.setAttribute("hidden", true);
+            id3.removeAttribute("disabled");
         } else {
             this.props.UpdateJsonAlert(text);
         }
@@ -409,9 +404,6 @@ class FlowDiagarm extends React.Component {
             var trigger = json.properties.definition.triggers;
             var lb_trg;
             var triggerN = "";
-            var next = '';
-            var position = 0;
-            var positionX = 0;
             for (var trg in trigger) {
                 triggerN = trg;
                 var tr = document.getElementById(trg);
@@ -424,7 +416,6 @@ class FlowDiagarm extends React.Component {
             var htmlNodes = this.renderCy(jsn, '', '', auxy, true);
             //Order array
             htmlNodes = this.orderArray(htmlNodes, '');
-            var obj = 0;
             var arrayLeft = edgeArray;
             while (arrayLeft.length > 0) {
                 var arrayRet = new Array();
@@ -476,7 +467,8 @@ class FlowDiagarm extends React.Component {
             }
         }
     }
-
+    
+    //Order the next array of property
     setOrderNode(jsn) {
         var arrayRet = new Array();
         var arrayKey = Object.keys(jsn);
@@ -524,7 +516,6 @@ class FlowDiagarm extends React.Component {
             if (aux != null) {
                 if (propArray[k][1] == 'To') {
                     email = validateEmail(aux.value);
-                    debugger;
                 }
                 if (email) {
                     var test = new Array();
@@ -535,36 +526,7 @@ class FlowDiagarm extends React.Component {
             }
         }                                  
         return txt_json;
-    }
-
-    //set the new values to the json, obj is the json object, path is the path to get the property
-    //value is the new value to store, expression is a boolean for the expression property, and pp 
-    //is the property name for expression
-    setValue(obj, path, value, expression, pp) {
-        var i;
-        if (path != null) {
-            for (i = 0; i < path.length - 1; i++) {
-                obj = obj[path[i]];
-            }
-            if (!expression) {
-                for (var propN in obj[path[i]]) {
-                    if (propN == pp)obj[path[i]][propN].inputs.body = value;
-                }
-            } else {
-                for (var j in obj[path[i]]) {
-                    for (var k in obj[path[i]][j]) {
-                        for (var t in obj[path[i]][j][k]) {
-                            if (t == pp) obj[path[i]][j][k][t][1] = value;
-                        }
-                    }
-                }
-            }
-        } else {
-            for (var propN in obj.inputs.body) {
-                obj.inputs.body[propN] = value;
-            }
-        }
-    }
+    }  
 
     //jsonRes is the actual json, prop is the property for search, and pathArray is the path of the json
     //to the prop
@@ -595,6 +557,9 @@ class FlowDiagarm extends React.Component {
         return null;
     }
 
+    //set the new values to the json, obj is the json object, path is the path to get the property
+    //value is the new value to store, expression is a boolean for the expression property, and pp 
+    //is the property name for expression
     setValueJson(json, prop, value) {
         console.log(prop);
         if (prop[2] == 'inputs') {
@@ -659,7 +624,10 @@ class FlowDiagarm extends React.Component {
                     switch (type) {
                         case 'inputs':
                             var indice = 1;
-                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + auxy[i] + "</b></div>";
+                            var resType = '';
+                            if (nameFrom == 'else') resType = 'False: ';
+                            if (nameFrom == 'actions') resType = 'True: ';
+                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + resType + " " +  auxy[i] + "</b></div>";
                             var poss = edgeArray.length;
                             var firstNode = false;
                             if ((typeof Object.keys(jsn[auxy[i]].runAfter)[0] === "undefined" || Object.keys(jsn[auxy[i]].runAfter)[0] == '') && edge) {
@@ -780,11 +748,9 @@ class FlowDiagarm extends React.Component {
                                             break;
 
                                         case 'actions':
-                                            var priority = 2;
                                             if (nameFrom == '') {
                                                 nameFrom = 'actions';
                                                 nameMap = auxy[i];
-                                                priority = 1;
                                             }
                                             var nodeArr = this.setOrderNode(jsn[auxy[i]][propN]);
                                             var arrayActions = this.renderCy(jsn[auxy[i]][propN], nameFrom, nameMap, nodeArr, false);
@@ -906,6 +872,31 @@ class FlowDiagarm extends React.Component {
             } else if (type == 4) {
                 y -= 10;
             }
+            var valid = false;
+            var cant = 0;
+            while (!valid) {
+                if (this.checkPossition(x, y)) {
+                    valid = true;
+                } else {
+                    cant++;
+                    if (x < 0) {
+                        x -= 150;
+                    } else if (x > 0) {
+                        x += 150;
+                    } else if (type == 2) {
+                        y -= 200;
+                        x += 300;
+                    } else if (type == 1) {
+                        y -= 200;
+                        x -= 300;
+                    } else {
+                        y += 120;
+                    }
+                }
+                if (cant == 50) {
+                    valid = true;
+                }
+            }
         }
         cy.add({
             group: 'nodes',
@@ -926,6 +917,31 @@ class FlowDiagarm extends React.Component {
         });
     }
 
+    //check if in the x and y position there is an node
+    checkPossition(x, y) {
+        var difx = 0;
+        var dify = 0;
+        for (let i = 0; i < edgeArray.length; i++) {
+            var element = cy.getElementById(edgeArray[i][0]).position();
+            if (typeof element != "undefined") {
+                if (x > element.x) {
+                    difx = x - element.x;
+                } else {
+                    difx = element.x - x;
+                }
+                if (y > element.y) {
+                    dify = y - element.y;
+                } else {
+                    dify = element.y - y;
+                }
+                if (difx < 100 && dify < 100) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
 
     //gets the property inside the json
     renderAction(jsonIn, action) {
@@ -944,7 +960,7 @@ class FlowDiagarm extends React.Component {
 
     render(props) {
         return (
-            <button type="button" className="btn btn-primary" onClick={this.changeHandler.bind(this)} >Save changes</button>
+            <button id="btn_save" type="button" className="btn btn-primary" onClick={this.changeHandler.bind(this)} >Save changes</button>
         );
     }
 }

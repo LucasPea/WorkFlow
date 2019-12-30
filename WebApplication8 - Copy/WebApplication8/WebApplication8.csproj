@@ -138,6 +138,7 @@
       <DependentUpon>Login.aspx</DependentUpon>
     </Compile>
     <Compile Include="Models\DBConnection.cs" />
+    <Compile Include="Models\Subcription.cs" />
     <Compile Include="Models\TokenClass.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Work.aspx.cs">

@@ -51,15 +51,14 @@ public class DBConnection
         /*
             int Col1Value = 0;
             DataTable dt = new DataTable();
-            dt = SqlComm.SqlDataTable("SELECT * FROM myTable WHERE myPK='simpleText'");
-            if (dt.Rows.Count == 0) 
+            dt = SqlComm.SqlDataTable("SELECT * FROM a WHERE b");
+            if (dt.Rows.Count != 0) 
             {
-
+                Col1Value = (int)dt.Rows[2]["Col1"];
             }
             else
             {
-                // Get the value of Col1 in the 3rd row (0 is the first row)
-                Col1Value = (int)dt.Rows[2]["Col1"];
+                
             }   
          */
     }

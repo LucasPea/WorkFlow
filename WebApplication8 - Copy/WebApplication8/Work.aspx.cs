@@ -12,10 +12,12 @@ namespace WebApplication8
     public partial class Work : System.Web.UI.Page
     {
         public string acc_token;
+        public string subscription;
         protected void Page_Load(object sender, EventArgs e)
         {
             TokenClass tk = new TokenClass();
             acc_token=tk.GetToken();
+            subscription = tk.GetSubscription(acc_token);
         }
     }
 }

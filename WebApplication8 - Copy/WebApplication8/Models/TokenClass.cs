@@ -1,9 +1,12 @@
-﻿using RestSharp;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Web;
+using WebApplication8.Models;
 
 public class TokenClass
 {
@@ -33,5 +36,16 @@ public class TokenClass
         string res = response.Content.Replace("﻿", "");
         dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(res);
         return json.access_token;
+    }
+
+    public string GetSubscription(string token)
+    {
+        var client = new RestClient(" https://management.azure.com/subscriptions?api-version=2019-06-01");
+        var request = new RestRequest(Method.GET);
+        request.AddHeader("Authorization", "Bearer " + token); 
+        IRestResponse response = client.Execute(request);
+        string res = response.Content.Replace("﻿", "");
+        var json = JsonConvert.DeserializeObject<Subcription>(res);
+        return json.Value[0].SubscriptionId.ToString();
     }
 }
