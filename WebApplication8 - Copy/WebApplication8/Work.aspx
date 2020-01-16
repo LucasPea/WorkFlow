@@ -54,7 +54,14 @@
             background: #f2f2f2;
             width: 100%;
             box-sizing: border-box;
+            /*margin-bottom:2px;
+            margin-top:2px;*/
         }
+
+        /*.textarea {
+            margin-bottom:2px;
+            margin-top:2px;
+        }*/
 
         .btn {
             margin-bottom: 10px;
@@ -119,8 +126,12 @@
     <script>
         var token = "<%=acc_token%>";
         var subscription = "<%=subscription%>";
+        var permissionType = "<%=type%>";
     </script>
-    <h1>POC Azure Logic Apps BPM1</h1>
+    <div style="">
+        <h1 style="width: 80%;float: left;">POC Azure Logic Apps BPM1</h1> 
+        <button style="margin-top: 12px;" class="btn btn-primary" onclick="logout()">Logout</button>
+    </div>
 
     <div id="root"></div>
     <script type="text/babel" src="/Scripts/WorkFlowList.js"></script>

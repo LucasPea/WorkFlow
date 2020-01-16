@@ -33,7 +33,7 @@ public class DBConnection
         /*
             int myRequiredScalar = 0;
             object obj = new object();
-            obj = SqlComm.SqlReturn("SELECT TOP 1 Col1 FROM Table1");
+            obj = DBConnection.SqlReturn("SELECT TOP 1 Col1 FROM Table1");
             if (obj != null) myRequiredScalar = (int)obj;
          */
     }
@@ -51,7 +51,7 @@ public class DBConnection
         /*
             int Col1Value = 0;
             DataTable dt = new DataTable();
-            dt = SqlComm.SqlDataTable("SELECT * FROM a WHERE b");
+            dt = DBConnection.SqlDataTable("SELECT * FROM a WHERE b");
             if (dt.Rows.Count != 0) 
             {
                 Col1Value = (int)dt.Rows[2]["Col1"];
@@ -75,6 +75,6 @@ public class DBConnection
             obj = cmd.ExecuteScalar();
             return obj;
         }
-        //SqlComm.SqlStoredProcedure1Param("TheStoredProcedureName", "TheParameterName", TheParameterValue);
+        //DBConnection.SqlStoredProcedure1Param("TheStoredProcedureName", "TheParameterName", TheParameterValue);
     }
 }

@@ -1,0 +1,886 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <!--     Fonts and icons     -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+    <!-- Material Kit CSS -->
+    <link href="~/Content/assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+
+    <!-- New buttons and Navigation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" crossOrigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossOrigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossOrigin="anonymous"></script>
+    <script src="~/Content/assets/js/core/jquery.min.js"></script>
+
+    <script src="~/Content/assets/js/core/popper.min.js"></script>
+
+    <script src="~/Content/assets/js/core/bootstrap-material-design.min.js"></script>
+
+    <script src="~/Content/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+
+    <!-- Plugin for the momentJs  -->
+    <script src="~/Content/assets/js/plugins/moment.min.js"></script>
+
+    <!--  Plugin for Sweet Alert -->
+    <script src="~/Content/assets/js/plugins/sweetalert2.js"></script>
+
+    <!-- Forms Validations Plugin -->
+    <script src="~/Content/assets/js/plugins/jquery.validate.min.js"></script>
+
+    <!-- Plugin for the Wizard, full documentation here: https://github.com/VinceG/twitter-bootstrap-wizard -->
+    <script src="~/Content/assets/js/plugins/jquery.bootstrap-wizard.js"></script>
+
+    <!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+    <script src="~/Content/assets/js/plugins/bootstrap-selectpicker.js"></script>
+
+    <!--  Plugin for the DateTimePicker, full documentation here: https://eonasdan.github.io/bootstrap-datetimepicker/ -->
+    <script src="~/Content/assets/js/plugins/bootstrap-datetimepicker.min.js"></script>
+
+
+    <!--  DataTables.net Plugin, full documentation here: https://datatables.net/  -->
+    <script src="~/Content/assets/js/plugins/jquery.dataTables.min.js"></script>
+
+    <!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+    <script src="~/Content/assets/js/plugins/jquery.tagsinput.js"></script>
+
+    <!-- Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+    <script src="~/Content/assets/js/plugins/jasny-bootstrap.min.js"></script>
+
+    <!--  Full Calendar Plugin, full documentation here: https://github.com/fullcalendar/fullcalendar    -->
+    <script src="~/Content/assets/js/plugins/fullcalendar.min.js"></script>
+    
+    <!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+    <script src="~/Content/assets/js/plugins/nouislider.min.js"></script>
+
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+
+    <!-- Library for adding dinamically elements -->
+    <script src="~/Content/assets/js/plugins/arrive.min.js"></script>
+
+    <!-- Chartist JS -->
+    <script src="~/Content/assets/js/plugins/chartist.min.js"></script>
+
+    <!--  Notifications Plugin    -->
+    <script src="~/Content/assets/js/plugins/bootstrap-notify.js"></script>
+    <style>
+        .my_Loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(../Content/assets/img/loader.gif) center no-repeat #ffffff69;
+            display: none;
+        }
+
+        h1 {
+            font-size: 35px;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+
+        .standardConf {
+            background-color: #365DA7;
+            text-align: center;
+            margin: 10px !important;
+            border-radius: 25px !important;
+            width: auto;
+        }
+
+        .spinnerVal {
+            text-align: center;
+        }
+
+        .customSpinner {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .input-group > .custom-select:not(:last-child), .input-group > .form-control:not(:last-child) {
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+        /*Apply individual Styles to one*/
+
+        .spinner-roundVal {
+            margin: auto 2px;
+            border-radius: 20px !important;
+            width: auto !important;
+        }
+
+        .spinner-roundbutton {
+            border-radius: 100px !important;
+            background-color: #365DA7;
+        }
+
+        .a {
+            margin-left: -40px;
+        }
+
+        .b {
+            margin-right: -40px;
+        }
+
+        .c {
+            background: #C2CEE4;
+        }
+
+        #regForm {
+            background-color: #efefef;
+            margin: 100px auto;
+            padding: 40px;
+            width: 70%;
+            min-width: 300px;
+        }
+
+        /* Style the input fields */
+        input {
+            padding: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-family: Raleway;
+            border: 1px solid #aaaaaa;
+        }
+
+            /* Mark input boxes that gets an error on validation: */
+            input.invalid {
+                background-color: #ffdddd;
+            }
+
+
+        button {
+            background-color: #365DA7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            font-family: Raleway;
+            cursor: pointer;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        #prevBtn {
+            background-color: #365DA7;
+        }
+
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+
+
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 20px;
+            width: 20px;
+            margin: 0 20px;
+            background-color: #28348F;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+            /* Mark the active step: */
+            .step.active {
+                opacity: 0.75;
+            }
+
+            /* Mark the steps that are finished and valid: */
+            .step.finish {
+                opacity: 1;
+            }
+
+        body {
+            background-color: #efefef;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+    <script src="~/JsControllers/csc_uk.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+
+
+    <style>
+        .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control {
+            position: relative;
+            -ms-flex: 1 1 auto !important;
+            flex: 1 1 auto;
+            top: 5px;
+            width: 1%;
+            margin-bottom: 0;
+        }
+
+        .tabledata {
+            color: grey;
+            font-style: italic;
+        }
+
+        .quantity::-webkit-inner-spin-button,
+        .quantity::-webkit-outer-spin-button {
+            -webkit-appearance: none !important;
+            margin: 0 !important;
+        }
+
+        .disabled_a {
+            pointer-events: none;
+            cursor: default;
+        }
+
+        .table thead tr th {
+            font-size: 1.063rem;
+            width: 296px;
+        }
+
+        .form-check .form-check-input[disabled] ~ .form-check-sign .check {
+            border-color: #000000;
+            opacity: 1.26;
+        }
+
+        .ConfigFontColor {
+            color: #2A3C90;
+            font-size: 15px;
+        }
+
+            .ConfigFontColor.resume {
+                font-size: 30px;
+                text-align: center;
+            }
+
+        .CustomTextBox {
+            color: #2A3C90;
+            background-color: lightblue;
+            border: none;
+        }
+
+        .titlecus {
+        }
+
+        h2 {
+            font-size: 42px !important;
+            line-height: 35px;
+        }
+
+
+        h7 {
+            font-size: 14px;
+            color: #365DA7;
+        }
+
+        .h7.active {
+            color: #d4dbea;
+        }
+
+        .h8 {
+            font-style: oblique;
+        }
+
+            .h8.bold {
+                font-weight: bold;
+            }
+
+        .infoText {
+            font-size: 0.75rem;
+        }
+
+        .cardFont {
+            font-size: 30px;
+            color: #6C757D;
+            font-weight: bold;
+        }
+
+        .stepN {
+            border: none;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+            .stepN.active {
+                opacity: 1;
+                background-color: #6885BD;
+                color: white;
+            }
+
+            .stepN.start {
+                opacity: 1;
+            }
+
+            .stepN.finish {
+                opacity: 1.5;
+            }
+
+        .stepN2 {
+            border: none;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+            .stepN2.active {
+                opacity: 1;
+                background-color: #6885BD;
+                color: white;
+            }
+
+            .stepN2.start {
+                opacity: 1;
+            }
+
+            .stepN2.finish {
+                opacity: 1.5;
+            }
+
+        .shadow {
+            box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2), 0 8px 40px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .col.pers {
+            height: 25px;
+            width: 100px;
+            float: right;
+            padding-left: 0px;
+            padding-right: 0px;
+        }
+
+        .col.disable {
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+        .col.container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        btn.btnBack {
+            position: relative;
+            color: #007BFF;
+            background-color: transparent;
+            display: inline-block;
+            font-weight: 400;
+            text-align: center;
+            white-space: nowrap;
+            vertical-align: middle;
+            border: 1px solid;
+            padding: .375rem .75rem;
+            font-size: 1rem;
+            line-height: 1.5;
+            border-radius: 30px;
+        }
+
+        .pointer {
+            cursor: pointer;
+        }
+
+        .btn.btn-primary.transparent {
+            background-color: transparent;
+            color: #365DA7;
+        }
+
+        .btn.btn-primary.transparent2 {
+            background-color: #efefef;
+            color: #365DA7;
+        }
+
+        .resumeCard {
+            border-radius: 4px !important;
+            background-color: #365DA7;
+        }
+
+        td:nth-child(even) {
+            /*background-color: #f2f2f2*/
+        }
+
+        table.resumeTable {
+            border-collapse: collapse;
+            width: 100%;
+            font-size: 20px;
+        }
+
+        tr {
+            border-collapse: collapse;
+        }
+
+        .togglebutton label input[type=checkbox]:checked + .toggle {
+            background-color: #365DA7;
+        }
+
+            .togglebutton label input[type=checkbox]:checked + .toggle:after {
+                border-color: #365DA7;
+            }
+
+        .row.container {
+            overflow-x: auto;
+            overflow-y: auto;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            border-bottom: 1px dotted black;
+            z-index: 1000;
+        }
+
+            .tooltip .tooltiptextbottom {
+                visibility: hidden;
+                width: 120px;
+                background-color: #365DA7;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                opacity: 1;
+                /* Position the tooltip */
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                margin-left: -60px;
+            }
+
+            .tooltip .tooltiptexttop {
+                visibility: hidden;
+                width: 120px;
+                background-color: #365DA7;
+                color: #fff;
+                text-align: center;
+                border-radius: 6px;
+                padding: 5px 0;
+                opacity: 1;
+                /* Position the tooltip */
+                position: absolute;
+                width: 120px;
+                bottom: 100%;
+                left: 50%;
+                margin-left: -60px;
+            }
+
+            .tooltip:hover .tooltiptexttop {
+                visibility: visible;
+            }
+
+            .tooltip:hover .tooltiptextbottom {
+                visibility: visible;
+            }
+
+        span.btnhide {
+            visibility: visible;
+        }
+
+        span.btnhide2 {
+            visibility: visible;
+            display: flex;
+        }
+
+        .col-md-8.btnhide {
+            visibility: visible;
+            display: flex;
+        }
+
+        span.btnshow {
+            visibility: hidden;
+            display: none !important;
+        }
+
+        .h5.change {
+            font-size: 1.25rem;
+        }
+
+        .h3.change {
+            font-size: 1.75rem;
+        }
+
+        @@media only screen and (max-width: 765px) {
+            span.btnhide {
+                visibility: hidden;
+                display: none !important;
+            }
+
+            span.btnhide2 {
+                visibility: hidden;
+                display: none !important;
+            }
+
+            span.btnshow {
+                visibility: visible;
+                display: flex !important;
+            }
+
+            .col-md-8.btnhide {
+                visibility: hidden;
+                display: none !important;
+            }
+        }
+
+        @@media only screen and (max-width: 994px) {
+            .h5.change {
+                font-size: 1rem;
+            }
+
+            .h3.change {
+                font-size: 1.45rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid" style="padding-top: 15px;padding-left: 40px;padding-right: 40px;background-color:white">
+        <div style="height:70px;width:auto">
+            <div style="width:50%;float:left">
+                <h2 class="font-weight-bold ConfigFontColor resume" style="color:#0070c0;float:left; font-size:40px">Invoice</h2>
+            </div>
+            <div style="width:50%;float:right">
+                <span style="float:right"><img id="img0" src="~/Content/assets/img/Cowry_Logo.png" height="70" width="201" /></span>
+            </div>
+            <div style="float:left">
+                <span id="lb_InvoiceID" style="font-size:18.33px">Invoice ID</span><br />
+                <span id="lb_Date" style="font-size:18.33px"></span><br />
+                <b style="font-size:18.33px">Your Ref:</b><span style="font-size:18.33px">Business Central Support</span>
+
+            </div>
+        </div>
+        <div class="" style="padding-top:20px">
+            <div class="table">
+                <table class="table-hover resumeTable" id="tb_ship" style="">
+                    <tr>
+                        <th style="width:33%"></th>
+                        <th style="width:33%;color:#4770c0;font-size:15px">Ship-to Address</th>
+                        <th style="width:33%;color:#0070c0;font-size:23px">Cowry Solutions</th>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <b id="lb_companyName" style="font-size:18.33px;font:bold"></b><br />
+                            <b id="lb_lastName" style="font-size:18.33px;font:bold"></b><br />
+                            <b id="lb_city" style="font-size:18.33px;font:bold"></b><b>, </b><b id="lb_companyAddress" style="font-size:18.33px;font:bold"></b><br />
+                            <b id="lb_companyState" style="font-size:18.33px;font:bold"></b><b>, </b><b id="lb_companyPostal" style="font-size:18.33px;font:bold"></b><br />
+                            <b id="lb_country" style="font-size:18.33px;font:bold"></b>
+                        </td>
+                        <td style="font-size:18.33px">
+                            <span id="lb_companyNames"></span><br />
+                            <span id="lb_lastNames"></span><br />
+                            <span id="lb_citys"></span><span>, </span><span id="lb_companyAddresss"></span><br />
+                            <span id="lb_companyStates"></span><span>, </span><span id="lb_companyPostals"></span><br />
+                            <span id="lb_countrys"></span>
+                        </td>
+                        <td style="font-size:18.33px">
+                            <span id="cowryName"></span><br />
+                            <span id="cowryAddress"></span><br />
+                            <span id="cowryStreet"></span><br />
+                            <span id="cowryState"></span><br />
+                            <span id="cowryCity"></span><br /><br />
+                            <span id="cowryPhone"></span>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="table">
+            <table class="table-hover resumeTable" id="detailTable" style="background-color:white">
+                <tr style="background-color:#0070c0">
+                    <th style="color:white">No.</th>
+                    <th style="color:white">Description</th>
+                    <th style="color:white">Quantity</th>
+                    <th style="color:white">Unit Price</th>
+                    <th style="color:white">Line Amount</th>
+                </tr>
+            </table>
+        </div>
+        <div class="table" style="padding-top:40px;">
+            <table class="table-hover resumeTable" id="">
+                <tr>
+                    <th style="width:25%; color:#4770c0;font-size:15px">Home Page</th>
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                    <th style="width:25%; color:#4770c0;font-size:15px">Email</th>
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                </tr>
+                <tr>
+                    <td>
+                        http://www.cowrysolutions.com
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                        admin@cowrysolutions.com
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class="table" style="padding-top:40px;">
+            <table class="table resumeTable" id="">
+                <tr style="display:none">
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                </tr>
+                <tr>
+                    <td>
+                        <span>Terms: Net 14 days.</span>
+                        <br />
+                        <br />
+                        <span>Please make payment to:</span><br />
+                        <div class="table" style="width:324px">
+                            <table>
+                                <tr style="display:none">
+                                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                                    <th style="width:25%; color:#4770c0;font-size:15px"></th>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <span>Bank A/c:</span><br />
+                                        <span>Sort Code:</span><br />
+                                        <span>A/c No.:</span><br />
+                                    </td>
+                                    <td>
+                                        <span id="cowryBank">Cowry Solutions Ltd.</span><br />
+                                        <span id="cowryCode">20-65-20</span><br />
+                                        <span id="cowryNo">63892891</span><br />
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                    <td>
+                    </td>
+                </tr>
+            </table>
+        </div>
+
+        <div style="text-align: center;">
+            <span style="color:lightgray">Cowry Solutions Limited</span><br />
+            <span style="color:lightgray">Registered Office: 20-22 Wenlock Road, London, N1 7GU</span><br />
+            <span style="color:lightgray">Company Number: 11925170 VAT Registration Number: GB 322162348</span><br /><br /><br />
+        </div>
+    </div>
+    <script>
+        var data = localStorage.getItem('datatoReport');
+        var productsDetail = localStorage.getItem('products');
+        var currency = localStorage.getItem('curr');
+        addCowry(currency);
+        addDate();
+        addText();
+        var products = new Array();
+        var index = 0;
+        var text = '';
+        var totalPay = 0;
+        var product = new Array();
+        for (var j = 0; j < productsDetail.length; j++) {
+            if (productsDetail[j] != ',') {
+                text += productsDetail[j];
+            } else {
+                if (index < 4) {
+                    product[index] = text;
+                    text = '';
+                    index++;
+                }
+                if (index == 4) {
+                    index = 0;
+                    totalPay += parseFloat(product[3]) * parseFloat(product[2]);
+                    text = '';
+                    var table = document.getElementById('detailTable'),
+                        row = table.insertRow(-1),
+                        cell1 = row.insertCell(0),
+                        cell2 = row.insertCell(1),
+                        cell3 = row.insertCell(2),
+                        cell4 = row.insertCell(3),
+                        cell5 = row.insertCell(4);
+                    cell1.innerHTML = product[0];
+                    cell2.innerHTML = product[1];
+                    cell3.innerHTML = product[2];
+                    cell4.innerHTML = currency + product[3];
+                    cell5.innerHTML = currency + parseFloat((parseFloat(product[3]) * parseFloat(product[2]))).toFixed(2);
+                    cell1.style.textAlign = "center";
+                    cell3.style.textAlign = "center";
+                    cell4.style.textAlign = "right";
+                    cell5.style.textAlign = "right";
+                    product = new Array();
+                }
+            }
+        }
+        index = 0;
+        product[3] = text;
+        var table = document.getElementById('detailTable'),
+            row = table.insertRow(-1),
+            cell1 = row.insertCell(0),
+            cell2 = row.insertCell(1),
+            cell3 = row.insertCell(2),
+            cell4 = row.insertCell(3);
+            cell5 = row.insertCell(4);
+        cell1.innerHTML = product[0];
+        cell2.innerHTML = product[1];
+        cell3.innerHTML = product[2];
+        cell4.innerHTML = currency + product[3];
+        cell5.innerHTML = currency + parseFloat((parseFloat(product[3]) * parseFloat(product[2]))).toFixed(2);
+        cell1.style.textAlign = "center";
+        cell3.style.textAlign = "center";
+        cell4.style.textAlign = "right";
+        cell5.style.textAlign = "right";
+        totalPay += parseFloat(product[3]) * parseFloat(product[2]);
+        text = '';
+        var table = document.getElementById('detailTable'),
+            row = table.insertRow(-1),
+            cell1 = row.insertCell(0),
+            cell2 = row.insertCell(1),
+            cell3 = row.insertCell(2),
+            cell4 = row.insertCell(3);
+            cell5 = row.insertCell(4);
+        cell4.innerHTML = 'Total Tax: ';
+        cell5.innerHTML = currency + '0.00';
+        cell4.style.textAlign = "center";
+        cell5.style.textAlign = "right";
+        var table = document.getElementById('detailTable'),
+            row = table.insertRow(-1),
+            cell1 = row.insertCell(0),
+            cell2 = row.insertCell(1),
+            cell3 = row.insertCell(2),
+            cell4 = row.insertCell(3);
+            cell5 = row.insertCell(4);
+        cell4.innerHTML = 'Total: ';
+        cell5.innerHTML = currency + parseFloat(totalPay).toFixed(2);
+        cell4.style.textAlign = "center";
+        cell5.style.textAlign = "right";
+        product = new Array();
+        for (var j = 0; j < data.length; j++) {
+            if (data[j] != ',') {
+                text += data[j];
+            } else {
+                if (index < 3) {
+                    console.log(text);
+                    product[index] = text;
+                    text = '';
+                    index++;
+                }
+            }
+        }
+        index = 0;
+        product[2] = text;
+        if (product[0] == 'Standard') {
+            product[3] = 0;
+        }
+        if (product[0] == 'Annuity (10% surcharge)') {
+            product[3] = product[2];
+            product[2] = 0;
+        }
+        if (product[0] == 'Up Front (10% saving)') {
+            product[3] = 0;
+        }
+        text = '';
+        var lb = document.getElementById('lb_method');
+        lb.innerHTML = product[0];
+        product = new Array();
+
+        function addCowry(currency) {
+            if (currency == '$') {
+                document.getElementById("cowryName").innerHTML = "Cowry Solutions";
+                document.getElementById("cowryAddress").innerHTML = "";
+                document.getElementById("cowryStreet").innerHTML = "";
+                document.getElementById("cowryState").innerHTML = "60 29th Street, Ste 603";
+                document.getElementById("cowryCity").innerHTML = "San Francisco, CA 94110";
+                document.getElementById("cowryPhone").innerHTML = "Phone: 7074959909";
+
+                document.getElementById("cowryBank").innerHTML = "Cowry Solutions Ltd.";
+                document.getElementById("cowryCode").innerHTML = "20-65-20";
+                document.getElementById("cowryNo").innerHTML = "63892891";
+            } else {
+                document.getElementById("cowryName").innerHTML = "Cowry Solutions Limited";
+                document.getElementById("cowryAddress").innerHTML = "3rd Floor, The Blade";
+                document.getElementById("cowryStreet").innerHTML = "Abbey Street";
+                document.getElementById("cowryState").innerHTML = "Reading";
+                document.getElementById("cowryCity").innerHTML = "Berkshire RG1 3BE";
+                document.getElementById("cowryPhone").innerHTML = "Phone: 0118 214 2600";
+
+                document.getElementById("cowryBank").innerHTML = "Cowry Solutions Ltd.";
+                document.getElementById("cowryCode").innerHTML = "20-65-20";
+                document.getElementById("cowryNo").innerHTML = "63892891";
+            }
+        }
+
+        function addDate() {
+            var d = new Date();
+            var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            var dateformat = d.getDate() + " " + months[d.getMonth()] + " " + d.getFullYear();
+            document.getElementById("lb_Date").innerHTML = dateformat;
+        }
+
+        function addText() {
+            var invoiceID = localStorage.getItem('invoiceId');
+            var lastName = localStorage.getItem('lastName');
+            var companyName = localStorage.getItem('companyName');
+            var companyAddress = localStorage.getItem('companyAddress');
+            var country = localStorage.getItem('country');
+            var companyState = localStorage.getItem('companyState');
+            var companyPostal = localStorage.getItem('companyPostal');
+            var city = localStorage.getItem('city');
+
+
+            var lbInvoice = document.getElementById('lb_InvoiceID');
+            var lblastName = document.getElementById('lb_lastName');
+            var lbcompanyName = document.getElementById('lb_companyName');
+            var lbcompanyAddress = document.getElementById('lb_companyAddress');
+            var lbcountry = document.getElementById('lb_country');
+            var lbcompanyState = document.getElementById('lb_companyState');
+            var lbcompanyPostal = document.getElementById('lb_companyPostal');
+            var lbcity = document.getElementById('lb_city');
+
+            var lblastNames = document.getElementById('lb_lastNames');
+            var lbcompanyNames = document.getElementById('lb_companyNames');
+            var lbcompanyAddresss = document.getElementById('lb_companyAddresss');
+            var lbcountrys = document.getElementById('lb_countrys');
+            var lbcompanyStates = document.getElementById('lb_companyStates');
+            var lbcompanyPostals = document.getElementById('lb_companyPostals');
+            var lbcitys = document.getElementById('lb_citys');
+
+            lbInvoice.innerHTML = invoiceID;
+            lblastName.innerHTML = lastName;
+            lbcompanyName.innerHTML = companyName;
+            lbcompanyAddress.innerHTML = companyAddress;
+            lbcountry.innerHTML = country;
+            lbcompanyState.innerHTML = companyState;
+            lbcompanyPostal.innerHTML = companyPostal;
+            lbcity.innerHTML = city;
+
+            lblastNames.innerHTML = lastName;
+            lbcompanyNames.innerHTML = companyName;
+            lbcompanyAddresss.innerHTML = companyAddress;
+            lbcountrys.innerHTML = country;
+            lbcompanyStates.innerHTML = companyState;
+            lbcompanyPostals.innerHTML = companyPostal;
+            lbcitys.innerHTML = city;
+        }
+    </script>
+</body>
+</html>

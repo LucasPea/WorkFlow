@@ -10,9 +10,11 @@ using WebApplication8.Models;
 
 public class TokenClass
 {
-    static string clientId= ConfigurationManager.AppSettings["clientId"];
-    static string secret = ConfigurationManager.AppSettings["secret"];
-    static string apiId = ConfigurationManager.AppSettings["apiId"];
+    public static string ClientId { get; } = ConfigurationManager.AppSettings["clientId"];
+
+    public static string ApiId { get; } = ConfigurationManager.AppSettings["apiId"];
+
+    public static string Secret { get; } = ConfigurationManager.AppSettings["secret"];
 
     public TokenClass()
     {
@@ -20,7 +22,7 @@ public class TokenClass
 
     public string GetToken()
     {
-        var client = new RestClient("https://login.microsoftonline.com/" + apiId + "/oauth2/token");
+        var client = new RestClient("https://login.microsoftonline.com/" + ApiId + "/oauth2/token");
         var request = new RestRequest(Method.POST);
         request.AddHeader("cache-control", "no-cache");
         request.AddHeader("Connection", "keep-alive");
@@ -31,16 +33,16 @@ public class TokenClass
         request.AddHeader("Cache-Control", "no-cache");
         request.AddHeader("Accept", "*/*");
         request.AddHeader("Content-Type", "application/x-www-form-urlencoded");
-        request.AddParameter("undefined", "grant_type=client_credentials&client_id=" + clientId + "&client_secret=" + secret + "&resource=https%3A%2F%2Fmanagement.azure.com%2F", ParameterType.RequestBody);
+        request.AddParameter("undefined", "grant_type=client_credentials&client_id=" + ClientId + "&client_secret=" + Secret + "&resource=https%3A%2F%2Fmanagement.azure.com%2F", ParameterType.RequestBody);
         IRestResponse response = client.Execute(request);
         string res = response.Content.Replace("﻿", "");
-        dynamic json = Newtonsoft.Json.JsonConvert.DeserializeObject(res);
+        dynamic json = JsonConvert.DeserializeObject(res);
         return json.access_token;
     }
 
     public string GetSubscription(string token)
     {
-        var client = new RestClient(" https://management.azure.com/subscriptions?api-version=2019-06-01");
+        var client = new RestClient("https://management.azure.com/subscriptions?api-version=2019-06-01");
         var request = new RestRequest(Method.GET);
         request.AddHeader("Authorization", "Bearer " + token); 
         IRestResponse response = client.Execute(request);

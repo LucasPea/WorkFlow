@@ -1,0 +1,19 @@
+---
+/home1/cowrysol/public_html:
+  db: cowrysol_wp815
+  domain: cowrysolutions.com
+  hostname: box3032.bluehost.com
+  path: /home1/cowrysol/public_html
+  table: wpfi_options
+  type: wordpress
+  user: cowrysol
+  version: 5.1.1
+/home1/cowrysol/public_html/7blocks:
+  db: cowrysol_7f4
+  domain: 7blocks.io
+  hostname: box3032.bluehost.com
+  path: /home1/cowrysol/public_html/7blocks
+  table: 7f4_options
+  type: wordpress
+  user: cowrysol
+  version: 5.1.1

@@ -1,0 +1,9 @@
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\bin\Debug\net451\Crayon.Api.Sdk.dll
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\bin\Debug\net451\Crayon.Api.Sdk.pdb
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\bin\Debug\net451\Newtonsoft.Json.dll
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.csprojAssemblyReference.cache
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.AssemblyInfoInputs.cache
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.AssemblyInfo.cs
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.csproj.CopyComplete
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.dll
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\net451\Crayon.Api.Sdk.pdb

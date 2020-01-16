@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "CowryCurrency";
+    Layout = "~/Views/Shared/Cowry.cshtml";
+}
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="~/JsController/CowryCurrency.js"></script>
+
+<style>
+        input, textarea, select, fieldset {
+        border-radius: 2px;
+        max-width: 100%;
+    }
+
+    input, select, textarea {
+        background: transparent none repeat scroll 0 0;
+        font-size: 1em;
+        line-height: 1.42;
+        padding: 8px 10px;
+    }
+
+    *, input, *::before, *::after {
+        box-sizing: border-box;
+    }
+
+        *, input, *::before, *::after {
+            box-sizing: border-box;
+        }
+
+
+    select {
+        -moz-appearance: none;
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        background-color: transparent;
+        background-image: url("data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiPz4KPCEtLSBHZW5lcmF0ZWQgYnkgSWNvTW9vbi5pbyAtLT4KPCFET0NUWVBFIHN2ZyBQVUJMSUMgIi0vL1czQy8vRFREIFNWRyAxLjEvL0VOIiAiaHR0cDovL3d3dy53My5vcmcvR3JhcGhpY3MvU1ZHLzEuMS9EVEQvc3ZnMTEuZHRkIj4KPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHdpZHRoPSIxNSIgaGVpZ2h0PSIxNSIgdmlld0JveD0iMCAwIDU1IDU2Ij4KPHBhdGggZD0iTTQ0LjU1NyAxOS40OTVjLTIuMDY5IDIuMDY5LTE2LjU1NCAxNi4wMzYtMTYuNTU0IDE2LjAzNnMtMTUuMDAyLTEzLjk2Ny0xNy4wNzEtMTYuMDM2LTMuMTA0IDMuMTA0LTMuMTA0IDMuMTA0bDIwLjE3NSAxOC42MjMgMTkuNjU4LTE4LjYyM2MwIDAtMS4wMzUtNS4xNzMtMy4xMDQtMy4xMDR6IiBmaWxsPSIjNTg1ODU4Ii8+Cjwvc3ZnPg==");
+        background-position: right 10px center;
+        background-repeat: no-repeat;
+        cursor: pointer;
+        padding-right: 28px;
+        text-indent: 0.01px;
+        text-overflow: "";
+    }
+
+    input[type="text"], input[type="search"], input[type="password"], input[type="email"], input[type="file"], input[type="number"], input[type="tel"], textarea, select {
+        border: 1px solid #ececec;
+        display: block;
+        margin: 0 0 20px;
+        max-width: 100%;
+        width: 100%;
+    }
+
+    ._select {
+        max-width: 100%;
+    }
+</style>
+
+
+    <div class="card" style="background:#F2F4FA" ng-app="CowryCurrency" ng-controller="CowryCurrencyPriceCtrl">
+        <div class="card-header card-header-primary">
+            <h2 class="card-title">Currency Options</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="card float-center">
+                        <!-- Card header -->
+                        <div class="card-header">
+                            <!-- Title -->
+                            <h5 class="h3 mb-0">Select your currency </h5>
+                        </div>
+                        <!-- Card image -->
+                        <!-- List group -->
+                        <!-- Card body -->
+                        <div class="card-body">
+                            <select class="_select" ng-model="currencySelect">
+                                <option value="USD">USD</option>
+                                <option value="GBP">GBP</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div style="overflow:auto;">
+                <div>
+                    <button type="button" class="btn btn-info" id="prevBtn" onclick="ShowHome()" style="float:left;">Back to Home</button>
+                    <button type="button" class="btn btn-primary" id="nextBtn" ng-click="ShowCurrencySelect(currencySelect)" style="float:right;">Let's Start</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+<script>
+    function ShowHome() {
+        debugger;
+        window.location.href = "/CowryHome/CowryHome";
+    }   
+</script>

@@ -1,0 +1,103 @@
+﻿
+@{
+    ViewBag.Title = "CowryHome";
+    Layout = "~/Views/Shared/Cowry.cshtml";
+}
+
+<div class="card-body">
+    <h2 style="text-align:center;">Purchase Dynamics Business Central Today</h2>
+    <h1>Checkin</h1>
+    <br />
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card card-product" data-count="2">
+                <div class="card-header card-header-image" data-header-animation="true">
+                    <a>
+                        <img src="~/AppContent/assets/img/New_BuyNow.JPG" onclick="ShowCowryCurrency()" />
+                    </a>
+                </div>
+                <div class="card-body" id="uncard">
+                    <h4 class="card-title">
+                        <a>Includes: Basic Configuration, Support and Sample Data.</a>
+                        
+                    </h4>
+                    <div class="card-description">
+                        <h4>For companies that are comfortable doing their own setup.</h4>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" onclick="ShowCowryCurrency()" class="btn btn-rose pull-right">Buy Now<div class="ripple-container"></div></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-product" data-count="3">
+                <div class="card-header card-header-image" data-header-animation="true">
+                    <a href="#pablo">
+                        <img src="~/AppContent/assets/img/New_Configure.JPG" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a>Includes: Preconfigured/Accelerated Templates, Support and Sample Data.</a>                        
+                    </h4>
+                    <div class="card-description">
+                        <h4>For companies that want help with <a href="http://103.73.190.66:8080/Login/Login">setup</a></h4>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-rose pull-right" onclick="ComingSoonPopup()">Configure Your System<div class="ripple-container"></div></button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card card-product" data-count="2">
+                <div class="card-header card-header-image" data-header-animation="true">
+                    <a href="#pablo">
+                        <img src="~/AppContent/assets/img/New_Customize.JPG" />
+                    </a>
+                </div>
+                <div class="card-body">
+                    <h4 class="card-title">
+                        <a href="#pablo">Includes: Custom Quote for configuration and any additional system requirements.</a>                        
+                    </h4>
+                    <div class="card-description">
+                        <h4>For companies that require a high level of customisation.</h4>
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-rose pull-right" onclick="ComingSoonPopup()">Custom Solution<div class="ripple-container"></div></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function ShowCowryCurrency()
+    {
+        window.location.href = "/CowryCurrency/CowryCurrency";
+    }
+
+    function ComingSoonPopup() {
+
+        Swal.fire({
+            title: '<strong>Coming Soon !</strong>',
+            type: 'info',
+            html:
+              'Please feel free to contact us on our ' +
+              '<a href="https://www.cowrysolutions.com/contacts"><b>Contact page</b></a> ' +
+              'to learn more how we can help configure your system',           
+            focusConfirm: false,
+            confirmButtonText:
+              '<i class="fa fa-thumbs-up"></i> Great!',
+            confirmButtonAriaLabel: 'Thumbs up, great!',           
+        })
+    }
+
+</script>
+

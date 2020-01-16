@@ -59,6 +59,32 @@ async function getFocus(a) {
     if (fc != null) fc.focus();
 }
 
+function logout() {
+    window.location = "Login.aspx";
+}
+
+//class Login extends React.Component {
+//    constructor() {
+//        super();
+//        this.state = {
+//            userType:[]
+//        }
+//    };
+//    render() {
+//        return (
+//            <form id="form1" runat="server">
+//                <div class="login-page">
+//                    <div class="form">
+//                        <asp: TextBox placeholder="Username" CssClass="input" ID="txtUser" runat="server"></asp: TextBox>
+//                        <asp: TextBox placeholder="Password" CssClass="input" ID="txtPass" runat="server" TextMode="Password"></asp: TextBox>
+//                        <asp: Button CssClass="btn" ID="Button1" runat="server" OnClick="Button1_Click" Text="Log In" />
+//                    </div>
+//                </div >
+//            </form >
+//            );
+//    }
+//}
+
 class WorkflowList extends React.Component {
     constructor() {
         super();
@@ -298,18 +324,17 @@ class FlowDiagarm extends React.Component {
                     {
                         selector: 'edge',
                         style: {
-                            'line-color': '#FF0000',
-                            'target-arrow-color': '#FF0000',
-                            'curve-style': 'bezier',
+                            'curve-style': 'bezier',//taxi 
                             'target-arrow-shape': 'triangle',
                         }
                     },
                     {
                         selector: 'node',
                         style: {
-                            'shape': 'barrel',
+                            'shape': 'rectangle',
                             'background-color': '#CCCCCC',
                             'border-width': 1,
+                            'width': 80,
                             'text-valign': 'center',
                             'text-halign': 'center',
                             'background-blacken': 0,
@@ -319,8 +344,6 @@ class FlowDiagarm extends React.Component {
                 layout: {
                     name: 'grid',
                     rows: 10,
-                    //avoidOverlap: true, // prevents node overlap, may overflow boundingBox if not enough space
-                    //avoidOverlapPadding: 10, // extra spacing around nodes when avoidOverlap: true
                 }
             });
             cy.on('tap', 'node', function (evt) {
@@ -409,7 +432,7 @@ class FlowDiagarm extends React.Component {
                 var tr = document.getElementById(trg);
                 if (tr == null) {
                     lb_trg = "<div id=" + trg + ">Type: " + trigger[trg]['type'] + "<br/> Kind: " + trigger[trg]['kind'] + "</div>";
-                    this.addNodeToCy('', 0, lb_trg, trg, trg, 1);
+                    this.addNodeToCy('', 0, lb_trg, trg, trg);
                 }
             }
             var auxy = this.setOrderNode(jsn);
@@ -417,6 +440,8 @@ class FlowDiagarm extends React.Component {
             //Order array
             htmlNodes = this.orderArray(htmlNodes, '');
             var arrayLeft = edgeArray;
+            var arrayFirst = this.setOrderNode(jsn);
+            var firstLength = 0;
             while (arrayLeft.length > 0) {
                 var arrayRet = new Array();
                 for (var i = 0; i < arrayLeft.length; i++) {
@@ -425,23 +450,55 @@ class FlowDiagarm extends React.Component {
                         for (var j = 0; j < htmlNodes.length; j++) {
                             if (htmlNodes[j][0] == arrayLeft[i][0]) {
                                 type = 4;
-                                this.addNodeToCy(triggerN, type, htmlNodes[j][1], htmlNodes[j][0], htmlNodes[j][0], htmlNodes[j][3]);
+                                this.addNodeToCy(triggerN, type, htmlNodes[j][1], htmlNodes[j][0], htmlNodes[j][0]);
                             }
                             break;
                         }
                     } else {
                         var element = cy.getElementById(arrayLeft[i][1]).position();
                         if (typeof element != "undefined") {
+                            var cantType = 0;
+                            for (let k = 0; k < arrayFirst.length; k++) {
+                                if (arrayFirst[k] == arrayLeft[i][0]) {
+                                    for (let n = 0; n < arrayLeft.length; n++) {
+                                        if (arrayLeft[n][1] == arrayLeft[i][1] && arrayFirst.includes(arrayLeft[n][0])) cantType++;
+                                    }
+                                }
+                            }
                             for (var j = 0; j < htmlNodes.length; j++) {
                                 if (htmlNodes[j][0] == arrayLeft[i][0]) {
-                                    if (htmlNodes[j][4] == 'else') {
-                                        type = 1;
+                                    if (arrayFirst.includes(arrayLeft[i][0])) {
+                                        if (htmlNodes[j][4] == 'else') {
+                                            type = 1;
+                                        }
+                                        if (htmlNodes[j][4] == 'actions') {
+                                            type = 2;
+                                        }
+                                        if (cantType > 1) {
+                                            type = 5 + cantType;
+                                        }
+                                        var elementProp = document.getElementById(htmlNodes[j][0]);
+                                        if (elementProp==null)this.addNodeToCy(arrayLeft[i][1], type, htmlNodes[j][1], htmlNodes[j][0], htmlNodes[j][0]);
+                                        firstLength++;
+                                        break;
+                                    } else {
+                                        if (firstLength + 1 < arrayFirst.length) {
+                                            var pos = arrayRet.length;
+                                            arrayRet[pos] = new Array();
+                                            arrayRet[pos][0] = arrayLeft[i][0];
+                                            arrayRet[pos][1] = arrayLeft[i][1];
+                                        } else {
+                                            if (htmlNodes[j][4] == 'else') {
+                                                type = 1;
+                                            }
+                                            if (htmlNodes[j][4] == 'actions') {
+                                                type = 2;
+                                            }
+                                            var elementProp = document.getElementById(htmlNodes[j][0]);
+                                            if (elementProp == null)this.addNodeToCy(arrayLeft[i][1], type, htmlNodes[j][1], htmlNodes[j][0], htmlNodes[j][0]);
+                                            break;
+                                        }
                                     }
-                                    if (htmlNodes[j][4] == 'actions') {
-                                        type = 2;
-                                    }
-                                    this.addNodeToCy(arrayLeft[i][1], type, htmlNodes[j][1], htmlNodes[j][0], htmlNodes[j][0], htmlNodes[j][3]);
-                                    break;
                                 }
                             }
                         } else {
@@ -459,15 +516,29 @@ class FlowDiagarm extends React.Component {
                 var get = cy.getElementById(edgeArray[i][0] + '_' + edgeArray[i][1]);
                 var trg = cy.getElementById("edge_" + triggerN + "_" + edgeArray[i][0]);
                 if (trg.length == 0 && triggerN != "" && edgeArray[i][1] == 'first_edge') {
-                    this.addEdgeToCy("edge_" + triggerN + "_" + edgeArray[i][0], triggerN, edgeArray[i][0]);
+                    this.addEdgeToCy("edge_" + triggerN + "_" + edgeArray[i][0], triggerN, edgeArray[i][0], '#000000'/*'#FF0000'*/);
                 }
                 if (edgeArray[i][1] != null && get.length == 0 && edgeArray[i][1] != 'first_edge') {
-                    this.addEdgeToCy(edgeArray[i][0] + '_' + edgeArray[i][1], edgeArray[i][1], edgeArray[i][0]);
+                    var ppl = this.setOrderNode(jsn);
+                    var color = '#007bff';
+                    for (let j = 0; j < ppl.length; j++) {
+                        if (ppl[j] == edgeArray[i][0]) {
+                            color = '#000000';
+                        }
+                    }
+                    var elem = document.getElementById(edgeArray[i][0]);
+                    if (elem.innerHTML.includes('True:')) {
+                        color = '#7fba00';
+                    }
+                    if (elem.innerHTML.includes('False:')) {
+                        color = '#FF0000';
+                    }
+                    this.addEdgeToCy(edgeArray[i][0] + '_' + edgeArray[i][1], edgeArray[i][1], edgeArray[i][0], color/*'#FF0000'*/);
                 }
             }
         }
     }
-    
+
     //Order the next array of property
     setOrderNode(jsn) {
         var arrayRet = new Array();
@@ -512,21 +583,23 @@ class FlowDiagarm extends React.Component {
         var email = true;
         for (let k = 0; k < propArray.length; k++) {
             var aux = document.getElementById('txt' + propArray[k][0] + '_' + propArray[k][1]);
-            
+
             if (aux != null) {
                 if (propArray[k][1] == 'To') {
                     email = validateEmail(aux.value);
                 }
                 if (email) {
-                    var test = new Array();
-                    test = this.getPaths(txt_json.properties.definition.actions, propArray[k], test, aux.value);
+                    if (this.checkPermission(propArray[k][1])) {
+                        var test = new Array();
+                        test = this.getPaths(txt_json.properties.definition.actions, propArray[k], test, aux.value);
+                    }
                 } else {
                     return '';
                 }
             }
-        }                                  
+        }
         return txt_json;
-    }  
+    }
 
     //jsonRes is the actual json, prop is the property for search, and pathArray is the path of the json
     //to the prop
@@ -627,7 +700,7 @@ class FlowDiagarm extends React.Component {
                             var resType = '';
                             if (nameFrom == 'else') resType = 'False: ';
                             if (nameFrom == 'actions') resType = 'True: ';
-                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + resType + " " +  auxy[i] + "</b></div>";
+                            var lb_msg = "<div id=" + auxy[i] + " style='width:100px;'> <div style='border-bottom: 1px solid black;text-align: center;width: 110px;margin-left: -5px;margin-bottom: 5px;'><b style='font-size: 6px;'>" + resType + " " + auxy[i] + "</b></div>";
                             var poss = edgeArray.length;
                             var firstNode = false;
                             if ((typeof Object.keys(jsn[auxy[i]].runAfter)[0] === "undefined" || Object.keys(jsn[auxy[i]].runAfter)[0] == '') && edge) {
@@ -641,6 +714,7 @@ class FlowDiagarm extends React.Component {
                                     edgeArray[poss] = new Array(2);
                                     edgeArray[poss][0] = auxy[i];
                                     edgeArray[poss][1] = name;
+                                    poss = edgeArray.length;
                                 }
                             }
                             var renderBody = this.renderAction(jsn[auxy[i]].inputs.body, 'Body');
@@ -652,9 +726,9 @@ class FlowDiagarm extends React.Component {
                                     propArray[poss][1] = propN;
                                     propArray[poss][2] = 'email';
                                     if (this.checkPermission(propN)) {
-                                        lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs.body[propN] + "</textarea>";
+                                        lb_msg += "<span >" + propN.toUpperCase() + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs.body[propN] + "</textarea>";
                                     } else {
-                                        lb_msg += "" + propN + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs.body[propN] + "</span>";
+                                        lb_msg += "" + propN.toUpperCase() + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs.body[propN] + "</span><br />";
                                     }
                                     indice++;
                                 }
@@ -677,11 +751,28 @@ class FlowDiagarm extends React.Component {
                                         propArray[poss][1] = propN;
                                         propArray[poss][2] = 'inputs';
                                         if (this.checkPermission(propN)) {
-                                            lb_msg += "<span >" + propN + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs[propN] + "</textarea>";
+                                            lb_msg += "<span >" + propN.toUpperCase() + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + propN + "' >" + jsn[auxy[i]].inputs[propN] + "</textarea>";
                                         } else {
-                                            lb_msg += "" + propN + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs[propN] + "</span>";
+                                            lb_msg += "" + propN.toUpperCase() + ": <span style='width:100%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs[propN] + "</span> <br>";
                                         }
                                         indice++;
+                                    } else if (propN == 'headers') {
+                                        lb_msg += "<span>" + propN.toUpperCase() + "</span><br>";
+                                        for (let headers in jsn[auxy[i]].inputs[propN]) {
+                                            poss = propArray.length;
+                                            propArray[poss] = new Array(3);
+                                            propArray[poss][0] = auxy[i];
+                                            propArray[poss][1] = headers;
+                                            propArray[poss][2] = 'expression';
+                                            lb_msg += "<span style='width:20%'>" + headers.toUpperCase() + ":</span> <span style='width:80%' id='txt" + auxy[i] + "_" + headers + "'> " + jsn[auxy[i]].inputs[propN][headers] + "</span><br>";
+                                        }
+                                    } else {
+                                        poss = propArray.length;
+                                        propArray[poss] = new Array(3);
+                                        propArray[poss][0] = auxy[i];
+                                        propArray[poss][1] = propN;
+                                        propArray[poss][2] = 'expression';
+                                        lb_msg += "<span style='width:20%'>" + propN.toUpperCase() + ":</span> <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]].inputs[propN] + "</span><br>";
                                     }
                                 }
                                 lb_msg += "</div>";
@@ -712,7 +803,7 @@ class FlowDiagarm extends React.Component {
                                                 firstNode = true;
                                             }
                                             for (var propNJ in jsn[auxy[i]][propN]) {
-                                                lb_msg += "" + propN + ": <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "_" + propNJ + "'> " + propNJ + "</span><br />";
+                                                lb_msg += "" + propN.toUpperCase() + ": <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "_" + propNJ + "'> " + propNJ.toUpperCase() + "</span><br />";
                                                 for (var porpNJPE in jsn[auxy[i]][propN][propNJ]) {
                                                     for (var porpNJE in jsn[auxy[i]][propN][propNJ][porpNJPE]) {
                                                         poss = propArray.length;
@@ -723,18 +814,19 @@ class FlowDiagarm extends React.Component {
                                                         if (this.checkPermission(porpNJE)) {
                                                             lb_msg += "<span >" + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][0] + " " + porpNJE + ": </span><textarea class='input' style='width:100%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + porpNJE + "' >" + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][1] + "</textarea><br /> ";
                                                         } else {
-                                                            lb_msg += "" + propN + ": <span style='width:80%' id='txt" + auxy[i] + "_" + propN + "'> " + jsn[auxy[i]][propN] + "</span>";
+                                                            lb_msg += "<span >" + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][0] + " " + porpNJE + ": </span> <span style='width:80%' id='txt" + auxy[i] + "_" + porpNJE + "'> " + jsn[auxy[i]][propN][propNJ][porpNJPE][porpNJE][1] + "</span><br />";
                                                         }
                                                         indice++;
                                                     }
                                                 }
                                             }
                                             indice++;
-                                            if (!this.checkPermission('type')) {
-                                                lb_msg += "<span >" + 'type' + ": </span><textarea class='input' style='width:80%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + "type" + "' >" + jsn[auxy[i]]["type"] + "</textarea>";
-                                            } else {
-                                                lb_msg += "" + "type" + ": <span style='width:80%' id='txt" + auxy[i] + "_" + "type" + "'> " + jsn[auxy[i]]["type"] + "</span>";
-                                            }
+                                            lb_msg += "" + "TYPE" + ": <span style='width:80%' id='txt" + auxy[i] + "_" + "type" + "'> " + jsn[auxy[i]]["type"] + "</span>";
+                                            //if (!this.checkPermission('type')) {
+                                            //    lb_msg += "<span >" + 'TYPE' + ": </span><textarea class='input' style='width:80%;resize: none;overflow: hidden;' type='text' id='txt" + auxy[i] + "_" + "type" + "' >" + jsn[auxy[i]]["type"] + "</textarea>";
+                                            //} else {
+                                                
+                                            //}
                                             lb_msg += "</div>";
                                             var template = document.createElement('template');
                                             template.innerHTML = lb_msg;
@@ -782,7 +874,7 @@ class FlowDiagarm extends React.Component {
                                         case 'else':
                                             nameFrom = 'else';
                                             nameMap = auxy[i];
-                                            
+
                                             var nodeArr = this.setOrderNode(jsn[auxy[i]][propN].actions);
                                             var arrayActions = this.renderCy(jsn[auxy[i]][propN].actions, nameFrom, nameMap, nodeArr, false);
                                             for (let i = 0; i < arrayActions.length; i++) {
@@ -842,23 +934,33 @@ class FlowDiagarm extends React.Component {
     checkPermission(propN) {
         var perm = true;
         for (var i = 0; i < permission.length; i++) {
-            if (propN == permission[i]) perm = false;
+            if (propN == permission[i]) {
+                perm = false;
+            }
+        }
+        if (permissionType != 5) {
+            perm = false;
         }
         return perm;
     }
 
     //add the edges to the cy layout
-    addEdgeToCy(id, source, target) {
+    addEdgeToCy(id, source, target, color) {
         cy.add({
             group: 'edges',
-            data: { id: id, source: source, target: target }
+            data: { id: id, source: source, target: target },
+            style: {
+                'line-color': color,
+                'target-arrow-color': color,
+            }
         });
     }
 
     //add the nodes to the cy layout
-    addNodeToCy(previous, type, lb_msg, nameN, prop, indice) {
+    addNodeToCy(previous, type, lb_msg, nameN, prop) {
         var x = 0;
         var y = 0;
+        var tryF = true;
         if (type != 0) {
             var posCy = cy.getElementById(previous).position();
             x = posCy.x;
@@ -871,6 +973,8 @@ class FlowDiagarm extends React.Component {
                 x -= 150;
             } else if (type == 4) {
                 y -= 10;
+            } else if (type > 5) {
+                x -= 120;
             }
             var valid = false;
             var cant = 0;
@@ -879,16 +983,32 @@ class FlowDiagarm extends React.Component {
                     valid = true;
                 } else {
                     cant++;
-                    if (x < 0) {
-                        x -= 150;
-                    } else if (x > 0) {
-                        x += 150;
+                    if (x < 0 && type < 5) {
+                        if (tryF) {
+                            x -= 150;
+                            tryF = false;
+                        } else {
+                            x += 150;
+                            y -= 100;
+                            tryF = true;
+                        }
+                    } else if (x > 0 && type < 5) {
+                        if (tryF) {
+                            x += 150;
+                            tryF = false;
+                        } else {
+                            x -= 150;
+                            y += 100;
+                            tryF = true;
+                        }
                     } else if (type == 2) {
                         y -= 200;
                         x += 300;
                     } else if (type == 1) {
                         y -= 200;
                         x -= 300;
+                    } else if (type > 5) {
+                        x += 240;
                     } else {
                         y += 120;
                     }
@@ -904,16 +1024,6 @@ class FlowDiagarm extends React.Component {
             position: { x: x, y: y },
             classes: 'l2',
             selector: 'node',
-            style: {
-                'shape': 'rectangle',
-                'background-color': '#CCCCCC',
-                'border-width': 1,
-                'width': 80,
-                'height': (indice * 30),
-                'text-valign': 'center',
-                'text-halign': 'center',
-                'background-blacken': 0,
-            }
         });
     }
 

@@ -1,0 +1,1871 @@
+﻿
+@{
+    ViewBag.Title = "home_us";
+    Layout = "~/Views/Shared/cscpartnerapp.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="~/JsControllers/csc_uk.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular-sanitize.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script async="" src="https://www.google-analytics.com/analytics.js"></script>
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"></script>
+
+
+<script>
+(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+    (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+    m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-139478042-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+<script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { dataLayer.push(arguments); }
+    gtag('js', new Date());
+
+    gtag('config', 'UA-139478042-1');
+</script>
+
+<style>
+    .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control {
+        position: relative;
+        -ms-flex: 1 1 auto !important;
+        flex: 1 1 auto;
+        top: 5px;
+        width: 1%;
+        margin-bottom: 0;
+    }
+
+    .tabledata {
+        color: grey;
+        font-style: italic;
+    }
+
+    .quantity::-webkit-inner-spin-button,
+    .quantity::-webkit-outer-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+    }
+
+    .disabled_a {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    .table thead tr th {
+        font-size: 1.063rem;
+        width: 296px;
+    }
+
+    .form-check .form-check-input[disabled] ~ .form-check-sign .check {
+        border-color: #000000;
+        opacity: 1.26;
+    }
+
+    .ConfigFontColor {
+        color: #2A3C90;
+        font-size: 15px;
+    }
+
+        .ConfigFontColor.resume {
+            font-size: 30px;
+            text-align: center;
+        }
+
+    .CustomTextBox {
+        color: #2A3C90;
+        background-color: lightblue;
+        border: none;
+    }
+
+    .titlecus {
+    }
+
+    h2 {
+        font-size: 42px !important;
+        line-height: 35px;
+    }
+
+
+    h7 {
+        font-size: 14px;
+        color: #365DA7;
+    }
+
+    .h7.active {
+        color: #d4dbea;
+    }
+
+    .h8 {
+        font-style: oblique;
+    }
+
+        .h8.bold {
+            font-weight: bold;
+        }
+
+    .infoText {
+        font-size: 0.75rem;
+    }
+
+    .cardFont {
+        font-size: 30px;
+        color: #6C757D;
+        font-weight: bold;
+    }
+
+    .step.stepMin {
+        height: 10px;
+        width: 10px;
+        margin: 0 10px;
+    }
+
+    .stepN {
+        border: none;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .stepN.active {
+            opacity: 1;
+            background-color: #6885BD;
+            color: white;
+        }
+
+        .stepN.start {
+            opacity: 1;
+        }
+
+        .stepN.finish {
+            opacity: 1.5;
+        }
+
+    .stepN2 {
+        border: none;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .stepN2.active {
+            opacity: 1;
+            background-color: #6885BD;
+            color: white;
+        }
+
+        .stepN2.start {
+            opacity: 1;
+        }
+
+        .stepN2.finish {
+            opacity: 1.5;
+        }
+
+    .shadow {
+        box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2), 0 8px 40px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .col.pers {
+        height: 25px;
+        width: 100px;
+        float: right;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .col.disable {
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    .col.container {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+
+    btn.btnBack {
+        position: relative;
+        color: #007BFF;
+        background-color: transparent;
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        border: 1px solid;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 30px;
+    }
+
+    .pointer {
+        cursor: pointer;
+    }
+
+    .btn.btn-primary.transparent {
+        background-color: transparent;
+        color: #365DA7;
+    }
+
+    .btn.btn-primary.transparent2 {
+        background-color: #efefef;
+        color: #365DA7;
+    }
+
+    .resumeCard {
+        border-radius: 4px !important;
+        background-color: #365DA7;
+    }
+
+    td:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    table.resumeTable {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 20px;
+    }
+
+    tr {
+        border-collapse: collapse;
+    }
+
+    .togglebutton label input[type=checkbox]:checked + .toggle {
+        background-color: #365DA7;
+    }
+
+        .togglebutton label input[type=checkbox]:checked + .toggle:after {
+            border-color: #365DA7;
+        }
+
+    .row.container {
+        /*overflow-x: auto;
+        overflow-y: auto;*/
+    }
+
+    .tooltip {
+        position: relative;
+        display: inline-block;
+        border-bottom: 1px dotted black;
+        z-index: 1000;
+    }
+
+        .tooltip .tooltiptextbottom {
+            visibility: hidden;
+            width: 120px;
+            background-color: #365DA7;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            opacity: 1;
+            /* Position the tooltip */
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .tooltip .tooltiptexttop {
+            visibility: hidden;
+            width: 120px;
+            background-color: #365DA7;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 5px 0;
+            opacity: 1;
+            /* Position the tooltip */
+            position: absolute;
+            width: 120px;
+            bottom: 100%;
+            left: 50%;
+            margin-left: -60px;
+        }
+
+        .tooltip:hover .tooltiptexttop {
+            visibility: visible;
+        }
+
+        .tooltip:hover .tooltiptextbottom {
+            visibility: visible;
+        }
+
+    span.btnhide {
+        visibility: visible;
+    }
+
+    span.btnhide2 {
+        visibility: visible;
+        display: flex;
+    }
+
+    .col-md-8.btnhide {
+        visibility: visible;
+        display: flex;
+    }
+
+    span.btnshow {
+        visibility: hidden;
+        display: none !important;
+    }
+
+    .h5.change {
+        font-size: 1.25rem;
+    }
+
+    .h3.change {
+        font-size: 1.75rem;
+    }
+    /*
+    @@media only screen and (max-width: 765px) {
+        span.btnhide {
+            visibility: hidden;
+            display: none !important;
+        }
+        span.btnhide2 {
+            visibility: hidden;
+            display: none !important;
+        }
+        span.btnshow {
+            visibility: visible;
+            display: flex !important;
+        }
+        .col-md-8.btnhide {
+            visibility: hidden;
+            display: none !important;
+        }
+    }
+    @@media only screen and (max-width: 994px) {
+        .h5.change{
+            font-size:1rem;
+        }
+        .h3.change{
+            font-size:1.45rem;
+        }
+    }*/
+    @@-webkit-keyframes spinner-border {
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+
+    @@keyframes spinner-border {
+        to {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg)
+        }
+    }
+
+    .spinner-border {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: text-bottom;
+        border: .25em solid currentColor;
+        border-right-color: transparent;
+        border-radius: 50%;
+        -webkit-animation: spinner-border .75s linear infinite;
+        animation: spinner-border .75s linear infinite
+    }
+
+    .spinner-border-sm {
+        width: 1rem;
+        height: 1rem;
+        border-width: .2em
+    }
+
+    @@-webkit-keyframes spinner-grow {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+
+        50% {
+            opacity: 1
+        }
+    }
+
+    @@keyframes spinner-grow {
+        0% {
+            -webkit-transform: scale(0);
+            transform: scale(0)
+        }
+
+        50% {
+            opacity: 1
+        }
+    }
+
+    .spinner-grow {
+        display: inline-block;
+        width: 2rem;
+        height: 2rem;
+        vertical-align: text-bottom;
+        background-color: currentColor;
+        border-radius: 50%;
+        opacity: 0;
+        -webkit-animation: spinner-grow .75s linear infinite;
+        animation: spinner-grow .75s linear infinite
+    }
+
+    .spinner-grow-sm {
+        width: 1rem;
+        height: 1rem
+    }
+
+    .form-control {
+        font-family: sans-serif;
+    }
+</style>
+
+@*<script>
+        (function (i, s, o, g, r, a, m) {
+        i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+            (i[r].q = i[r].q || []).push(arguments)
+        }, i[r].l = 1 * new Date(); a = s.createElement(o),
+            m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+        ga('create', 'UA-139478042-1', 'auto');
+        ga('send', 'pageview');
+    </script>*@
+<div class="container-fluid mt--6" ng-app="cscUK" ng-controller="cscUKCtrl" ng-init="cowryGBP()">
+    <div class="container" style="padding-right: 0px;padding-left: 0px;">
+        <div style="text-align:center;margin-top:1%;">
+            <div class="container" style="text-align:center;margin-right: 0px;padding-left: 0px;padding-right: 0px;">
+                <div class="row" style=" margin-bottom: 2%; width: 100%; text-align:center; justify-content: center;
+            align-items: center; margin-left: 0px; margin-right: 0px;">
+                    <h2 class="font-weight-bold ConfigFontColor" style="width:70%">Business Central Configurator</h2>
+                    <span id="LightningLogo" style="width:10%;"><img src="~/Content/assets/img/LightningLogo.png" height="58" width="50" /></span>
+                </div>
+                <div id="txt_Welcome" class="row" style="width:100%;height:10%;justify-content: center; justify-items:center;align-items: center; margin-left: 0px; width:100%; margin-right: 0px;">
+                    <div style="margin-bottom: 30px; width: 80%; text-align:center; justify-content: center; justify-items:center;align-items: center; margin-left: 0px; margin-right: 0px;height:100%">
+                        <span style="width:100%;height:40%;text-align:center">
+                            Welcome to our Business Central Configurator. Use this Configurator to purchase licences, setup packages and support arrangements.
+                            Each of these components are configured separately and you can add further features at a future date.
+                            And if you have any questions, please contact us using this
+                            <a href="https://cowrysolutions.com/contacts/" target="_blank">form</a>.<br />
+                        </span>
+                        <span style="width:100%;height:20%;text-align:center">
+                            <span style="padding-top: 10px;padding-bottom: 10px;">
+                                <span style="width:70%;"><img src="~/Content/assets/img/LightningLogo.png" height="58" width="50" /></span>
+                                <b style="width:30%;">
+                                    Lightning for Business Central™
+                                    Cowry Solutions
+                                </b>
+                            </span><br />
+                        </span>
+                        <span style="width:100%;height:40%;text-align:center">
+                            Cowry Solutions was established to do one thing – deliver low cost, high quality Dynamics Business Central solutions to customers throughout the US and the UK. We come with no baggage, no side-tracks – just a really clear focus. 
+                            <br />
+                            To meet that aim, we have brought together a team that lives and breathes Dynamics Business Central. And with every implementation that we do, Lightning for Business Central™ is honed to encompass our latest learnings.
+                        </span>
+                    </div>
+                </div>
+                <div id="NavDiv" class="row " style="text-align:center;justify-content:center;align-items: center;justify-items:center;display:flex;height: 120px;margin-left: 0px;margin-right: 0px;">
+                    <div id="stepN1" class="stepN start pointer" style="margin-right: 10px;margin-top: 10px;background-color:white">
+                        <div class="border border-primary shadow" style="width: 232px;height: 110px;" onclick="ga('send','event', 'Navigation', 'License Setup')"  ng-click="nextPrevNav(0,1)">
+                            <div style="width: 100px;height: 100px;position: relative;">
+                                <b><span style="font-size: 130px;width: 100%;height: 100%;position: absolute;top: -50px;left: 61px;z-index: 1;color: lightsteelblue;font-family: Calibri;">1</span></b><br>
+                                <b><span style="font-size: 18px;z-index: 19;top: 25px;left: 15px;position: absolute;width: 200px;font-style: italic;">Start by choosing your Licenses</span></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="stepN2" class="stepN start pointer" style="margin-right: 10px;margin-top: 10px;background-color:white">
+                        <div class="border border-primary shadow" style="width: 232px;height: 110px;" onclick="ga('send','event', 'Navigation', 'Package Setup')" ng-click="nextPrevNav(1,1)">
+                            <div style="width: 100px;height: 100px;position: relative;">
+                                <b><span style="font-size: 130px;width: 100%;height: 100%;position: absolute;top: -50px;left: 61px;z-index: 1;color: lightsteelblue;font-family: Calibri;">2</span></b><br>
+                                <b><span style="font-size: 18px;z-index: 19;top: 25px;left: 15px;position: absolute;width: 200px;font-style: italic;">Add the setup packages that you need</span></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="stepN3" class="stepN start pointer" style="margin-right: 10px;margin-top: 10px;background-color:white">
+                        <div class="border border-primary shadow" style="width: 232px;height: 110px;" onclick="ga('send','event', 'Navigation', 'Support Setup')"  ng-click="nextPrevNav(2,1)">
+                            <div style="width: 100px;height: 100px;position: relative;">
+                                <b><span style="font-size: 130px;width: 100%;height: 100%;position: absolute;top: -50px;left: 61px;z-index: 1;color: lightsteelblue;font-family: Calibri;">3</span></b><br>
+                                <b><span style="font-size: 18px;z-index: 19;top: 25px;left: 15px;position: absolute;width: 200px;font-style: italic;">Choose the support that suit you best</span></b>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="stepN4" class="stepN start pointer" style="margin-right: 0px;margin-top: 10px;background-color:white" hidden>
+                        <div class="border border-primary shadow" style="width: 232px;height: 110px; display:grid" onclick="ga('send','event', 'Navigation', 'Resume Setup')" ng-click="nextPrevNav(3,1)">
+                            <!--2,2-->
+                            <div style="width:100%;height:22px">
+                                <div style="width:5%;float:left; height:1px">
+                                </div>
+                                <div style="width:95%;float:right;text-align:left">
+                                    <h7><b>Price as Configured:</b></h7>
+                                </div>
+                            </div>
+                            <div style="width:100%;height:22px">
+                                <div style="width:20%;float:left; height:1px">
+                                </div>
+                                <div style="width:80%;float:right;text-align:left;line-height:1">
+                                    <h7><b>{{getSymbol()}}<span id="totalMonth" class="h6">0</span></b> Per Month</h7><br />
+                                    <h7 id="lb_standardSuppRes" style="font-size:12px;vertical-align:top" hidden>*Standard Support Included</h7>
+                                </div>
+                            </div>
+                            <div style="width:100%;height:22px">
+                                <div style="width:20%;float:left; height:1px">
+                                </div>
+                                <div style="width:80%;float:right;text-align:left">
+                                    <h7><b>{{getSymbol()}}<span id="totalOneTime" class="h6">0</span></b> One Time Cost</h7>
+                                </div>
+                            </div>
+                            <div style="width:100%;">
+                                <div style="width:15%;float:left; height:1px">
+                                </div>
+                                <div style="width:70%;float:left;text-align:left">
+                                    <button id="btnPricing" class="btn btn-primary btn-round btn-sm" style="margin-bottom: 0px;margin-top: 0px;">
+                                        View Pricing Summary
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="btn_startConf" class="col-md-12" style="margin-top: 5%;margin-left: 0%;align-items: center;">
+                    <div style="overflow:auto;margin-top: 1%;align-items: center;margin-top: 1%;width:100%;display:flex;justify-content: center;">
+                        <div style="width:270px">
+                            <button class="btn btn-primary btn-round btn-lg" ng-click="nextPrevNav(1,0)" onclick="ga('send','event', 'Button', 'Start Configuration')"  style="float:left">
+                                <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                                <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-left: 17.6px;">Start your configuration</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>
+            <div id="navDot" style="text-align: center;margin-top: 25px;margin-right: 0px;display:none;margin-bottom: 25px">
+                <div style="width: 100%;margin-top: 20px;">
+                    <span id="stepStart" class="step" hidden></span>                    <!-- 0Start -->
+                    <span id="step1" class="step" hidden></span>                        <!-- 0Licenses  -->
+                    <span ng-repeat="x in TestArray">
+                        <span ng-if="x[4]==false">
+                            <span id="Package: {{x[0]}}" class="step pointer tooltip" onclick="ga('send', 'event', 'Navigation', this.id)" ng-click="nextPrev($index+2,1)">
+                                <span class="tooltiptextbottom">{{x[0]}}</span>
+                            </span>
+                        </span>
+                        <span ng-if="x[4]==true">
+                            <span id="Package: {{x[0]}}" class="step pointer tooltip" onclick="ga('send', 'event', 'Navigation', this.id)" ng-click="nextPrev($index+2,1)">
+                                <span class="tooltiptextbottom">{{x[0]}}</span>
+                            </span>
+                        </span>
+                    </span>                                                             <!-- 1Packages  -->
+                    <span class="step" hidden></span>                                   <!-- 2Support -->
+                    <span class="step" hidden></span>                                   <!-- 3Resume -->
+                    <span class="step" hidden></span>                                   <!-- 3Payment Options -->
+                    <span class="step" hidden></span>                                   <!-- 3Input Form -->
+                    <span class="step" hidden></span>                                   <!-- 3Credit Option -->
+                    <span class="step" hidden></span>                                   <!-- 3PaymentDetails -->
+                    <span class="step" hidden></span>                                   <!-- 3PaymentOk -->
+                    <!--<span class="step" hidden></span> PaymentDetails -->
+                </div>
+            </div>
+        </div>
+        <div class="tab">
+            <section id="tab1">
+            </section>
+        </div>
+
+        <div class="tab">
+            <div style="display: flex;justify-content: center;align-items: center;margin-top: 2%;">
+                <div class="row" style="width: 1024px; display: flex; justify-content: center;  align-items: center;">
+                    <!-- Microsoft Licenses-->
+                    <div class="col" style="width:425px;height:393px;padding-bottom:5px" ng-repeat="x in ProductLicenses">
+                        <div class="border border-primary shadow" style="width: 100%;height: 100%;background-color:white">
+                            <div class="row" style="margin-left: 0px;margin-right: 0px;width: 100%;height: 30%;">
+                                <div class="" style="width: 65%;padding-left: 0px;padding-right: 0px;">
+                                    <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 20px; margin-top: 10px;">{{x.LicenseType }}</h3>
+                                    <h5 class="h5 mb-0 change" style="width:100%;padding-left: 20px;">({{x.ProductName}})</h5>
+                                </div>
+                                <div class="" style="width: 35%;height:auto;margin-top: 10px;padding-left: 0px;padding-right: 0px;justify-items:left">
+                                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                                        <span class="h4 mb-0 ConfigFontColor" style="font-size:40px">{{getSymbol()}}</span>
+                                        <span class="h4 mb-0 ConfigFontColor" style="font-size:40px" id="essentialprice">{{x.ProductPrice}} </span>
+                                    </div>
+                                    <div class="row" style="margin-left: 0px;margin-right: 0px;">
+                                        <span class="h4 mb-0 ConfigFontColor">Per User/Per Month</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col" style="margin-left: 0px;margin-right: 0px;width: 100%;height: 55%;padding-left: 20px;">
+                                <div class="card-body px-lg-7" style="padding-bottom: 0px;padding-top: 15px;padding-left: 0px;padding-right: 0px;">
+                                    <div class="infoText">
+                                        {{x.ProductDescription}}
+                                        <ul>
+                                            <li ng-repeat="y in x.Features" ng-bind-html="y | test">{{y}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-12" style="margin-left: 0px;margin-right: 0px;width: 100%;height: 15%;">
+                                <div class="card-body px-lg-7" style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                                    <div class="row" style="display: flex;justify-content:center;justify-items:center;align-content:center;align-items:center">
+                                        <div class="input-group customSpinner" style="width: 350px; padding-left: 0px;left: 0px;">
+                                            <div class="input-group-prepend b">
+                                                <button id="btn_minus{{$index}}" class="btn btn-primary spinnerbutton spinnerMinus spinner-roundbutton" disabled ng-click="changeQty($index,x.ProductPrice,'-',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)" >
+                                                    <span class="fa fa-minus"></span>
+                                                </button>
+                                            </div>
+                                            <input id="inputTest{{$index}}" type="number" value="0" class="form-control spinnerVal" style="width:auto; cursor:default" disabled>
+                                            </input>
+                                            <div class="input-group-append a">
+                                                <button id="btn_plus{{$index}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" ng-click="changeQty($index,x.ProductPrice,'+',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)">
+                                                    <span class="fa fa-plus"></span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="OneTimeDiv" style="display: flex; justify-content: center;  align-items: center;margin-top: 0px;width:100% ; display:none">
+            <div style="width: 3%;float:left">
+                <div style="width: 30px;height: 30px;margin-right: 0px; float:left">
+                    <button id="prevBtn" onclick="ga('send','event', 'Button', 'Previous Package Pack')" ng-click="nextPrev(-1,0)" class="btn btn-primary btn-round btn-lg" style=" padding-left: 25%;padding-right: 25%;padding-bottom: 0px;padding-top: 0px;width: 30px;height: 30px;"><i class="material-icons" style="text-align: center;border-right-width: 10px;width: 15px;right: 1px;bottom: 3px;margin-bottom: 0px;margin-top: 0px;">keyboard_arrow_left</i></button>
+                </div>
+            </div>
+
+            <div style="width: 94%;">
+                <div class="tab" ng-repeat="z in TestArray">
+                    <div style="display: flex;justify-content: center;align-items: center;margin-top: 0px;height: 100%;">
+                        <div class="row " style="width:1024px;display: flex;justify-content: center;align-items: center;margin-left: 15px;margin-right: 0px;height:100%">
+                            <!-- Packages -->
+                            <div ng-repeat="x in OneTime">
+                                <div ng-if="x.Subject==z[0]">
+                                    <div ng-if="x.ProductId>=z[2]">
+                                        <div ng-if="x.ProductId<=z[3]">
+                                            <div class="" style="width:468px;height:475px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px;" ng-style="z[1]==3 &&{'width':'310px'}">
+                                                <div id="card_Financials{{x.ProductId}}" class="border border-primary shadow" ng-click="packagesAdd(x.ProductId,x.ProductPrice,x.RequiredProduct,x.Required,x.ProductName)" style="width: auto;height: 100%;margin-right: 10px;background-color:white">
+                                                    <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 28%;">
+                                                        <div class="col" style="width:auto;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                                            <div style="width:59%; float:left;align-items:center">
+                                                                <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="padding-left: 10px; padding-top: 10px;">{{x.ProductName}}</h3>
+                                                                <h5 class="h5 mb-0" style="width:300px;padding-left: 10px;">{{x.LicenseType}}</h5>
+                                                            </div>
+                                                            <div style="width:41% ;float:right;padding-top: 10px;text-align:right; ">
+                                                                <div style="float:right;width:100%">
+                                                                    <span class="h4 mb-0 ConfigFontColor" style="font-size:25px">{{getSymbol()}}</span>
+                                                                    <span class="h4 mb-0 ConfigFontColor" style="font-size:40px;padding-right:10px" id="cFinPrice">{{changeFloat(x.ProductPrice)}} </span>
+                                                                </div>
+                                                                <span class="h4 mb-0 ConfigFontColor" style="font-size:15px;padding-right:10px">One Time Cost</span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col " style="padding-left: 0px;padding-right: 0px;margin-left: 0px;height: 57%;">
+                                                        <div class="card-body px-lg-7" style="padding-left: 10px;">
+                                                            <div class="infoText">
+                                                                {{x.ProductDescription}}
+                                                                <ul>
+                                                                    <li ng-repeat="y in x.Features">{{y}}</li>
+                                                                </ul>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="" style="display:flex;justify-content: center;align-items: center;justify-items:center ;width: auto;height:15%;">
+                                                        <span ng-if="x.MaximumSale>0">
+                                                            <div class="col-md-12" style="margin-left: 0px;margin-right: 0px;width: 100%;height: 20%;">
+                                                                <div class="card-body px-lg-7" style="padding-bottom: 0px;padding-left: 0px;padding-right: 0px;padding-top: 0px;">
+                                                                    <div class="row" style="display: flex;justify-content:center;justify-items:center;align-content:center;align-items:center">
+                                                                        <div class="input-group customSpinner" style="width: 275px; padding-left: 0px;left: 0px;">
+                                                                            <div class="input-group-prepend b">
+                                                                                <button id="btn_minusAddComp{{x.ProductId}}" class="btn btn-primary spinnerbutton spinnerMinus spinner-roundbutton" disabled ng-click="changeQtyAdd($index,x.ProductPrice,'-',x.MinimumSale,x.MaximumSale,x.ProductId,x.RequiredProduct,x.Required,x.ProductName)">
+                                                                                    <span class="fa fa-minus"></span>
+                                                                                </button>
+                                                                            </div>
+                                                                            <input id="inputTestAddComp{{x.ProductId}}" type="number" value="0" class="form-control spinnerVal" style="width:auto; cursor:default" disabled>
+                                                                            </input>
+                                                                            <div class="input-group-append a">
+                                                                                <button id="btn_plusAddComp{{x.ProductId}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" ng-click="changeQtyAdd($index,x.ProductPrice,'+',x.MinimumSale,x.MaximumSale,x.ProductId,x.RequiredProduct,x.Required,x.ProductName)">
+                                                                                    <span class="fa fa-plus"></span>
+                                                                                </button>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </span>
+                                                        <span ng-if="x.MaximumSale==0">
+                                                            <button id="{{x.ProductId}}" class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 0px;margin-left: 0px;right: 0px;">Select</button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div style="width: 3%;float:left">
+                <div style="width: 30px;height: 30px;margin-right: 0px; float:right">
+                    <button id="nextBtn" onclick="ga('send','event', 'Button', 'Next Package Pack')" ng-click="nextPrev(1,0)" class="btn btn-primary btn-round btn-lg" style=" padding-left: 25%;padding-right: 25%;padding-bottom: 0px;padding-top: 0px;width: 30px;height: 30px;"><i class="material-icons" style="text-align: center;border-right-width: 10px;width: 15px;right: 1px;bottom: 3px;margin-bottom: 0px;margin-top: 0px;">keyboard_arrow_right</i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Support -->
+        <div class="tab">
+            <div style="display: flex;justify-content: center;align-items: center;margin-top: 0px;height: 100%;padding-top: 15px;">
+                <div class="row " style="width:94%;height:100%;display: flex;justify-content: center;align-items: center;padding-left: 5px;margin-right: 0px;margin-left: 0px;">
+                    <!-- Support -->
+                    <div class="col" style="height:450px;width:100%;padding-left: 0px;padding-right: 5px;margin-right: 0px; padding-bottom:5px ;" ng-repeat="x in SupportOption">
+                        <div class="border border-primary shadow" style="height:100%;margin-right: 0px;background-color:white;" ng-click="supportType(x.ProductId,x.ProductName,x.ProductPrice,x.MinimumSale)">
+                            <div style="width: 100%; margin-left: 0px; margin-right: 0px;height: 20%;">
+                                <div class="col" style="width:100%;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                    <div style="width:60%; float:left;align-items:center">
+                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="padding-left: 10px; padding-top: 10px;font-size:25px">{{x.ProductName}}</h3>
+                                        <h5 class="h5 mb-0" style="padding-left: 10px;">{{x.LicenseType}}</h5>
+                                    </div>
+                                    <div style="width:40% ;float:right;padding-top: 10px;text-align:right; padding-right:10px">
+                                        <span class="h4 mb-0 ConfigFontColor" style="font-size:25px">{{getSymbol()}}</span>
+                                        <span id="Support{{x.ProductId}}" class="h4 mb-0 ConfigFontColor" style="font-size:40px">{{changeFloat(x.ProductPrice)}}</span>
+                                        <span ng-repeat="z in SupportUser" ng-mod>
+                                            <span class="h4 font-weight-bold mb-0 ConfigFontColor" ng-if="z.RequiredProduct==x.ProductId">
+                                                {{AddSupportUser(x.ProductPrice,z.ProductPrice,x.ProductId)}}
+                                            </span>
+                                        </span>
+                                        <br /><span class="h4 mb-0 ConfigFontColor" style="padding-right:5px">Per Month</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col " style="padding-left: 0px;padding-right: 0px;margin-left: 0px;height: 60%;">
+                                <div class="card-body px-lg-7" style="padding-left: 10px;padding-bottom: 0px;padding-top: 0px;">
+                                    <div class="infoText">
+                                        {{x.ProductDescription}}
+                                        <ul>
+                                            <li ng-repeat="y in x.Features">{{y}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="" style="display:flex;justify-content: center;align-items: center;justify-items:center ;width: auto;height:20%;">
+                                <button id="{{x.ProductId}}" class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px;margin-left: 0px">Select</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+            <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                <div style="width: 50%;margin-left: 25%;">
+                    <button id="btn_proRes" onclick="ga('send','event', 'Button', 'Continue Configuration')"  ng-click="nextPrevNav(1,0)" class="btn btn-primary btn-round btn-lg">
+                        <i class="material-icons" style="float:right;margin-top: 10px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                        <span class="btnhide2" style="display:flex;align-items:center;justify-content:center;text-align:center">Review Configuration and Checkout</span>
+                        <span class="btnshow" style="display:flex;align-items:center;justify-content:center;text-align:center">Review Configuration</span>
+                        <span class="btnshow" style="display:flex;align-items:center;justify-content:center;text-align:center">and Checkout</span>
+                        <span class="btnhide2" style="display:flex;align-items:center;justify-content:center;text-align:center;">(you can make changes on the next page)</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="overflow:auto;align-items: center;">
+                <div style="width: 50%;margin-left: 25%;">
+                    <button id="btn_goBack" onclick="ga('send','event', 'Button', 'Reconfigure')" ng-click="nextPrevNav(-1,0)" class="btn btn-primary btn-round btn-lg transparent">
+                        <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_backward</i>
+                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Reconfigure</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resume -->
+        <div class="tab">
+            <div class="container-fluid" style="margin-top: 15px;">
+                <h2 class="font-weight-bold ConfigFontColor resume">Pricing Summary</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="background:#F2F4FA">
+                            <div class="card-body" style="margin-top: 0px;padding-bottom: 0px;">
+                                <div class="row" style="margin-top:0px;margin-bottom: 0px; height:240px">
+                                    <div class="col-md-8 btnhide" style="height:100%">
+                                        <div class="card" style="height:85%">
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;">
+                                                <h4 class="mb-0 text-center">
+                                                    <a>Business Central Licensing </a>
+                                                </h4>
+                                            </div>
+                                            <!-- Card body -->
+                                            <div class="card-body">
+                                                <div class="row" style="margin-top:-20px;">
+                                                    <div class="col-md-6" ng-repeat="x in ProductLicenses" style="height:100%;padding-left: 0px;padding-right: 0px;">
+                                                        <div class="card" style="height: 140px;margin-top: 10px;">
+                                                            <h3 class="h3 font-weight-bold card-title text-muted mb-0 change" style="height:30%; padding-left: 10px; padding-top: 10px;">{{x.LicenseType }}</h3>
+                                                            <h5 class="h5 mb-0 change btnhide3" style="width:100%;padding-left: 10px;height:35%">({{x.ProductName}})</h5>
+                                                            <div class="" style="display:inline-flex;justify-content:center;height: 35%;margin-top: 5px;">
+                                                                <div style="float:left;">
+                                                                    <button id="btn_minusRess{{$index}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" disabled style="width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQty($index,x.ProductPrice,'-',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)">
+                                                                        <span class="fa fa-minus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                    </button>
+                                                                </div>
+
+                                                                <h4 id="showFull{{x.ProductId}}" style="float:left;padding-left:20px;padding-right:20px">
+                                                                    {{getQty(x.ProductId)}}
+                                                                </h4>
+
+                                                                <div style="float:left;">
+                                                                    <button id="btn_plusRess{{$index}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" style="width: 25%;float:right;width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQty($index,x.ProductPrice,'+',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)">
+                                                                        <span class="fa fa-plus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4" style="height:100%">
+                                        <div class="card" style="height:85%">
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;">
+                                                <h4 class="mb-0 text-center">
+                                                    <a>PowerApps</a>
+                                                </h4>
+                                            </div>
+                                            <!-- Card body -->
+                                            <div class="card-body">
+                                                <div class="row" style="margin-top:-20px;">
+                                                    <div class="card" style="height: 140px;margin-top: 10px;">
+                                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0 change" style="height:35%;margin-left: 10px; margin-top: 10px;">Premium Users</h3>
+                                                        <h5 class="h5 mb-0 change" style="height:30%;width:100%;padding-left: 10px;padding-bottom: 10px;">(Included at no cost)</h5>
+                                                        <div style="height:25%;text-align:center">
+                                                            <h4 id="showPower">{{getPowerApps()}}</h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 style="width: 50%; float:left">Per Month</h4>
+                                                <h4 style="width: 50%; float:right; text-align:right">Total {{getSymbol()}}<span id="td_serviceTotal" class="h4">0</span></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="table-responsive">
+                                                    <table class="table-hover resumeTable" style="text-align:center;">
+                                                        <tr ng-repeat="x in ProductLicenses">
+                                                            <td style="width:50%; text-align:left"><span id="txt_{{x.ProductId}}">{{x.ProductName}}</span></td>
+                                                            <td style="width:20%;">
+                                                                <div style="display:inline-flex">
+                                                                    <button id="btn_minusRes{{$index}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" disabled style="width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQty($index,x.ProductPrice,'-',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)">
+                                                                        <span class="fa fa-minus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                    </button>
+                                                                    <span id="qty{{x.ProductId}}" style="padding-right: 5px;padding-left: 5px;">
+                                                                        {{getQty(x.ProductId)}}
+                                                                    </span>
+                                                                    <button id="btn_plusRes{{$index}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" style="width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQty($index,x.ProductPrice,'+',x.MinimumSale,x.MaximumSale,x.ProductName,x.ProductId)">
+                                                                        <span class="fa fa-plus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                    </button>
+                                                                </div>
+                                                            </td>
+                                                            <td style="width:15%;text-align:right">{{getSymbol()}}{{changeFloat(x.ProductPrice)}}</td>
+                                                            <td style="width:15%;text-align:right">{{getSymbol()}}<span id="totalResume{{x.ProductId}}">{{getTotal(x.ProductPrice, x.ProductId,1,true)}}</span></td>
+                                                        </tr>
+                                                        <tr ng-repeat="x in SupportOption">
+                                                            <td style="width:50%; text-align:left"><span id="txt_{{x.ProductId}}">{{x.ProductName}}</span></td>
+                                                            <td style="width:20%">
+                                                                <span ng-if="x.MinimumSale>0">
+                                                                    <span class="togglebutton">
+                                                                        <label>
+                                                                            <span class="btnhide">No</span>
+                                                                            <input type="checkbox" id="qty{{x.ProductId}}" ng-click="chk_btnStandard(x.ProductId,x.ProductName,x.ProductId,x.ProductPrice)">{{chkQty(x.ProductId)}}
+                                                                            <span class="toggle"></span>
+                                                                            <span class="btnhide">Yes</span>
+                                                                        </label>
+                                                                    </span>
+                                                                    <span id="qty{{x.ProductId}}"> {{chkQty(x.ProductId)}} </span>
+                                                                </span>
+                                                                <span ng-if="x.MinimumSale==0">
+                                                                    <span class="togglebutton">
+                                                                        <label>
+                                                                            <span class="btnhide">No</span>
+                                                                            <input type="checkbox" id="qty{{x.ProductId}}" ng-click="AddUserTotal(x.ProductId,x.ProductName,x.ProductPrice)">{{chkQty(x.ProductId)}}
+                                                                            <span class="toggle"></span>
+                                                                            <span class="btnhide">Yes</span>
+                                                                        </label>
+                                                                    </span>
+                                                                </span>
+                                                            </td>
+                                                            <td style="width:15%;text-align:right">{{getSymbol()}}<span id="resumeSupPrice{{x.ProductId}}">{{getPriceSup(x.ProductId)}}</span></td>
+                                                            <td style="width:15%;text-align:right">
+                                                                <span ng-if="x.MinimumSale>0">{{getSymbol()}}<span id="totalResume{{x.ProductId}}">{{getTotal(x.ProductPrice, x.ProductId,1,true)}}</span></span>
+                                                                <span ng-if="x.MinimumSale==0">{{getSymbol()}}<span id="totalResume{{x.ProductId}}">{{getTotal(x.ProductPrice, x.ProductId,0,true)}}</span></span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td><h4>Total</h4></td>
+                                                            <td></td>
+                                                            <td></td>
+                                                            <td style="text-align:center;font-size:20px;">{{getSymbol()}}<span id="td_packageTotal">0</span></td> <!--ng-model="userData.DomainName"-->
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 style="width: 50%; float:left">One Time Cost</h4>
+                                                <h4 style="width: 50%; float:right; text-align:right">Total {{getSymbol()}}<span id="td_packageOneTimeTotal" class="h4">0</span></h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="dataTable">
+                                                    <div ng-repeat="z in SubjectType">
+                                                        <div ng-repeat="x in OneTime">
+                                                            <div ng-if="x.Subject==z[0]">
+                                                                <table class="table-hover resumeTable" style="text-align:center;">
+                                                                    <tr>
+                                                                        <td style="width:50%; text-align:left"><span id="txt_{{x.ProductId}}">{{x.ProductName}}</span></td>
+                                                                        <td style="width:20%">
+                                                                            <span ng-if="x.MaximumSale>0">
+                                                                                <div style="display:inline-flex">
+                                                                                    <button id="btn_minusResAddComp{{x.ProductId}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" disabled style="width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQtyAdd($index,x.ProductPrice,'-',x.MinimumSale,x.MaximumSale,x.ProductId,x.RequiredProduct,x.Required,x.ProductName)">
+                                                                                        <span class="fa fa-minus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                                    </button>
+                                                                                    <span id="qty{{x.ProductId}}" style="padding-right: 5px;padding-left: 5px;">{{getQtyAdd(x.ProductId)}}</span>
+                                                                                    <button id="btn_plusResAddComp{{x.ProductId}}" class="btn btn-primary spinnerbutton spinnerPlus spinner-roundbutton" style="width: 20px;height: 20px;padding-left: 0px;padding-right: 0px;padding-top: 0px;padding-bottom: 0px;" ng-click="changeQtyAdd($index,x.ProductPrice,'+',x.MinimumSale,x.MaximumSale,x.ProductId,x.RequiredProduct,x.Required,x.ProductName)">
+                                                                                        <span class="fa fa-plus" style="font-size: 10px;margin-bottom: 0px;margin-top: 0px;padding-bottom: 7px;align-items: center"></span>
+                                                                                    </button>
+                                                                                </div>
+                                                                            </span>
+                                                                            <span ng-if="x.MaximumSale==0">
+                                                                                <span class="togglebutton">
+                                                                                    <label>
+                                                                                        <span class="btnhide">No</span>
+                                                                                        <input type="checkbox" id="qty{{x.ProductId}}" ng-click="packagesAdd(x.ProductId,x.ProductPrice,x.RequiredProduct,x.Required,x.ProductName)">{{chkQty(x.ProductId)}}
+                                                                                        <span class="toggle"></span>
+                                                                                        <span class="btnhide">Yes</span>
+                                                                                    </label>
+                                                                                </span>
+                                                                            </span>
+                                                                        </td>
+                                                                        <td style="width:15%;text-align:right">{{getSymbol()}}{{changeFloat(x.ProductPrice)}}</td>
+                                                                        <td style="width:15%;text-align:right">{{getSymbol()}}<span id="totalResume{{x.ProductId}}">0</span></td>
+                                                                    </tr>
+                                                                </table>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table-hover resumeTable" style="text-align:center;">
+                                                        <tr>
+                                                            <td style="width:50%;"><h4>Total</h4></td>
+                                                            <td style="width:20%;"></td>
+                                                            <td style="width:15%;"></td>
+                                                            <td style="width:15%;text-align:center;font-size:20px;">{{getSymbol()}}<span id="td_packageTotal2">0</span></td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="overflow:auto;align-items: center;display:flex; justify-content:center">
+                                <div style="width: 50%;">
+                                    <button id="btn_proChk" onclick="ga('send','event', 'Button', 'Proceed', 'To Payment info')" ng-click="CheckTotalPay()" class="btn btn-primary btn-round btn-lg">
+                                        <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-left: 17.6px;"><span class="btnhide2" style="padding-right: 3px;">Proceed to</span>Checkout</span>
+                                    </button>
+                                </div>
+                            </div>
+                            <div style="overflow:auto;align-items: center;display:flex; justify-content:center">
+                                <div style="width: 50%;">
+                                    <button id="btn_reconf" onclick="ga('send','event', 'Button', 'Reconfigure', 'To support')" ng-click="nextPrevNav(-1,0)" class="btn btn-primary btn-round btn-lg transparent">
+                                        <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_backward</i>
+                                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Reconfigure</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Options -->
+        <div class="tab">
+            <h2 style="margin-top: 15px;" class="font-weight-bold ConfigFontColor resume">Payment Options</h2>
+            <div style="display: flex;justify-content: center;align-items: center;margin-top: 0px;height: 475px;padding-top:5px">
+                <div class="row " style="width:100%;display: flex;justify-content: center;align-items: center;margin-left: 25px;margin-right: 0px;height:100%">
+                    <!-- Standard -->
+                    <div class="" style="height:440px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Payment', 'Standard Payment')" ng-click="paymentTerm('btn_standardPay')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 25%;">
+                                <div class="col" style="width:auto;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                    <div style="width:100%;margin-right: 0px;float:left">
+                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Standard Terms</h3>
+                                    </div>
+                                    <div style="width:100%;float:left;padding-left: 0px;margin-right: 0px;margin-top: 0px;">
+                                        <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px">{{getSymbol()}}</span>
+                                        <span id="standarTermsPayMonth" class="h4 font-weight-bold mb-0 ConfigFontColor" style="font-size:20px"></span>
+                                        <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px"> Per Month + <br />{{getSymbol()}}</span>
+                                        <span id="standarTermsPayOneTime" class="h4 font-weight-bold mb-0 ConfigFontColor" style="font-size:20px"></span>
+                                        <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px"> One Time</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-left: 0px;padding-right: 0px;margin-left: 0px;height: 60%;">
+                                <div class="">
+                                    <div class="infoText">
+                                        A monthly payment that includes:
+                                        <ul>
+                                            <li>User Licenses</li>
+                                            <li>PowerApps Licenses (No Cost)</li>
+                                            <li>Required Support Package</li>
+                                            <li>Any additional services charges incurred during setup and configuration – billed conveniently over a 12 month period</li>
+                                        </ul>
+
+                                        A one time Payment that includes:
+                                        <ul>
+                                            <li>Your selected Lightning packages</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:20%;">
+                                <button id="btn_standardPay" class="btn btn-primary btn-round btn-lg transparent active" style="width: 192px;left: 5px; margin-left:10%">Selected</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Annuity -->
+                    <div class="" style="height:440px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Payment', 'Annuity Payment')" ng-click="paymentTerm('btn_AnnuityPay')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 25%;">
+                                <div style="width:100%;margin-right: 0px;float:left">
+                                    <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Annuity</h3>
+                                </div>
+                                <div style="width:100%;float:left;padding-left: 0px;margin-right: 0px;margin-top: 0px;">
+                                    <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px">{{getSymbol()}}</span>
+                                    <span id="txt_standarTermsPayMonth" class="h4 font-weight-bold mb-0 ConfigFontColor" style="font-size:20px"></span>
+                                    <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px"> Per Month</span>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-left: 0px;padding-right: 0px;margin-left: 0px;height: 60%;">
+                                <div class="" style="height: 100%;">
+                                    <div class="infoText" style="height: 80%;">
+                                        This option rolls your Lightning packages into the monthly fee, so no up front cost There is a small premium for this option.
+                                    </div>
+                                    <div class="infoText" style="font-weight: bold;">
+                                        * Price drops to {{getSymbol()}}<span id="txt_Month"></span> Per Month from second year.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:20%;">
+                                <button id="btn_AnnuityPay" class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px; margin-left:10%">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pay Up Front -->
+                    <div class="" style="height:440px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Payment', 'One Time Payment')" ng-click="paymentTerm('btn_PayUpFront')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 25%;">
+                                <div class="col" style="width:auto;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                    <div style="width:100%;margin-right: 0px;float:left">
+                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Pay Up Front</h3>
+                                    </div>
+                                    <div style="width:100%;float:left;padding-left: 0px;margin-right: 0px;margin-top: 0px;">
+                                        <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px">{{getSymbol()}}</span>
+                                        <span id="txt_standarTermsPayOneTime" class="h4 font-weight-bold mb-0 ConfigFontColor" style="font-size:20px"></span>
+                                        <span class="h4 font-weight-bold  mb-0 ConfigFontColor" style="font-size:20px"> One Time Payment</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col" style="padding-left: 0px;padding-right: 0px;margin-left: 0px;height: 60%;">
+                                <div class="" style="height: 100%;">
+                                    <div class="infoText" style="height: 80%;">
+                                        Pay us up front for your Lightning Packages, 12 months of licensing and support and you make a 10% saving.
+                                    </div>
+                                    <div class="infoText" style="font-weight: bold;">
+                                        * Price drops to {{getSymbol()}}<span id="txt_oneMonth"></span> Per Month from second year.
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:20%;">
+                                <button id="btn_PayUpFront" class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px; margin-left:10%">Select</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                <div style="width: 50%;margin-left: 25%;">
+                    <button id="btn_proRes" onclick="ga('send','event', 'Button', 'Proceed', 'To input form')"  ng-click="nextPrevNav(1,0)" class="btn btn-primary btn-round btn-lg">
+                        <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-left: 17.6px;"><span class="btnhide2" style="padding-right: 3px;">Proceed to</span>Checkout</span>
+                    </button>
+                </div>
+            </div>
+
+            <div style="overflow:auto;align-items: center;">
+                <div style="width: 50%;margin-left: 25%;">
+                    <button id="btn_goBack" onclick="ga('send','event', 'Button', 'Reconfigure', 'To resume')" ng-click="nextPrevNav(-1,0)" class="btn btn-primary btn-round btn-lg transparent">
+                        <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_backward</i>
+                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Reconfigure</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Payment info -->
+        <!-- Input Form -->
+        <div class="tab">
+            <div class="container-fluid">
+                <h2 style="margin-top: 15px;" class="font-weight-bold ConfigFontColor resume">Organization Information</h2>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="background:#F2F4FA">
+                            <div class="card-body">
+                                <form novalidate="" method="POST" id="myForm">
+                                    <div class="row">
+                                        <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                            <!-- Card header -->
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 class="card-title">Personal Information</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="firstname" name="firstname" class="form-control" aria-required="true" ng-model="userData.FirstName" required placeholder="First Name*">
+                                                            <div class="invalid-feedback"><b>Please enter first name</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="lastName" name="lastName" class="form-control" aria-required="true" ng-model="userData.LastName" required placeholder="Last Name*">
+                                                            <div class="invalid-feedback"><b>Please enter last name</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="jobTitle" name="jobTitle" class="form-control" aria-required="true" ng-model="userData.JobTitle" required placeholder="Job Title*">
+                                                            <div class="invalid-feedback"><b>Please enter job title</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="tel" id="contactNo" name="phone" class="form-control" aria-required="true" ng-model="userData.ContactNumber" required placeholder="Contact Number*">
+                                                            <div class="invalid-feedback"><b>Please enter contact number</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="email" class="form-control" id="email" name="email" email="true" aria-required="true" ng-model="userData.Email" required placeholder="Email Address*">
+                                                            <div class="invalid-feedback"><b>Please enter email address</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="email" class="form-control" id="confirmemail" name="confirmemail" aria-required="true" ng-model="userData.ConfirmEmail" required placeholder="Confirm Email Address*">
+                                                            <div class="invalid-feedback"><b>Please enter confirm email address</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 class="card-title">Company Information</h4>
+                                            </div>
+                                            <div class="card-body">
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="companyName" name="companyName" class="form-control" ng-model="userData.CompanyName" required placeholder="Company Name*">
+                                                            <div class="invalid-feedback"><b>Please enter company name</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" ng-model="userData.CompanyNumber" required placeholder="Phone Number*">
+                                                            <div class="invalid-feedback"><b>Please enter phone number</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="form-group bmd-form-group" style="margin-right:0px;margin-left:0px;">
+                                                    <input type="text" id="address" name="address" class="form-control" ng-model="userData.CompanyAddress" required placeholder="Address*">
+                                                    <div class="invalid-feedback"><b>Please enter company address</b></div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <select name="country" class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" ng-model="userData.CompanyCountry" id="countryId" style="margin-top: 8px;height: 38px;" onchange="changeGetAddress()" required>
+                                                            <option value="">Select Country</option>
+                                                            <option value="US">United States</option>
+                                                            <option value="UK">United Kingdom</option>
+                                                        </select>
+                                                        <span hidden id="SelectedCountry"></span>
+                                                        <span hidden id="SelectedCountryValue"></span>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="postalcode" name="postalcode" class="form-control" ng-model="userData.CompanyPostalCode" onchange="getAddress()" required placeholder="Postal Code*">
+                                                            <div class="invalid-feedback"><b>Please enter postal code</b></div>
+                                                            <div id="invalidZIP" hidden><b style="color:red">*Invalid postal code</b></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div style="text-align:center;">
+                                                    <div id="spinnerVal" class="spinner-border" hidden style="color:#365DA7;"></div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="city" name="City" class="form-control" required placeholder="City*">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="state" name="State" class="form-control" required placeholder="State*">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="cityTest" name="City" class="form-control" ng-model="userData.CompanyCity" required disabled hidden>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="stateTest" name="State" class="form-control" ng-model="userData.CompanyState" required disabled hidden>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                            <!-- Card header -->
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 class="card-title">Microsoft Account</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <h5>Do you have an existing Microsoft or Office 365 Account?</h5>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="togglebutton">
+                                                            <label>
+                                                                <span class="btnhide">No</span>
+                                                                <input type="checkbox" id="microsoftAccount">
+                                                                <span class="toggle"></span>
+                                                                <span class="btnhide">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <div class="form-group bmd-form-group">
+                                                            <input type="text" id="domainName" name="domainName" class="form-control" ng-model="userData.DomainName" placeholder="Domain Name">
+                                                            <div class="invalid-feedback"><b>Please enter Domain name</b></div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="form-check" style="margin-top: 30px;font-size: 20px;color:black">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="checkbox" id="findDomain" value="">Check this box if you need help finding this. We’ll contact you before processing your order.
+                                                                <span class="form-check-sign">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                            <!-- Card header -->
+                                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                                <h4 class="card-title">Authorization</h4>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <span ng-if="getSymbol()=='£'">
+                                                            <h5>In order to proceed you need to agree to the <u><b><a href="#" name="~/Content/assets/PDF/MCA2017Agr_EMEA_EU-EFTA_ENG_Sep20172_CR.pdf" onClick="btnpdf_Click(this)">Microsoft Cloud Agreement</a></b></u>.</h5>
+                                                        </span>
+                                                        <span ng-if="getSymbol()=='$'">
+                                                            <h5>In order to proceed you need to agree to the <u><b><a href="#" name="~/Content/assets/PDF/MCA2017Agr_EMEA_EU-EFTA_ENG_Sep20172_CR.pdf" onClick="btnpdf_Click(this)">Microsoft Cloud Agreement</a></b></u>.</h5>
+                                                        </span>
+                                                        <div class="invalid-feedback"><b>Select Yes to agree</b></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="togglebutton">
+                                                            <label>
+                                                                <span class="btnhide">No</span>
+                                                                <input type="checkbox" id="microsoftCloudAggrement" required>
+                                                                <span class="toggle"></span>
+                                                                <span class="btnhide">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                        <div id="mcaContractVal" hidden><b>Select Yes to agree</b></div>
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-md-6">
+                                                        <span ng-if="getSymbol()=='£'">
+                                                            <h5>Our Contract is <u><b><a href="#" name="~/Content/assets/PDF/Framework Agreement v.1.0 UK.pdf" onClick="btnpdf_Click(this)">here</a></b></u>.</h5>
+                                                        </span>
+                                                        <span ng-if="getSymbol()=='$'">
+                                                            <h5>Our Contract is <u><b><a href="http://103.73.190.66:909/Documents/Cowry_Support_Agreement.pdf" target="_blank">here</a></b></u>.</h5>
+                                                        </span>
+                                                        <div class="invalid-feedback"><b>Select Yes to agree</b></div>
+                                                    </div>
+                                                    <div class="col-md-6">
+                                                        <div class="togglebutton">
+                                                            <label>
+                                                                <span class="btnhide">No</span>
+                                                                <input type="checkbox" id="supportContract" required>
+                                                                <span class="toggle"></span>
+                                                                <span class="btnhide">Yes</span>
+                                                            </label>
+                                                        </div>
+                                                        <div id="supportContractVal" hidden><b>Select Yes to agree</b></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                                        <div style="width: 50%;margin-left: 25%;">
+                                            <button id="btn_proPay" class="btn btn-primary btn-round btn-lg" onclick="ga('send','event', 'Button', 'Proceed', 'To Payment Option')" ng-click="createLead(userData)">
+                                                <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                                                <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-left: 17.6px;"><span class="btnhide2" style="padding-right: 3px;">Proceed to</span>Pay</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div style="overflow:auto;align-items: center;">
+                                        <div style="width: 50%;margin-left: 25%;">
+                                            <button id="btn_resum" ng-click="nextPrevNav(-1,0)" onclick="ga('send','event', 'Button', 'Reconfigure', 'To Payment info')" class="btn btn-primary btn-round btn-lg transparent">
+                                                <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_backward</i>
+                                                <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Reconfigure</span>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Input Form -->
+        <!-- 3Credit Option -->
+        <div class="tab">
+            <h2 style="margin-top: 15px;" class="font-weight-bold ConfigFontColor resume">Choose a Payment Method</h2>
+            <div style="display: flex;justify-content: center;align-items: center;margin-top: 0px;height: 275px;padding-top:5px">
+                <div class="row " style="width:100%;display: flex;justify-content: center;align-items: center;margin-left: 0px;margin-right: 0px;height:100%">
+                    <!-- Credit Card -->
+                    <div class="" style="height:250px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Button', 'Payment Option', 'Payment selected: Credit Card')" ng-click="optionPayment('credit')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 70%;">
+                                <div class="col" style="width:auto;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                    <div style="width:100%;margin-right: 0px;float:left">
+                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Credit Card</h3>
+                                        <h5 class="h5 mb-0 change" style="width:100%;padding-left: 20px;"></h5>
+                                        <div style="padding-top:30px">
+                                            <span class="fa fa-credit-card" style="font-size:48px"></span>
+                                            <span class="fa fa-cc-visa" style="font-size:48px"></span>
+                                            <span class="fa fa-cc-mastercard" style="font-size:48px"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:30%;">
+                                <button class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px; margin-left:10%">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Pro-forma Invoice  -->
+                    <div class="" style="height:250px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Button', 'Payment Option', 'Payment selected: Invoice Form')" ng-click="optionPayment('invoice')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 70%;">
+                                <div style="width:100%;margin-right: 0px;float:left">
+                                    <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Pro-forma Invoice</h3>
+                                    <h5 class="h5 mb-0 change" style="width:100%;">(With banking details)</h5>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:30%;">
+                                <button class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px; margin-left:10%">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Direct Debit -->
+                    <div class="" style="height:250px;width:300px;padding-left: 0px;padding-right: 0px;  padding-bottom:5px ;">
+                        <div class="border border-primary shadow" onclick="ga('send','event', 'Button', 'Payment Option', 'Payment selected: Direct Debit')" ng-click="optionPayment('debit')" style="width: auto;height: 100%;margin-right: 10px;padding-left: 10px;padding-top: 10px;background-color:white;">
+                            <div style="width: auto; margin-left: 0px; margin-right: 0px;height: 70%;">
+                                <div class="col" style="width:auto;padding-left: 0px;padding-right: 0px;margin-top: 0px;">
+                                    <div style="width:100%;margin-right: 0px;float:left">
+                                        <h3 class="h3 font-weight-bold card-title text-muted mb-0" style="margin-left: 0px; margin-top: 0px;">Direct Debit</h3>
+                                        <h5 class="h5 mb-0 change" style="width:100%;">(Coming soon)</h5>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style=" width:340px;height:30%;">
+                                <button class="btn btn-primary btn-round btn-lg transparent" style="width: 192px;left: 5px; margin-left:10%">Select</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- 3Credit Option -->
+        <!-- PaymentDetails -->
+        <div class="tab">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card" style="background:#F2F4FA">
+                            <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                <div style="align-items:center">
+                                    <div style="text-align:center">
+                                        <h2 class="card-title">Payment Details</h2>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                        <div class="card-body">
+                                            <div class="form-group" style="padding-bottom: 0px;">
+                                                <label class="form-control-label" style="padding-bottom: 0px;" for="exampleFormControlSelect1">Select Your Payment Type</label>
+                                                <select class="form-control" style="padding-bottom: 0px;padding-top: 0px;" id="exampleFormControlSelect1" ng-model="paymentInfo.CardType" ng-change="SetValid(paymentInfo.CardType)">
+                                                    <option value="MasterCard">Master Card</option>
+                                                    <option value="Visa">Visa</option>
+                                                    <option value="Amex">Amex</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" style="padding-bottom: 0px;">
+                                                <div class="form-group bmd-form-group">
+                                                    <label class="bmd-label-floating">Name on Credit Card</label>
+                                                </div>
+                                                <div class="form-group bmd-form-group">
+                                                    <input type="text" class="form-control" id="cc_cardname" disabled ng-model="paymentInfo.NameOnCard">
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group bmd-form-group">
+                                                        <label class="bmd-label-floating">Credit Card No</label>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group">
+                                                        <input type="text" class="form-control" id="cc_cardnumber" disabled ng-model="paymentInfo.CardNumber">
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group bmd-form-group">
+                                                        <label class="bmd-label-floating">CVV</label>
+                                                    </div>
+                                                    <div class="form-group bmd-form-group">
+                                                        <input type="text" class="form-control" id="cc_cardcvv" disabled ng-model="paymentInfo.CardCVV">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6" style="padding-bottom: 0px;">
+                                                    <label class="form-control-label" for="exampleFormControlSelect1">Expiry Month</label>
+                                                    <select class="form-control" id="exampleFormControlSelect1" style="padding-bottom: 0px;padding-top: 0px;" ng-model="paymentInfo.CardExpiryMonth">
+                                                        <option value="01">01</option>
+                                                        <option value="02">02</option>
+                                                        <option value="03">03</option>
+                                                        <option value="04">04</option>
+                                                        <option value="05">05</option>
+                                                        <option value="06">06</option>
+                                                        <option value="07">07</option>
+                                                        <option value="08">08</option>
+                                                        <option value="09">09</option>
+                                                        <option value="10">10</option>
+                                                        <option value="11">11</option>
+                                                        <option value="12">12</option>
+                                                    </select>
+                                                </div>
+                                                <div class="col-md-6" style="padding-bottom: 0px;">
+                                                    <label class="form-control-label" for="exampleFormControlSelect1">Expiry Year</label>
+                                                    <select class="form-control" id="exampleFormControlSelect1" style="padding-bottom: 0px;padding-top: 0px;" ng-model="paymentInfo.CardExpiryYear">
+                                                        <option value="2019">2019</option>
+                                                        <option value="2020">2020</option>
+                                                        <option value="2021">2021</option>
+                                                        <option value="2022">2022</option>
+                                                        <option value="2023">2023</option>
+                                                        <option value="2024">2024</option>
+                                                        <option value="2025">2025</option>
+                                                        <option value="2026">2026</option>
+                                                        <option value="2027">2027</option>
+                                                        <option value="2028">2028</option>
+                                                        <option value="2029">2029</option>
+                                                        <option value="2030">2030</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                                <div style="width: 50%;margin-left: 25%;">
+                                    <!-- onclick="nextPrevNav(1,0)" onclick="nextPrevNav(-1,0)" -->
+                                    <button id="btn_endPay" onclick="ga('send','event', 'Button', 'Credit Card', 'Payment Sent')" ng-click="checkPaymentInfo(paymentInfo,userData)" class="btn btn-primary btn-round btn-lg">
+                                        <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_forward</i>
+                                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-left: 17.6px;"><span class="btnhide2" style="padding-right: 3px;">Proceed to</span>Checkout</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div style="overflow:auto;align-items: center;">
+                                <div style="width: 50%;margin-left: 25%;">
+                                    <button id="btn_reEndPay" onclick="ga('send','event', 'Button', 'Credit Card', 'To Payment Options')"  ng-click="nextPrevNav(-1,0)" class="btn btn-primary btn-round btn-lg transparent">
+                                        <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">arrow_backward</i>
+                                        <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Reconfigure</span>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- PaymentDetails -->
+
+        <div class="tab">
+            <div class="card card-login">
+                <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                    <h2 class="card-title">Thank you for contacting Cowry Solutions. </h2>
+                </div>
+                <div class="card-body text-center">
+                    <h3>We are busy preparing your solution for you.One of our team members will be in touch with you shortly</h3>
+                </div>
+                <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                    <div style="width: 50%;margin-left: 25%;">
+                        <button class="btn btn-primary btn-round btn-lg" onclick="backhome()">
+                            <span>Back to Cowry Solutions</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="DivContinue" style="overflow:auto;margin-top: 1%;align-items: center; display:none">
+            <div style="width: 50%;margin-left: 25%;">
+                <button id="btn_nextNav" ng-click="nextPrevNav(1,0)" class="btn btn-primary btn-round btn-lg" style="text-align:center">
+                    <i class="material-icons" style="float:right;margin-top: 0px;margin-bottom: 0px;">arrow_forward</i>
+                    <span class="btnhide2" style="display:block"> Continue your configuration </span>
+                    <span class="btnshow" style="display:contents">Continue</span>
+                    <span class="btnshow" style="display:contents">your configuration</span>
+                </button>
+            </div>
+        </div>
+        <div class="container" style="align-items:center;margin-top: 1%;visibility:hidden" hidden>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row text-center">
+                        <div class="col-10" style="margin-left: 9%;">
+                            Use of the Cowry Solutions &#8482; Configurator is limited to Organizations defined as “End-users and/or customers” of a proposed Business Central System.
+                            Any other user is prohibited and considered a violation of the terms of use of this website.
+                            Please contact us via our <a href="https://cowrysolutions.com/contacts/" target="_blank">contact</a>  page for any questions.
+                        </div>
+                    </div>
+                    <div style="overflow:auto;margin-top: 1%;align-items: center; margin-top: 1%;width:100%">
+                        <div style="width:40%;margin-left: 31%;">
+                            <button class="btn btn-primary btn-round btn-lg transparent" style="float:right" onclick="ShowConUK()">Contact us </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row" style="margin-left:10px;margin-right:10px;margin-top: 2%;margin-bottom: 5px;width: 100%;bottom:0px;">
+    <div class="card-body" style="background:#2C3E50; color:white; border-radius:5px;text-align:center">
+        <h5>
+            If you need more than 12 licenses please <u><b><a class="pointer" onclick="ShowConUK()">Contact Us Here</a></b></u> and we will contact you to discuss. We aim to respond within 2 hours of the inquiry.
+        </h5>
+    </div>
+</div>
+
+<script>
+
+    function Uk() {
+        window.location.href = "/uk/home_uk";
+    }
+
+    function ShowConUK() {
+        window.open("/csc_uk/contactus");
+    }
+</script>
+<script>
+    var currentTab = 0;
+    var currentConf = 0;
+    var subTotal = 0;
+    showTab(currentTab, 0);
+
+    function showTab(n, m) {
+        var x = document.getElementsByClassName("tab");
+        x[n].style.display = "block";
+        if (n == 0) {                                                               //start
+            document.getElementById("DivContinue").style.display = "none";
+            document.getElementById("prevBtn").style.display = "none";
+            document.getElementById("nextBtn").style.display = "none";
+            document.getElementById("btn_nextNav").style.display = "none";
+            document.getElementById("txt_Welcome").style.display = "";
+            document.getElementById("LightningLogo").style.display = "none";
+            document.getElementById("btn_startConf").style.display = "";
+            document.getElementById("navDot").style.display = "none";
+            document.getElementById("stepStart").style.visibility = "hidden";
+            document.getElementById("step1").style.visibility = "hidden";
+            document.getElementById("OneTimeDiv").style.display = "none";
+            navFix(n);
+        } else {
+            if (n == m) {
+                document.getElementById("NavDiv").style.display = "none";
+            } else {
+                document.getElementById("stepN4").removeAttribute("hidden");
+                navFix(currentConf);
+                document.getElementById("txt_Welcome").style.display = "none";
+                document.getElementById("LightningLogo").style.display = "";
+                document.getElementById("DivContinue").style.display = "";
+                if (currentConf != 0 && currentConf != 2 && currentConf != 3) {
+                    document.getElementById("prevBtn").style.display = "inline";
+                    document.getElementById("nextBtn").style.display = "inline";
+                    document.getElementById("navDot").style.display = "";
+                    document.getElementById("OneTimeDiv").style.display = "flex";
+                }
+                else {
+                    document.getElementById("navDot").style.display = "none";
+                    document.getElementById("prevBtn").style.display = "none";
+                    document.getElementById("nextBtn").style.display = "none";
+                    document.getElementById("OneTimeDiv").style.display = "none";
+
+                }
+                if (currentConf == 2 || currentConf == 3) {
+                    document.getElementById("btn_nextNav").style.display = "none";
+                } else {
+                    document.getElementById("btn_nextNav").style.display = "";
+                }
+                document.getElementById("btn_startConf").style.display = "none";
+            }
+        }
+        fixStepIndicator(n)
+        topFunction();
+    }
+
+    function checkActive(n) {
+        var test = document.getElementById(n).className;
+        var substring = " active";
+        if (test.includes(substring)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function navFix(n) {
+        currentConf = n;
+        var step3 = document.getElementById('stepN4');
+        var btn3 = document.getElementById('btnPricing');
+        var step3t = document.getElementsByTagName("h7");
+        for (var text = 0; text < step3t.length; text++) {
+            step3t[text].className = step3t[text].className.replace("h7 active", "");
+        }
+        step3.className = step3.className.replace(" active", "");
+        step3.style.backgroundColor = "White";
+        btn3.className = btn3.className.replace(" transparent2", "");
+        if (currentConf == 3) {
+            for (var text = 0; text < step3t.length; text++) {
+                step3t[text].className += "h7 active";
+            }
+            step3.className += " active";
+            step3.style.backgroundColor = "#7389c0";
+            btn3.className += " transparent2";
+        }
+        for (var aux = 0; aux <= 2; aux++) {
+            var doc = document.getElementById('stepN' + (aux + 1));
+            doc.style.backgroundColor = "White";
+            //var src = "~/Content/assets/img/NavBar" + aux + ".png";
+            //document.getElementById('img' + aux).src = document.getElementById('img' + aux).src.replace('Active.png', '.png');
+            if (aux == currentConf && currentTab != 0) {
+                //document.getElementById('img' + aux).src = document.getElementById('img' + aux).src.replace('.png', 'Active.png');
+                doc.style.backgroundColor = "#7389c0";
+            }
+        }
+    }
+
+    function validateForm() {
+        var x, y, i, valid = true;
+        x = document.getElementsByClassName("tab");
+        y = x[currentTab].getElementsByTagName("input");
+        for (i = 0; i < y.length; i++) {
+            if (y[i].value == "") {
+                y[i].className += " invalid";
+            }
+        }
+        return valid;
+    }
+
+    function fixStepIndicator(n) {
+        var i, x = document.getElementsByClassName("step");
+        for (i = 0; i < x.length; i++) {
+            x[i].className = x[i].className.replace(" finish", "");
+            if (i == n || n == 0) {
+                x[i].className = x[i].className.replace(" finish", "");//finish
+            }
+        }
+        x[n].className += " finish";
+    }
+
+    function topFunction() {
+        $('html,body').animate({ scrollTop: 91 }, 'slow');
+    }
+
+    function setPaymentOption() {
+        var month = document.getElementById("td_serviceTotal").innerHTML;
+        var annuity = document.getElementById("td_packageOneTimeTotal").innerHTML;
+
+        if (!isInt2(month)) {
+            document.getElementById("standarTermsPayMonth").innerHTML = parseFloat(month).toFixed(2);
+            document.getElementById("txt_Month").innerHTML = parseFloat(month).toFixed(2);
+            document.getElementById("txt_oneMonth").innerHTML = parseFloat(month).toFixed(2);
+        } else {
+            document.getElementById("standarTermsPayMonth").innerHTML = parseInt(month);
+            document.getElementById("txt_Month").innerHTML = parseInt(month);
+            document.getElementById("txt_oneMonth").innerHTML = parseInt(month);
+        }
+
+        if (isInt2(annuity)) {
+            document.getElementById("standarTermsPayOneTime").innerHTML = parseInt(annuity);
+        } else {
+            document.getElementById("standarTermsPayOneTime").innerHTML = parseFloat(annuity).toFixed(2);
+        }
+
+        var totalAux = (parseFloat(annuity) * 1.1) / 12;
+        totalAux += parseFloat(month);
+        if (isInt2(totalAux)) {
+            document.getElementById("txt_standarTermsPayMonth").innerHTML = parseInt(totalAux);
+        } else {
+            document.getElementById("txt_standarTermsPayMonth").innerHTML = parseFloat(totalAux).toFixed(2);
+        }
+
+        totalAux = parseFloat(annuity) * 0.9;
+        totalAux += (parseFloat(month) * 12);
+        //totalAux = Math.round(totalAux);
+        if (isInt2(totalAux)) {
+            document.getElementById("txt_standarTermsPayOneTime").innerHTML = parseInt(totalAux);
+        } else {
+            document.getElementById("txt_standarTermsPayOneTime").innerHTML = parseFloat(totalAux).toFixed(2);
+        }
+
+
+    }
+
+    function isInt2(n) {
+        return n % 1 === 0;
+    }
+    function backhome() {
+        location.href = 'https://cowrysolutions.com';
+    }
+
+    function changeGetAddress() {
+        var country = document.getElementById('countryId').value;
+        document.getElementById('invalidZIP').setAttribute("hidden", true);
+
+        var zip = document.getElementById('postalcode').value;
+        if (country != "") {
+            if (zip != "") {
+                getAddress();
+            }
+        }
+    }
+
+    function getAddress() {
+        var country = document.getElementById('countryId').value;
+        if (country != "") {
+            document.getElementById('invalidZIP').setAttribute("hidden", true);
+            document.getElementById('spinnerVal').removeAttribute("hidden");
+            var zip = document.getElementById('postalcode').value;
+            callAddress("https://secure.geonames.org/postalCodeSearch?postalcode=" + zip + "&country=" + country + "&maxRows=1&username=remotingcoders");
+        } else {
+            document.getElementById('invalidZIP').setAttribute("hidden", true);
+        }
+    }
+    function callAddress(url) {
+        const http = new XMLHttpRequest();
+        http.open("GET", url);
+        http.send();
+        http.onload = function () {
+            document.getElementById('spinnerVal').setAttribute("hidden", true);
+            var data = http.responseText;
+
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(data, 'text/xml');
+
+            if (xmlDoc.getElementsByTagName("totalResultsCount")[0].childNodes[0].nodeValue != 0) {
+                if (xmlDoc.getElementsByTagName("countryCode")[0].childNodes[0].nodeValue == "GB") {
+                    document.getElementById('stateTest').value = xmlDoc.getElementsByTagName("adminName2")[0].childNodes[0].nodeValue;
+                } else {
+                    document.getElementById('stateTest').value = xmlDoc.getElementsByTagName("adminCode1")[0].childNodes[0].nodeValue;
+                }
+                document.getElementById('cityTest').value = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+                console.log(document.getElementById('cityTest').value);
+                document.getElementById('invalidZIP').setAttribute("hidden", true);
+            } else {
+                document.getElementById('cityTest').value = "";
+                document.getElementById('stateTest').value = "";
+
+                document.getElementById('invalidZIP').removeAttribute("hidden");
+            }
+        }
+    }
+
+    function btnpdf_Click(th) {
+        window.open(th.name, '_blank');
+    }
+
+</script>

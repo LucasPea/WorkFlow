@@ -1,0 +1,364 @@
+﻿
+@{
+    ViewBag.Title = "contactus";
+    Layout = "~/Views/Shared/cscpartnerapp.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+<script src="~/JsControllers/csc_ukCon.js"></script>
+
+<style>
+    .input-group > .custom-file, .input-group > .custom-select, .input-group > .form-control {
+        position: relative;
+        -ms-flex: 1 1 auto !important;
+        flex: 1 1 auto;
+        top: 5px;
+        width: 1%;
+        margin-bottom: 0;
+    }
+
+    .tabledata {
+        color: grey;
+        font-style: italic;
+    }
+
+    .quantity::-webkit-inner-spin-button,
+    .quantity::-webkit-outer-spin-button {
+        -webkit-appearance: none !important;
+        margin: 0 !important;
+    }
+
+    .disabled_a {
+        pointer-events: none;
+        cursor: default;
+    }
+
+    .table thead tr th {
+        font-size: 1.063rem;
+        width: 296px;
+    }
+
+    .form-check .form-check-input[disabled] ~ .form-check-sign .check {
+        border-color: #000000;
+        opacity: 1.26;
+    }
+
+    .ConfigFontColor {
+        color: #2A3C90;
+        font-size: 15px;
+    }
+
+        .ConfigFontColor.resume {
+            font-size: 30px;
+            text-align: center;
+        }
+
+    .CustomTextBox {
+        color: #2A3C90;
+        background-color: lightblue;
+        border: none;
+    }
+
+    .titlecus {
+    }
+
+    h2 {
+        font-size: 42px !important;
+        line-height: 35px;
+    }
+
+
+    h7 {
+        font-size: 14px;
+        color: #365DA7;
+    }
+
+    .h7.active {
+        color: white;
+    }
+
+    .h8 {
+        font-style: oblique;
+    }
+
+        .h8.bold {
+            font-weight: bold;
+        }
+
+    .infoText {
+        font-size: 0.75rem;
+    }
+
+    .cardFont {
+        font-size: 30px;
+        color: #6C757D;
+        font-weight: bold;
+    }
+
+    .stepN {
+        border: none;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .stepN.active {
+            opacity: 1;
+            background-color: #6885BD;
+            color: white;
+        }
+
+        .stepN.start {
+            opacity: 1;
+        }
+
+        .stepN.finish {
+            opacity: 1.5;
+        }
+
+    .stepN2 {
+        border: none;
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+        .stepN2.active {
+            opacity: 1;
+            background-color: #6885BD;
+            color: white;
+        }
+
+        .stepN2.start {
+            opacity: 1;
+        }
+
+        .stepN2.finish {
+            opacity: 1.5;
+        }
+
+    .shadow {
+        box-shadow: 0 3px 15px 0 rgba(0, 0, 0, 0.2), 0 8px 40px 0 rgba(0, 0, 0, 0.19);
+    }
+
+    .col.pers {
+        height: 25px;
+        width: 100px;
+        float: right;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .col.disable {
+        display: inline-block;
+        opacity: 0.5;
+    }
+
+    btn.btnBack {
+        position: relative;
+        color: #007BFF;
+        background-color: transparent;
+        display: inline-block;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        border: 1px solid;
+        padding: .375rem .75rem;
+        font-size: 1rem;
+        line-height: 1.5;
+        border-radius: 30px;
+    }
+
+    .pointer {
+        cursor: pointer;
+    }
+
+    .btn.btn-primary.transparent {
+        background-color: transparent;
+        color: #365DA7;
+    }
+
+    .resumeCard {
+        border-radius: 4px !important;
+        background-color: #365DA7;
+    }
+
+    td:nth-child(even) {
+        background-color: #f2f2f2
+    }
+
+    table.resumeTable {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 20px;
+    }
+
+    tr {
+        border-collapse: collapse;
+    }
+
+    .togglebutton label input[type=checkbox]:checked + .toggle {
+        background-color: #365DA7;
+    }
+
+        .togglebutton label input[type=checkbox]:checked + .toggle:after {
+            border-color: #365DA7;
+        }
+
+    .row.container {
+        overflow-x: auto;
+        overflow-y: auto;
+    }
+</style>
+
+<div class="container-fluid" ng-app="cscContactUK" ng-controller="cscContactUKCtrl">
+    <h2 style="margin-top: 15px;" class="font-weight-bold ConfigFontColor resume">Contact Us</h2>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card" style="background:#F2F4FA">
+                <div class="card-body">
+                    <form novalidate="" method="POST" id="myForm1">
+                        <div class="row">
+                            <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                    <h4 class="card-title">Personal Information</h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="firstname1" name="firstname" class="form-control" aria-required="true" ng-model="myData.FirstName" required placeholder="First Name*">
+                                                <div class="invalid-feedback"><b>Please enter first name</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="lastName1" name="lastName" class="form-control" aria-required="true" ng-model="myData.LastName" required placeholder="Last Name*">
+                                                <div class="invalid-feedback"><b>Please enter last name</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="jobTitle1" name="jobTitle" class="form-control" aria-required="true" ng-model="myData.JobTitle" required placeholder="Job Title*">
+                                                <div class="invalid-feedback"><b>Please enter job title</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="contactNo1" name="contactNo" class="form-control" aria-required="true" ng-model="myData.ContactNumber" required placeholder="Contact Number*">
+                                                <div class="invalid-feedback"><b>Please enter contact number</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="email" class="form-control" id="email1" name="email" email="true" aria-required="true" ng-model="myData.Email" required placeholder="Email Address*">
+                                                <div class="invalid-feedback"><b>Please enter email address</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="email" class="form-control" id="confirmemail1" name="confirmemail" aria-required="true" ng-model="myData.ConfirmEmail" required placeholder="Confirm Email Address*">
+                                                <div class="invalid-feedback"><b>Please enter confirm email address</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="row">
+                            <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                <div class="card-header card-header-primary resumeCard" style="margin-left: 0px;margin-right: 0px;padding-left: 2%;padding-right: 2%;">
+                                    <h4 class="card-title">Company Information</h4>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="companyName1" name="companyName" class="form-control" ng-model="myData.CompanyName" required placeholder="Company Name*">
+                                                <div class="invalid-feedback"><b>Please enter company name</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="phoneNumber1" name="phoneNumber" class="form-control" ng-model="myData.CompanyNumber" required placeholder="Phone Number*">
+                                                <div class="invalid-feedback"><b>Please enter phone number</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group bmd-form-group" style="margin-right:0px;margin-left:0px;">
+                                        <input type="text" id="address1" name="address" class="form-control" ng-model="myData.CompanyAddress" required placeholder="Address*">
+                                        <div class="invalid-feedback"><b>Please enter company address</b></div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <select class="form-control ng-valid ng-not-empty ng-dirty ng-valid-parse ng-touched" id="exampleFormControlSelect1" ng-model="myData.CompanyCountry" style="margin-top: 8px;height: 38px;" required>
+                                                <option value="">Country*</option>
+                                                <option ng-repeat="temp in allCountries" value="{{temp.name}}">{{temp.name}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="state1" name="state" class="form-control" ng-model="myData.CompanyState" required placeholder="State Province*">
+                                                <div class="invalid-feedback"><b>Please enter state</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="city1" name="city" class="form-control" ng-model="myData.CompanyCity" required placeholder="City*">
+                                                <div class="invalid-feedback"><b>Please enter city</b></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <input type="text" id="postalcode1" name="postalcode" class="form-control" ng-model="myData.CompanyPostalCode" required placeholder="Postal Code*">
+                                                <div class="invalid-feedback"><b>Please enter postal code</b></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div style="overflow:auto;margin-top: 5%;align-items: center;">
+                            <div style="width: 50%;margin-left: 25%;">
+                                <button id="btn_proPay" class="btn btn-primary btn-round btn-lg" ng-click="checkContactData(myData)">
+                                    <span style="display:flex;align-items:center;justify-content:center;text-align:center;">Submit</span>
+                                </button>
+                            </div>
+                        </div>
+                        <div style="overflow:auto;align-items: center;">
+                            <div style="width: 50%;margin-left: 25%;">
+                                <button onclick="ShowHome()" class="btn btn-primary btn-round btn-lg transparent">
+                                    <i class="material-icons" style="float:left;margin-top: 0px;margin-bottom: 0px;height:17.6px;width:17.6px">keyboard_arrow_left</i>
+                                    <span style="display:flex;align-items:center;justify-content:center;text-align:center;margin-right: 17.6px;">Back to Home</span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function ShowHome() {
+        window.location.href = "/uk/home_uk";
+    }
+</script>
+
+
+

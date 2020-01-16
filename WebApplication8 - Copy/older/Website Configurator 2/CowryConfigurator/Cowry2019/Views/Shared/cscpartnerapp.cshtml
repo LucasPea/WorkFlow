@@ -1,0 +1,220 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Cowry Solutions – To solve business challenges and accelerate collaboration with technology.</title>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <!--     Fonts and icons -->
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Roboto+Slab:400,700|Material+Icons" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/0.8.2/css/flag-icon.min.css">
+    <!-- Material Kit CSS -->
+    <link href="~/Content/assets/css/material-dashboard.css?v=2.1.1" rel="stylesheet" />
+
+    <!-- New buttons and Navigation -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" type="text/css" crossOrigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossOrigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js">
+    </script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossOrigin="anonymous"></script>
+    <style>
+        .container {  width: 1024px !important; max-width: 1024px !important; }
+        .my_Loader {
+            position: fixed;
+            left: 0px;
+            top: 0px;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: url(../Content/assets/img/loader.gif) center no-repeat;
+            display: none;
+            background-color:#ffffff69;
+        }
+
+        h1 {
+            font-size: 35px;
+        }
+
+        h2 {
+            color: #ffffff;
+            font-size: 12px;
+        }
+
+
+        .standardConf {
+            background-color: #365DA7;
+            text-align: center;
+            margin: 10px !important;
+            border-radius: 25px !important;
+            width: auto;
+        }
+
+        .spinnerVal {
+            text-align: center;
+        }
+
+        .customSpinner {
+            display: flex;
+            margin-bottom: 10px;
+        }
+
+        .input-group > .custom-select:not(:last-child), .input-group > .form-control:not(:last-child) {
+            border-top-right-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .input-group > .custom-select:not(:first-child), .input-group > .form-control:not(:first-child) {
+            border-top-left-radius: 50px;
+            border-bottom-left-radius: 50px;
+        }
+        /*Apply individual Styles to one*/
+
+        .spinner-roundVal {
+            margin: auto 2px;
+            border-radius: 20px !important;
+            width: auto !important;
+        }
+
+        .spinner-roundbutton {
+            border-radius: 100px !important;
+            background-color: #365DA7;
+        }
+
+        .a {
+            margin-left: -40px;
+        }
+
+        .b {
+            margin-right: -40px;
+        }
+
+        .c {
+            background: #C2CEE4;
+        }
+
+        #regForm {
+            background-color: #efefef;
+            margin: 100px auto;
+            padding: 40px;
+            width: 70%;
+            min-width: 300px;
+        }
+
+        /* Style the input fields */
+        input {
+            padding: 10px;
+            width: 100%;
+            font-size: 17px;
+            font-family: Raleway;
+            border: 1px solid #aaaaaa;
+        }
+
+            /* Mark input boxes that gets an error on validation: */
+            input.invalid {
+                background-color: #ffdddd;
+            }
+
+
+        button {
+            background-color: #365DA7;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 17px;
+            font-family: Raleway;
+            cursor: pointer;
+        }
+
+            button:hover {
+                opacity: 0.8;
+            }
+
+        #prevBtn {
+            background-color: #365DA7;
+        }
+
+        /* Hide all steps by default: */
+        .tab {
+            display: none;
+        }
+
+
+        /* Make circles that indicate the steps of the form: */
+        .step {
+            height: 20px;
+            width: 20px;
+            margin: 0 20px;
+            background-color: #28348F;
+            border: none;
+            border-radius: 50%;
+            display: inline-block;
+            opacity: 0.5;
+        }
+
+            /* Mark the active step: */
+            .step.active {
+                opacity: 0.75;
+            }
+
+            /* Mark the steps that are finished and valid: */
+            .step.finish {
+                opacity: 1;
+            }
+
+        body {
+            background-color: #efefef;
+        }
+    </style>
+</head>
+<body class="">
+    <div class="my_Loader"></div>
+    <nav class="navbar navbar-default" style="height:10%">
+        <div class="container-fluid" style="height:75px;">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="https://www.cowrysolutions.com">
+                    <!-- Logo icon -->
+                    <b>
+                        <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                        <!-- Light Logo icon -->
+                        <img src="https://cowrysolutions.com/wp-content/uploads/elementor/thumbs/b_logo-o66i3ve8xcrni96k0cvygbvuuih7svjuy9g0l7bfuo.png" style="margin-top: -23px;" />
+                    </b>
+                    <!--End Logo icon -->
+                </a>
+                <div class="float-right">
+                    <a href="/uk/home_uk?currency=USD"><span class="flag-icon flag-icon-us"></span> United States</a>&nbsp;&nbsp;&nbsp;
+                    <a href="/uk/home_uk"><span class="flag-icon flag-icon-gb"></span> United Kingdom</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+    <br />
+    <div class="row" style="height:80%">
+        @RenderBody()
+    </div>
+
+    <!--   Core JS Files   -->
+    <script src="~/Content/assets/js/core/jquery.min.js"></script>
+
+    <script src="~/Content/assets/js/core/popper.min.js"></script>
+
+    <script src="~/Content/assets/js/core/bootstrap-material-design.min.js"></script>
+
+    <script src="~/Content/assets/js/plugins/perfect-scrollbar.jquery.min.js"></script>
+    
+    <!--  Plugin for Sweet Alert -->
+    <script src="~/Content/assets/js/plugins/sweetalert2.js"></script>
+
+    <!-- Include a polyfill for ES6 Promises (optional) for IE11, UC Browser and Android browser support SweetAlert -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/core.js"></script>
+    
+</body>
+</html>

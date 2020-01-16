@@ -1,0 +1,1900 @@
+﻿
+@{
+    ViewBag.Title = "CowryMain";
+    Layout = "~/Views/Shared/Cowry.cshtml";
+}
+
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+<script src="~/JsController/CowryPrice.js"></script>
+
+
+<style>
+    /*custom font*/
+    @@import url(http://fonts.googleapis.com/css?family=Merriweather+Sans);
+
+    * {
+        margin: 0;
+        padding: 0;
+    }
+
+    html, body {
+        min-height: 100%;
+    }
+
+    body {
+    }
+
+      .breadcrumb {
+        /*centering*/
+        text-align: center;
+        display: inline-block;
+        box-shadow: 0 0 15px 1px rgba(0, 0, 0, 0.35);
+        overflow: hidden;
+        border-radius: 5px;
+        /*Lets add the numbers for each link using CSS counters. flag is the name of the counter. to be defined using counter-reset in the parent element of the links*/
+        counter-reset: flag;
+        width: 100%;
+    }
+
+        .breadcrumb a {
+            text-decoration: none;
+            outline: none;
+            display: block;
+            float: left;
+            font-size: 100%;
+            line-height: 36px;
+            color: white;
+            /*need more margin on the left of links to accomodate the numbers*/
+            /*padding: 0 10px 0 60px;*/
+            background: #666;
+            background: linear-gradient(#666, #333);
+            position: relative;
+            width: 16%;
+        }
+            /*since the first link does not have a triangle before it we can reduce the left padding to make it look consistent with other links*/
+            .breadcrumb a:first-child {
+                padding-left: 5px;
+                border-radius: 5px 0 0 5px; /*to match with the parent's radius*/
+            }
+
+                .breadcrumb a:first-child:before {
+                    left: 14px;
+                }
+
+            .breadcrumb a:last-child {
+                border-radius: 0 5px 5px 0; /*this was to prevent glitches on hover*/
+                padding-right: 20px;
+            }
+
+            /*hover/active styles*/
+            .breadcrumb a.active, .breadcrumb a:hover {
+                background: #333;
+                background: linear-gradient(#333, #000);
+            }
+
+                .breadcrumb a.active:after, .breadcrumb a:hover:after {
+                    background: #333;
+                    background: linear-gradient(135deg, #333, #000);
+                }
+
+            /*adding the arrows for the breadcrumbs using rotated pseudo elements*/
+            .breadcrumb a:after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: -18px; /*half of square's length*/
+                /*same dimension as the line-height of .breadcrumb a */
+                width: 36px;
+                height: 36px;
+                /*as you see the rotated square takes a larger height. which makes it tough to position it properly. So we are going to scale it down so that the diagonals become equal to the line-height of the link. We scale it to 70.7% because if square's:
+        length = 1; diagonal = (1^2 + 1^2)^0.5 = 1.414 (pythagoras theorem)
+        if diagonal required = 1; length = 1/1.414 = 0.707*/
+                transform: scale(0.707) rotate(45deg);
+                /*we need to prevent the arrows from getting buried under the next link*/
+                z-index: 1;
+                /*background same as links but the gradient will be rotated to compensate with the transform applied*/
+                background: #666;
+                background: linear-gradient(135deg, #666, #333);
+                /*stylish arrow design using box shadow*/
+                box-shadow: 2px -2px 0 2px rgba(0, 0, 0, 0.4), 3px -3px 0 2px rgba(255, 255, 255, 0.1);
+                /*
+            5px - for rounded arrows and
+            50px - to prevent hover glitches on the border created using shadows*/
+                border-radius: 0 5px 0 50px;
+            }
+            /*we dont need an arrow after the last link*/
+            .breadcrumb a:last-child:after {
+                content: none;
+            }
+            /*we will use the :before element to show numbers*/
+            .breadcrumb a:before {
+                /*content: counter(flag);*/
+                counter-increment: flag;
+                /*some styles now*/
+                border-radius: 100%;
+                width: 20px;
+                height: 20px;
+                line-height: 20px;
+                margin: 8px 0;
+                position: absolute;
+                top: 0;
+                left: 30px;
+                background: #444;
+                background: linear-gradient(#444, #222);
+                font-weight: bold;
+                width: 20%;
+            }
+
+
+    .flat a, .flat a:after {
+        background: white;
+        color: black;
+        transition: all 0.5s;
+    }
+
+        .flat a:before {
+            background: white;
+            box-shadow: 0 0 0 1px #ccc;
+        }
+
+        .flat a:hover, .flat a.active,
+        .flat a:hover:after, .flat a.active:after {
+            background: #375EA4;
+            color: white;
+        }
+
+    .form-control, .is-focused .form-control {
+        background-image: linear-gradient(to top, #375EA4 2px, rgba(156, 39, 176, 0) 2px), linear-gradient(to top, #d2d2d2 1px, rgba(210, 210, 210, 0) 1px);
+    }
+
+    .form-check .form-check-input:checked + .form-check-sign .check {
+        background: #375EA4;
+    }
+
+    .form-check .form-check-label .circle .check {
+        background-color: #375EA4;
+    }
+
+    .form-check .form-check-input:checked ~ .circle {
+        border-color: #375EA4;
+    }
+
+    .modal {
+        text-align: center;
+        padding: 0 !important;
+    }
+
+        .modal:before {
+            content: '';
+            display: inline-block;
+            height: 100%;
+            vertical-align: middle;
+            margin-right: -4px;
+        }
+
+    .modal-dialog {
+        display: inline-block;
+        text-align: left;
+        vertical-align: middle;
+    }
+
+    .tabledata {        
+        color: grey;
+        font-style:italic;
+    }
+
+</style>
+
+<div class="container-fluid mt--6" ng-app="CowryUSDPrice" ng-controller="CowryUSDPriceCtrl" ng-init="cowryUSDPriceData()">
+    <div class="row">
+        <div class="col-md-1"></div>
+
+        <div class="col-md-10">
+
+            <div class="breadcrumb flat" id="breadcrumb">
+                <a href="#link7" id="config">Configuration</a>
+                <a href="#link8" class="active" onclick="ShowPricingOption()" id="pricing">Pricing</a>
+                <a href="#link9" onclick="ShowSupportOption()" id="support">Support</a>
+                <a href="#link9" onclick="ShowTabOtherOptions()" id="summary">Summary</a>
+                <a href="#link9" onclick="ShowTabPaymentOpt()" id="payment">Payment</a>
+                <a href="#link10" onclick="ShowTabNewSignUp()" id="finish">Finish</a>
+            </div>
+
+            <section id="tabPricingOpt">
+                <div class="card" style="background:#F2F4FA">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="card-title">Pricing Options</h2>
+                                @*<h3 class="text-bottom">Select Number of Users</h3>*@
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="pull-right" style="background:white; color:#3575A4; border-radius:5px; padding:10px;">
+                                    <table>
+                                        <tr><td colspan="2"></td><h4 style="font-weight:600;">Subtotal</h4></tr>
+                                        <tr><td id="monthly1" >--</td><td>&nbsp;&nbsp;Per Month</td></tr>
+                                        <tr><td id="yearly1" >--</td=""><td>&nbsp;&nbsp;One Time Cost.</td></tr>
+                                    </table>                                    
+                                </h4>
+                            </div>
+                        </div>                    
+                    </div>
+
+                    <div class="card-body">                      
+                        <div class="row" style="margin-bottom:-35px;">
+                            <div class="col-md-12">
+                                <div class="card" style="background-color:#F2F4F4">
+                                    <div class="card-header">
+                                        <div class="row align-items-center">
+                                            <div class="col-8">
+                                                <!-- Title -->
+                                                <h4 class="h3 mb-0">Step One -- Select User Type &nbsp;&nbsp; <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal" /></span></h4>
+                                            </div>
+                                            <div class="col-4 text-right">                                             
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card image -->
+                                    <!-- List group -->
+                                    <!-- Card body -->
+                                    <div class="card-body">
+                                        <h5 style="margin-left:12px;margin-bottom:-10px;">You can only select one type of users for your system on this step.To Learn More <span><button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#myModal2">Click Here!</button></span></h5>
+                                        <div class="row">
+                                            <div class="col-md-12" style="margin-bottom: -30px;">
+                                                <div class="card" style="background-color:#F2F4FA;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h3 mb-0">Full User Type</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body">
+                                                       <div class="row">
+                                                           <div class="col-md-6">
+                                                               <div class="card">                                                                   
+                                                                   <!-- Card image -->
+                                                                   <!-- List group -->
+                                                                   <!-- Card body -->
+                                                                   <div class="card-body" id="mainformPricing">
+                                                                       <div class="row">
+                                                                           <div class="col-md-6">
+                                                                               <h4 class="h3 mb-0">Essential Users</h4>
+                                                                               <div class="col-md-9">
+                                                                                   <div class="form-group has-default bmd-form-group">
+                                                                                       @*<input type="text" id="essentialUsers" ng-blur="multiplyUsers1(users.essentialUsers, 'essentialUsers')" class="form-control" ng-model="users.essentialUsers">*@
+                                                                                       <select class="form-control" id="essentialUsers" ng-model="users.essentialUsers" ng-change="multiplyUsers1(users.essentialUsers, 'essentialUsers')">
+                                                                                           <option value="0" selected>0</option>
+                                                                                           <option value="1">1</option>
+                                                                                           <option value="2">2</option>
+                                                                                           <option value="3">3</option>
+                                                                                           <option value="4">4</option>
+                                                                                           <option value="5">5</option>
+                                                                                           <option value="6">6</option>
+                                                                                           <option value="7">7</option>
+                                                                                           <option value="8">8</option>
+                                                                                           <option value="9">9</option>
+                                                                                           <option value="10">10</option>
+                                                                                           <option value="11">11</option>
+                                                                                           <option value="12">12</option>
+                                                                                       </select>
+                                                                                   </div>
+                                                                               </div>
+                                                                           </div>
+                                                                           <div class="col-md-6">
+                                                                               <h2 id="essentialprice"> 00</h2>
+                                                                               <h4>Per User/ Per Month</h4>
+                                                                           </div>                                                                          
+                                                                       </div>
+                                                                       <strong>
+                                                                           <h3 style="margin-left:75px;font-style:italic;font-weight:600; font-size:25px">-or-</h3>
+                                                                       </strong>
+                                                                       <div class="row">
+                                                                           <div class="col-md-6">
+                                                                               <h4 class="h3 mb-0">Premium Users</h4>
+                                                                               <div class="col-md-9">
+                                                                                   <div class="form-group has-default bmd-form-group">
+                                                                                       @*<input type="text" id="premiumUsers" ng-blur="multiplyUsers1(users.premiumUsers,'premiumUsers')" class="form-control" ng-model="users.premiumUsers">*@
+                                                                                       <select class="form-control" id="premiumUsers" ng-model="users.premiumUsers" ng-change="multiplyUsers1(users.premiumUsers,'premiumUsers')">
+                                                                                           <option value="0" selected>0</option>
+                                                                                           <option value="1">1</option>
+                                                                                           <option value="2">2</option>
+                                                                                           <option value="3">3</option>
+                                                                                           <option value="4">4</option>
+                                                                                           <option value="5">5</option>
+                                                                                           <option value="6">6</option>
+                                                                                           <option value="7">7</option>
+                                                                                           <option value="8">8</option>
+                                                                                           <option value="9">9</option>
+                                                                                           <option value="10">10</option>
+                                                                                           <option value="11">11</option>
+                                                                                           <option value="12">12</option>
+                                                                                       </select>
+                                                                                   </div>
+                                                                               </div>
+                                                                           </div>
+                                                                           <div class="col-md-6">
+                                                                               <h2 id="premiumprice"> 00</h2>
+                                                                               <h4>Per User/ Per Month</h4>
+                                                                           </div>
+                                                                       </div>
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                           <div class="col-md-6">
+                                                               <div class="card">
+                                                                   <div class="card-body" style="background:#2C3E50; color:white; border-radius:5px;text-align: justify;text-justify: inter-word;">
+                                                                       <div class="row ">
+                                                                           <h4>Full Users are either Premium or Essential Users and system is licensed for either(But not both).</h4>
+                                                                           <h5>Most system with utilize the Essential User license as it includes full featured functionality across Business Central Including financial mamagement, CRM, supply chain and project management.</h5>
+                                                                           <h5>If your organization needs full featured manufacturing or service order management, then Premium is for you(and Includes all features in Essentials) .</h5>
+                                                                           <h5>To learn more.</h5>
+                                                                           <div class="col-auto">
+                                                                               <button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#myModal">Click Here</button>
+                                                                           </div>
+                                                                       </div>
+                                                                   </div>
+                                                               </div>
+                                                           </div>
+                                                       </div>
+                                                    </div>
+                                                </div>                                               
+                                            </div>
+
+                                            <div class="col-md-4" style="vertical-align:central">
+                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card" style="background-color:#F2F4F4">
+                                    <div class="card-header">
+                                        <div class="row align-items-center">
+                                            <div class="col-8">
+                                                <!-- Title -->
+                                                <h4 class="h3 mb-0">Step Two -- Team License (Optional) &nbsp;&nbsp; <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal" /></span></h4>
+                                            </div>
+                                            <div class="col-4 text-right">
+                                                @*<img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal" />*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Card image -->
+                                    <!-- List group -->
+                                    <!-- Card body -->
+                                    <div class="card-body">
+                                        <h5 style="margin-left: 10px;margin-bottom: -10px;">To learn more about Team License <span><button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#myModal3">Click Here!</button></span></h5>
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="card">
+                                                    <!-- Card header -->                                                  
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <h4 class="h3 mb-0">Team Users</h4>
+                                                                <div class="col-md-9">
+                                                                    <div class="form-group has-default bmd-form-group">
+                                                                        @*<input type="text" class="form-control" id="teamUsers" ng-blur="multiplyUsers1(users.teamUsers, 'teamUsers')" ng-model="users.teamUsers">*@
+                                                                        <select class="form-control" id="teamUsers" ng-change="multiplyUsers1(users.teamUsers, 'teamUsers')" ng-model="users.teamUsers">
+                                                                            <option value="0" selected>0</option>
+                                                                            <option value="1">1</option>
+                                                                            <option value="2">2</option>
+                                                                            <option value="3">3</option>
+                                                                            <option value="4">4</option>
+                                                                            <option value="5">5</option>
+                                                                            <option value="6">6</option>
+                                                                            <option value="7">7</option>
+                                                                            <option value="8">8</option>
+                                                                            <option value="9">9</option>
+                                                                            <option value="10">10</option>
+                                                                            <option value="11">11</option>
+                                                                            <option value="12">12</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>                                                                
+                                                            </div>
+                                                            <div class="col-md-6">                                                                
+                                                                <h2 id="teamprice"> 00</h2>
+                                                                <h4>Per User/ Per Month</h4>
+                                                            </div>
+                                                        </div>                                                      
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="overflow:auto;">
+                            <div>
+                                <button type="button" class="btn btn-primary" id="prevBtn" onclick="ShowCowryCurrecny()" style="float:left;">
+                                    <i class="material-icons left">chevron_left</i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextBtn" ng-click="checkvalidation_submit(users)" style="float:right;">
+                                    Next
+                                    <i class="material-icons right">chevron_right</i>
+                                </button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="tabSupportOpt" style="display:none">
+                <div class="card" style="background:#F2F4FA">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="card-title">Support Options</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="pull-right" style="background:white; color:#3575A4; border-radius:5px; padding:10px;">
+                                    <table>
+                                        <tr><td colspan="2"></td><h3 style="font-weight:600;">Subtotal</h3></tr>
+                                        <tr><td id="monthly2">--</td><td>&nbsp;&nbsp;Per Month</td></tr>
+                                        <tr><td id="yearly2">--</td><td>&nbsp;&nbsp;One Time Cost.</td></tr>
+                                    </table>                                   
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                  
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-bottom:0px;">
+                                    <div class="card-header" style="padding:0;">
+                                        <h5 class="h3 mb-0 text-center">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <img src="/AppContent/assets/img/large.png" style="width:4%;">Business Central Licensing
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <img src="/AppContent/assets/img/PowerApps-Logo.png" style="width:10%;">PowerApps <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal1" /></span>
+                                                </div>
+                                            </div>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-bottom: -30px; margin-top: -20px;">
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Premium Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="supportPremiumUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Essential Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="supportEssentialUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Team Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="supportTeamUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Included</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="supportTotalUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                           
+                        </div>
+
+                        <div class="card" margin-top:0px>
+                            <!-- Card header -->
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-1 text-center">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input class="form-check-input" type="radio" checked="checked" value="">
+                                                <span class="circle">
+                                                    <span class="check"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-10">
+                                        <!-- Title -->
+                                        <h4 class="h3 mb-0">Included Standard Support</h4>
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        <img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal4" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card image -->
+                            <!-- List group -->
+                            <!-- Card body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h2 id="standardprice"> 00</h2>
+                                        <h3>Per Month</h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul>
+                                            <li>Microsoft product(s) Service Level Agreement (SLA) uptime and guarantee.</li>
+                                            <li>Product software updates.</li>
+                                            <li>Access to the Cowry Solutions Support Portal for issues logging and tracking and administration.</li>
+                                            <li>Training services on new product releases and updates.</li>
+                                            <li>Webinars and on-demand training material.</li>
+                                            <li>Annual system reviews as well as usage metrics with performance and optimization reports.</li>
+                                            <li style="font-weight:600">Low, fixed price covers the entire organisation.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card" style="margin-top: -15px;">
+                            <!-- Card header -->
+                            <div class="card-header">
+                                <div class="row align-items-center">
+                                    <div class="col-1 text-center">
+                                        <div class="form-check">
+                                            <label class="form-check-label">
+                                                <input id="enhance" class="form-check-input" type="checkbox" value="off" ng-click="setSubTotal()">
+                                                <span class="form-check-sign">
+                                                    <span class="check"></span>
+                                                </span>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-10">
+                                        <!-- Title -->
+                                        <h4 class="h3 mb-0">Enhanced Support(Recommended)</h4>
+                                    </div>
+                                    <div class="col-1 text-center">
+                                        <img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal4" />
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Card image -->
+                            <!-- List group -->
+                            <!-- Card body -->
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <h2 id="enhancedprice"> 00</h2>
+                                        <h3>Per Month</h3>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <ul>
+                                            <li>Unlimited service and support ticket creation and resolution, without additional charge for each incident</li>
+                                            <li>Named and dedicated Cowry Solutions account manager.</li>
+                                            <li>Delivery of up to 2 custom reports per year.</li>
+                                            <li>Custom system user training for new employees twice per year.</li>
+                                            <li>120 Minutes per quarter for custom training.</li>
+                                            <li>Advice on dashboard setup and configuration.</li>
+                                            <li>Quarterly system review and optimization.</li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card-body float-right" style="background:#2C3E50; color:white; border-radius:5px;">
+                                            <div class="row float-right">
+                                                <h4>This price is based on the number of users and will vary if the number of licenses changes over time.</h4>                                                
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="overflow:auto;">
+                            <div>
+                                <button type="button" class="btn btn-primary" id="prevBtn" onclick="ShowPricingOption()" style="float:left;">
+                                    <i class="material-icons left">chevron_left</i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextBtn" ng-click="updateSupportData()" style="float:right;">
+                                    Next
+                                    <i class="material-icons right">chevron_right</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tabOtherOptions" style="display:none;">
+                <div class="card" style="background:#F2F4FA;">
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h2 class="card-title">Summary</h2>
+                            </div>
+                            <div class="col-md-6">
+                                <h4 class="pull-right" style="background:white; color:#3575A4; border-radius:5px; padding:10px;">
+                                    <table>
+                                        <tr><td colspan="2"></td><h3 style="font-weight:600;">Subtotal</h3></tr>
+                                        <tr><td id="monthly3">--</td><td>&nbsp;&nbsp;Per Month</td></tr>
+                                        <tr><td id="yearly3">--</td><td>&nbsp;&nbsp;One Time Cost.</td></tr>
+                                    </table>                                  
+                                </h4>
+                            </div> 
+                        </div>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card" style="margin-bottom:0px;">
+                                    <div class="card-header" style="padding:0;">
+                                        <h5 class="h3 mb-0 text-center">
+                                            <div class="row">
+                                                <div class="col-md-8">
+                                                    <img src="/AppContent/assets/img/large.png" style="width:4%;">Business Central Licensing
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <img src="/AppContent/assets/img/PowerApps-Logo.png" style="width:10%;">PowerApps <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal1" /></span>
+                                                </div>
+                                            </div>
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-bottom: -30px; margin-top: -20px;">
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Premium Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="summaryPremiumUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Essential Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="summaryEssentialUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Team Users</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="summaryTeamUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="card" style="background-color:#2C3E50; color:white;">
+                                                    <!-- Card header -->
+                                                    <div class="card-header">
+                                                        <!-- Title -->
+                                                        <h5 class="h4 mb-0">Included</h5>
+                                                    </div>
+                                                    <!-- Card image -->
+                                                    <!-- List group -->
+                                                    <!-- Card body -->
+                                                    <div class="card-body text-right">
+                                                        <h2 id="summaryTotalUsers">0</h2>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*<div class="col-md-4">
+                                <div class="card" style="margin-bottom:0px;">
+                                    <div class="card-header" style="float:right;padding:0;">
+                                        <h5 class="h3 mb-0 text-center">
+                                            <img src="/AppContent/assets/img/PowerApps-Logo.png" style="width:10%;">PowerApps <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal1" /></span> 
+                                        </h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row" style="margin-bottom: -30px; margin-top: -20px;">
+                                           
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>*@
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table id="shoaib" class="table table-hover table-fixed" border="1" style="text-align:center;">
+
+                                                <!--Table head-->
+                                                <thead style="background-color:#375EA4; color:white;">
+                                                    <tr>
+                                                        <th>S.No</th>
+                                                        <th>Product</th>
+                                                        <th>User</th>
+                                                        <th>Price/User</th>
+                                                        <th>Total Price/Month</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr id="premiumbox">
+                                                        <td class="text-center">1</td>
+                                                        <td>Business Central Premium</td>
+                                                        <td id="td_premiumUser">00</td>
+                                                        <td id="td_premiumPrice">00</td>
+                                                        <td id="td_premiumTotal">00</td>
+                                                    </tr>
+                                                    <tr id="essentialbox">
+                                                        <td class="text-center">2</td>
+                                                        <td>Business Central Essentials</td>
+                                                        <td id="td_essentialsUser">00</td>
+                                                        <td id="td_essentialsPrice">00</td>
+                                                        <td id="td_essentialsTotal">00</td>
+                                                    </tr>
+                                                    <tr id="teambox">
+                                                        <td class="text-center">3</td>
+                                                        <td>Business Central Team</td>
+                                                        <td id="td_teamUser">00</td>
+                                                        <td id="td_teamPrice">00</td>
+                                                        <td id="td_teamTotal">00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">4</td>
+                                                        <td>Power Apps</td>
+                                                        <td id="td_powerAppsUser"></td>
+                                                        <td>Included</td>
+                                                        <td>$ 0</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">5</td>
+                                                        <td>Setup/Configuration</td>
+                                                        <td>Not Selected</td>
+                                                        <td>Not Selected</td>
+                                                        <td>-</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td class="text-center">6</td>
+                                                        <td>Support</td>
+                                                        <td>-</td>
+                                                        <td>-</td>
+                                                        <td id="td_supportTotal">00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="4"><h4>Total</h4></th>
+                                                        <th id="td_finalTotalPrice" class="td-price" style="text-align:center;" >
+                                                            00
+                                                        </th>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="overflow:auto;margin-top: 5px;">
+                            <div>
+                                <button type="button" class="btn btn-primary" id="prevBtn" onclick="ShowSupportOption()" style="float:left;">
+                                    <i class="material-icons left">chevron_left</i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextBtn" ng-click="showPaymentOption()" style="float:right;">
+                                    Next
+                                    <i class="material-icons right">chevron_right</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="tabPaymentOpt" style="display:none;">
+                <div class="card" style="background:#F2F4FA">
+                    <div class="card-header card-header-primary">
+                        <h2 class="card-title">Payment Options</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="card" style="margin-top:15px; background-color:#F2F4F4">
+                            <!-- Card header -->
+                            <div class="card-header card-header-rose card-header-icon">
+                                <div class="card-icon">
+                                    <i class="material-icons">dns</i>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h3 class="card-title">Choose your options</h3>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <h5 style="margin-left:12px;margin-bottom:-10px;margin-top: 10px; color:black">To Learn More about Pricing Differences<span><button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#myModal6">Click Here!</button></span></h5>
+                                    </div>
+                                </div>                                
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <!-- Card header -->
+                                            <div class="card-header">
+                                                <div class="row align-items-center">
+                                                    <div class="col-1">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="radio" name="optradio" checked="checked" value="Monthly">
+                                                                <span class="circle">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <!-- Title -->
+                                                        <h4 class="h3 mb-0">Monthly</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card image -->
+                                            <!-- List group -->
+                                            <!-- Card body -->
+                                            <div class="card-body">
+                                                <h2 id="finalMonthylPrice">00</h2>
+                                                <h4>Per Month</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <!-- Card header -->
+                                            <div class="card-header">
+                                                <div class="row align-items-center">
+                                                    <div class="col-1">
+
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <!-- Title -->
+                                                        <h4 class="h3 mb-0">Annuity</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card image -->
+                                            <!-- List group -->
+                                            <!-- Card body -->
+                                            <div class="card-body" style="min-height: 125px;">
+                                                <h2>N/A</h2>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="card">
+                                            <!-- Card header -->
+                                            <div class="card-header">
+                                                <div class="row align-items-center">
+                                                    <div class="col-1">
+                                                        <div class="form-check">
+                                                            <label class="form-check-label">
+                                                                <input class="form-check-input" type="radio" name="optradio" value="Annual">
+                                                                <span class="circle">
+                                                                    <span class="check"></span>
+                                                                </span>
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-11">
+                                                        <!-- Title -->
+                                                        <h4 class="h3 mb-0">Annual</h4>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <!-- Card image -->
+                                            <!-- List group -->
+                                            <!-- Card body -->
+                                            <div class="card-body">
+                                                <h2 id="finalYearlylPrice">00</h2>
+                                                <h4>Billed Annually - Save 10 %</h4>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="overflow:auto;">
+                                    <div>
+                                        <button type="button" class="btn btn-warning" id="prevBtn" onclick="ShowPricingOption()" style="float:left;">Reconfigure</button>
+                                        <button type="button" class="btn btn-success" id="nextBtn" ng-click="updatePaymentOptions()" style="float:right;">Proceed to Payment</button>
+                                    </div>
+                                </div>
+                            </div>                          
+                        </div>
+
+                        <div style="overflow:auto;">
+                            <div>
+                                <button type="button" class="btn btn-primary" id="prevBtn" onclick="ShowTabOtherOptions()" style="float:left;">
+                                    <i class="material-icons left">chevron_left</i>
+                                    Back
+                                </button>
+                                <button type="button" class="btn btn-primary" id="nextBtn" ng-click="updatePaymentOptions()" style="float:right;">
+                                    Next
+                                    <i class="material-icons right">chevron_right</i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="tabNewCustomerSignUp" style="display:none;">
+                <div class="card" style="background:#F2F4FA">
+                    <!-- Card header -->
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3 class="card-title">New Customer Signup</h3>
+                                <p class="card-category">*All inputs are mandatory.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4 class="pull-right" style="background:white; color:#3575A4; border-radius:5px; padding:10px;">
+                                    <table>
+                                        <tr><td colspan="2"></td><h3 style="font-weight:600;">Total Payable Amount</h3></tr>
+                                        <tr><td class="permonth"></td><td>&nbsp;&nbsp;Per Month</td></tr>
+                                        <tr><td class="peryear"></td><td>&nbsp;&nbsp;One Time Cost.</td></tr>
+                                    </table>
+                                </h4>
+                            </div>
+                        </div>
+                    </div>
+                    <br />
+                    <div class="card-body">
+                        <form novalidate="" method="POST" id="myForm">
+                            <div class="row">
+                                <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                    <!-- Card header -->
+                                    <div class="card-header card-header-rose card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">contacts</i>
+                                        </div>
+                                        <h4 class="card-title">Personal Information</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="firstname" class="bmd-label-floating"> First Name* </label>
+                                                    <input type="text" id="firstname" name="firstname" class="form-control" aria-required="true" ng-model="userData.FirstName" required>
+                                                    <div class="invalid-feedback"><b>Please enter first name</b></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="lastName" class="bmd-label-floating">Last Name*</label>
+                                                    <input type="text" id="lastName" name="lastName" class="form-control" aria-required="true" ng-model="userData.LastName" required>
+                                                    <div class="invalid-feedback"><b>Please enter last name</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="jobTitle" class="bmd-label-floating">Job Title*</label>
+                                                    <input type="text" id="jobTitle" name="jobTitle" class="form-control" aria-required="true" ng-model="userData.JobTitle" required>
+                                                    <div class="invalid-feedback"><b>Please enter job title</b></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="contactNo" class="bmd-label-floating">Contact Number*</label>
+                                                    <input type="text" id="contactNo" name="contactNo" class="form-control" aria-required="true" ng-model="userData.ContactNumber" required>
+                                                    <div class="invalid-feedback"><b>Please enter contact number</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="email" class="bmd-label-floating">Email Address*</label>
+                                                    <input type="text" class="form-control" id="email" name="email" email="true" aria-required="true" ng-model="userData.Email" required>
+                                                    <div class="invalid-feedback"><b>Please enter email address</b></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="confirmemail" class="bmd-label-floating">Confirm Email Address*</label>
+                                                    <input type="text" class="form-control" id="confirmemail" name="confirmemail" aria-required="true" ng-model="userData.ConfirmEmail" required>
+                                                    <div class="invalid-feedback"><b>Please enter confirm email address</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                    <div class="card-header card-header-rose card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">meeting_room</i>
+                                        </div>
+                                        <h4 class="card-title">Company Information</h4>
+                                    </div>
+                                    <div class="card-body">
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="companyName" class="bmd-label-floating">Company Name*</label>
+                                                    <input type="text" id="companyName" name="companyName" class="form-control" ng-model="userData.CompanyName" required>
+                                                    <div class="invalid-feedback"><b>Please enter company name.</b></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="phoneNumber" class="bmd-label-floating">Phone Number*</label>
+                                                    <input type="text" id="phoneNumber" name="phoneNumber" class="form-control" ng-model="userData.CompanyNumber" required>
+                                                    <div class="invalid-feedback"><b>Please enter phone number.</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group bmd-form-group" style="margin-right: 10px;margin-left: 10px;">
+                                            <label for="address" class="bmd-label-floating">Address*</label>
+                                            <input type="text" id="address" name="address" class="form-control" ng-model="userData.CompanyAddress" required>
+                                            <div class="invalid-feedback"><b>Please enter company address.</b></div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6" style="margin-top: -15px;">
+                                                <div class="form-group bmd-form-group">
+                                                    <label class="bmd-label-floating">Country*</label>
+                                                    <select class="form-control" ng-model="userData.CompanyCountry" required>
+                                                        <option ng-repeat="temp in allCountries">{{temp.name}}</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="state" class="bmd-label-floating">State Province*</label>
+                                                    <input type="text" id="state" name="state" class="form-control" ng-model="userData.CompanyState" required>
+                                                    <div class="invalid-feedback"><b>Please enter state.</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="city" class="bmd-label-floating">City*</label>
+                                                    <input type="text" id="city" name="city" class="form-control" ng-model="userData.CompanyCity" required>
+                                                    <div class="invalid-feedback"><b>Please enter city.</b></div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label for="postalcode" class="bmd-label-floating">Postal Code*</label>
+                                                    <input type="text" id="postalcode" name="postalcode" class="form-control" ng-model="userData.CompanyPostalCode" required>
+                                                    <div class="invalid-feedback"><b>Please enter postal code.</b></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                    <!-- Card header -->
+                                    <div class="card-header card-header-rose card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">developer_board</i>
+                                        </div>
+                                        <h4 class="card-title">Microsoft Account</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Do you have an existing Microsoft or Office 365 Account?</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="togglebutton">
+                                                    <label>
+                                                        No
+                                                        <input type="checkbox" id="microsoftAccount">
+                                                        <span class="toggle"></span>
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <div class="form-group bmd-form-group">
+                                                    <label class="bmd-label-floating">Domain Name</label>
+                                                    <input type="text" class="form-control" id="domainName">
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="form-check" style="margin-top: 30px;font-size: 20px;color:black">
+                                                    <label class="form-check-label">
+                                                        <input class="form-check-input" type="checkbox" id="findDomain" value="">Check this box if you need help finding this. We’ll contact you before processing your order.
+                                                        <span class="form-check-sign">
+                                                            <span class="check"></span>
+                                                        </span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <br />
+                            <div class="row">
+                                <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                    <!-- Card header -->
+                                    <div class="card-header card-header-rose card-header-icon">
+                                        <div class="card-icon">
+                                            <i class="material-icons">security</i>
+                                        </div>
+                                        <h4 class="card-title">Authorization</h4>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>In order to proceed you need to agree to the <u><b><a href="/Documents/MCA_Agreement.pdf" target="_blank">Microsoft Cloud Agreement</a></b></u>. Select Yes to agree.</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="togglebutton">
+                                                    <label>
+                                                        No
+                                                        <input type="checkbox" id="microsoftCloudAggrement">
+                                                        <span class="toggle"></span>
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h5>Our Support Contract is <u><b><a href="/Documents/Cowry_Support_Agreement.pdf" target="_blank">here</a></b></u>. Select Yes to agree to the terms.</h5>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="togglebutton">
+                                                    <label>
+                                                        No
+                                                        <input type="checkbox" id="supportContract">
+                                                        <span class="toggle"></span>
+                                                        Yes
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                        </form>
+                    </div>
+
+                    <div style="overflow:auto;">
+                        <div>
+                            <button type="button" class="btn btn-primary" id="prevBtn" onclick="ShowTabPaymentOpt()" style="float:left;">
+                                <i class="material-icons left">chevron_left</i>
+                                Back
+                            </button>
+                            <button type="button" class="btn btn-primary" id="nextBtn" ng-click="checkUserData(userData)" style="float:right;">
+                                Next
+                                <i class="material-icons right">chevron_right</i>
+                            </button>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <section id="tabMakePayment" style="display:none">
+                <div class="card" style="background:#F2F4FA">
+                    <!-- Card header -->
+                    <div class="card-header card-header-primary">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <h3 class="card-title">Payment Details</h3>
+                                <p class="card-category">*All inputs are mandatory.</p>
+                            </div>
+                            <div class="col-md-4">
+                                <h4 class="pull-right" style="background:white; color:#3575A4; border-radius:5px; padding:10px;">
+                                    <table>
+                                        <tr><td colspan="2"></td><h3 style="font-weight:600;">Total Payable Amount</h3></tr>
+                                        <tr><td class="permonth"></td><td>&nbsp;&nbsp;Per Month</td></tr>
+                                        <tr><td class="peryear"></td><td>&nbsp;&nbsp;One Time Cost.</td></tr>
+                                    </table>
+                                </h4>      
+                            </div>
+                        </div>
+                    </div>                   
+                    <br />
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="card" style="margin-bottom: 10px; margin-top: 5px;">
+                                <!-- Card header -->
+                                <div class="card-header card-header-rose card-header-icon">
+                                    <div class="card-icon">
+                                        <i class="material-icons">account_balance_wallet</i>
+                                    </div>
+                                    <h4 class="card-title">Payment</h4>
+                                </div>
+                                <div class="card-body">
+
+                                    <div class="form-group">
+                                        <label class="form-control-label" for="exampleFormControlSelect1">Select Your Payment Type</label>
+                                        <select class="form-control" id="exampleFormControlSelect1" ng-model="paymentInfo.CardType" ng-change="SetValid(paymentInfo.CardType)">
+                                            <option value="MasterCard">Master Card</option>
+                                            <option value="Visa">Visa</option>
+                                            <option value="Amex">Amex</option>
+                                        </select>
+                                    </div>
+                                    <br />
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="form-group bmd-form-group">
+                                                <label class="bmd-label-floating">Name on Credit Card</label>
+                                                <input type="text" class="form-control" id="cc_cardname" disabled ng-model="paymentInfo.NameOnCard">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <label class="bmd-label-floating">Credit Card No.</label>
+                                                <input type="text" class="form-control" id="cc_cardnumber" disabled ng-model="paymentInfo.CardNumber">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <label class="bmd-label-floating">CVV</label>
+                                                <input type="text" class="form-control" id="cc_cardcvv" disabled ng-model="paymentInfo.CardCVV">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <label class="bmd-label-floating">Expiry Month</label>
+                                                <select class="form-control" id="exampleFormControlSelect1" ng-model="paymentInfo.CardExpiryMonth">
+                                                    <option value="01">01</option>
+                                                    <option value="02">02</option>
+                                                    <option value="03">03</option>
+                                                    <option value="04">04</option>
+                                                    <option value="05">05</option>
+                                                    <option value="06">06</option>
+                                                    <option value="07">07</option>
+                                                    <option value="08">08</option>
+                                                    <option value="09">09</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group bmd-form-group">
+                                                <label class="bmd-label-floating">Expiry Year</label>
+                                                <select class="form-control" id="exampleFormControlSelect1" ng-model="paymentInfo.CardExpiryYear">
+                                                    <option value="2019">2019</option>
+                                                    <option value="2020">2020</option>
+                                                    <option value="2021">2021</option>
+                                                    <option value="2022">2022</option>
+                                                    <option value="2023">2023</option>
+                                                    <option value="2024">2024</option>
+                                                    <option value="2025">2025</option>
+                                                    <option value="2026">2026</option>
+                                                    <option value="2027">2027</option>
+                                                    <option value="2028">2028</option>
+                                                    <option value="2029">2029</option>
+                                                    <option value="2030">2030</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="card card-login">
+                            <div class="card-header card-header-rose text-center">
+                                <h3 class="card-title" style="text-align:justify">We are ready to provision your Business Central solution and set up your support arrangement. As soon it is provisioned, we will charge <span id="totalPrice" style="font-size:25px; font-weight:600;"></span> to your credit card.<span id="message"></span></h3>
+                            </div>                                                   
+                        </div>
+                        <div style="overflow:auto;">
+                            <div>
+                                <button type="button" class="btn btn-info" id="nextBtn" ng-click="checkPaymentInfo(paymentInfo)" style="float:right;">Make Payment</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <section id="tabFinalPage" style="display:none;">
+                <div class="card card-login">
+                    <div class="card-header card-header-rose text-center">
+                        <h2 class="card-title">Thank you for purchasing Business Central through Cowry Solutions. </h2>
+                    </div>
+                    <div class="card-body text-center">
+                        <h3>We are busy preparing your solution for you and will be in touch via email when everything is ready.</h3>
+                    </div>
+                    <div class="card-footer justify-content-center">
+                        <a href="https://cowrysolutions.com/" class="btn btn-primary">Back to Cowry Solutions</a>
+                    </div>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="col-md-1"></div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h2 class="modal-title">Licensing - Business Central</h2>
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>
+                            Microsoft Business Central can be licensed in two ways:
+                            <ul>
+                                <li>Users can be <b>Essential</b> users, or</li>
+                                <li>All Users can be <b>Premium</b> users</li>
+                            </ul>
+
+                            <div class="card-body" style="background:#2C3E50; color:white; border-radius:10px;">
+                                <a style="margin-top:8px; margin-bottom:8px;"><h5 style="margin-left:5px;">  What’s the difference between Essential and Premium?  <span><button type="button" class="btn btn-sm btn btn-info" data-toggle="modal" data-target="#myModal2">Click here.</button></span></h5></a>
+                            </div>
+
+                            Customers cannot mix Essentials and Premium subscriptions. All of their users must be either Essentials OR Premium.                           
+                            <ul>
+                                <li>PowerApps for Dynamics 365 Applications. <span><img src="~/AppContent/assets/img/Group 7.png" class="quesimg" data-toggle="modal" data-target="#myModal1" /></span>            </li>
+                                <li>3 external Accountant licenses (all access, except user setup and admin tasks)</li>
+                            </ul>
+                            <b>Team</b> licenses can be used with at least one other Essential or Premium licensed user in the system and includes limited/basic functionality considered ‘light’ functionality. Additionally, any licensed Team user has PowerApps for Dynamics 365 Applications usage rights
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal1" role="dialog">
+    <div class="modal-dialog modal-lg" style="background: #F2F4FA;">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h2 class="modal-title">PowerApps for Dynamics 365</h2>
+                <img src="~/AppContent/assets/img/PowerApps-Logo.png" data-toggle="modal" data-target="#myModal" style="float:right; height: 10%; width: 10%;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>
+                            Microsoft PowerApps for Dynamics 365 Applications is included at no charge for ALL licensed users of Business Central (Premium, Essentials or Team Users).
+                            The license included is PowerApps for Dynamics 365 which includes everything in PowerApps Plan 2. 
+                            This allows Business Central Premium and Essentials users to create, modify and use mobile apps based on Business Central data.
+                            <ul>
+                                <li><b>PowerApps:</b> Extend and customize applications.</li>                            
+                                <li><b>Microsoft Flow:</b> Automate business processes and workflow.</li>                               
+                                <li><b>Power BI:</b> Deliver business intelligence.</li>
+                            </ul>
+
+                            @*The license included is PowerApps for Dynamics 365 which includes everything in PowerApps Plan 2, which allows Business Central Premium and Essentials users to create, modify and use mobile apps based on Dynamics 365 data.*@
+                        </h4>
+                    </div>
+
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal2" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h2 class="modal-title">Business Central License Types</h2>
+                @*<img src="~/AppContent/assets/img/large.png" style="float:right; height: 65px; width: 65px;" />*@
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>
+                            There are three different types of licenses available for users of
+                            Business Central – Essential, Premium and Team.
+                            <br />
+                            <br />
+                            <b>Essential</b> users have the following functionality:
+                            <ul>
+                                <li>Financial Management</li>
+                                <li>Customer Relationship Management</li>
+                                <li>Project Management</li>
+                                <li>Human Resources Management</li>
+                                <li>Warehouse Management</li>
+                            </ul>
+
+                            <b>Premium</b> users have the following functionality:
+                            <ul>
+                                <li>Everything in Essentials</li>
+                                <li>Service Management</li>
+                                <li>Manufacturing</li>
+                            </ul>
+                            Every Business Central system must have at least <b>ONE</b> Essential or Premium user,
+                            but can <b>NOT</b> have a combination of Essential and Premium.
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-6" style="margin-top: 5px;">
+                                    <h4>To learn about <b>Team</b> users</h4>
+                                </div>
+
+                                <div class="col-md-6" style="margin-left: -65px;">
+                                    <button type="button" data-toggle="modal" data-target="#myModal3" class="btn btn-sm btn-primary">Click Here</button>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal3" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h1 class="modal-title">Team Users</h1>
+                @*<img src="~/AppContent/assets/img/large.png" style="float:right; height: 65px; width: 65px;" />*@
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>
+                            The Business Central Team Member license is a named-user subscription designed for users who are not tied to a particular function, but who require basic Business Central functionality. 
+                            This license includes read access as well as some write access for selected light tasks across Business Central. 
+                            <br />                            
+                            <br />
+                            Dynamics 365 Business Central Team Members requires that at least one other user be licensed with Dynamics 365 Business Central Essentials
+                            or Dynamics 365 Business Central Premium.
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-8" style="margin-top: 5px;">
+                                    <h4>To learn about <b>Essential</b> or <b>Premium</b> users</h4>
+                                </div>
+
+                                <div class="col-md-4" style="margin-left: -65px;">
+                                    <button type="button" data-dismiss="modal" class="btn btn-sm btn-primary">Click Here</button>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal4" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h1 class="modal-title">Support Requirements</h1>
+                @*<img src="~/AppContent/assets/img/large.png" style="float:right; height: 65px; width: 65px;" />*@
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>
+                            All Business Central deployments delivered through Cowry Solutions include a support contract. 
+                            The support contract consists of <b>Standard Support</b> and optional <b>Enhanced Support</b>.                            
+                            <br />
+                            <br />
+                            <b>Why is this required?</b>
+                            <br />
+                            <br />
+                            We are required to maintain the health of your system and act as your liaison to Microsoft in the event of system inconsistencies
+                            and to provide relevant information including training, updates and service advisories.
+                            <br />
+                            <br />
+                            <div class="row">
+                                <div class="col-md-10" style="margin-top: 5px;">
+                                    <h4>To learn what’s included in either selection.</h4>
+                                </div>
+                                <div class="col-md-4">
+                                    <button type="button" data-toggle="modal" data-target="#myModal5" class="btn btn-sm btn-primary">Click Here</button>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal5" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h2 class="modal-title">Support Options</h2>
+                @*<img src="~/AppContent/assets/img/large.png" style="float:right; height: 65px; width: 65px;" />*@
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h4>                           
+                            <br />
+                            <b>Standard Support</b>
+                            <ul>
+                                <li>Microsoft product(s) Service Level Agreement (SLA) uptime and guarantee.</li>
+                                <li>Product software updates.</li>
+                                <li>Access to the Cowry Solutions Support Portal for issues logging and tracking and administration.</li>
+                                <li>Training services on new product releases and updates.</li>
+                                <li>Webinars and on-demand training material.</li>
+                                <li>Annual system reviews as well as usage metrics with performance and optimization reports.</li>
+                            </ul>
+                            <br />
+                            <b>Enhanced Support</b>
+                            <ul>
+                                <li>Unlimited service and support ticket creation and resolution, without additional charge for each incident</li>
+                                <li>Named and dedicated Cowry Solutions account manager.</li>
+                                <li>Delivery of up to 2 custom reports per year.</li>
+                                <li>Custom system user training for new employees twice per year.</li>
+                                <li>120 Minutes per quarter for custom training.</li>
+                                <li>Advice on dashboard setup and configuration.</li>
+                                <li>Quarterly system review and optimization.</li>
+                            </ul>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade bd-example-modal-lg" id="myModal6" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header" style="background: #17BCD0; color:white;">
+                <h3 class="modal-title">Business Central Purchasing Option</h3>             
+                <img src="~/AppContent/assets/img/large1.png" style="float:right; height: 65px; width: 65px;" />
+            </div>
+            <div class="row">
+                <div class="col-md-1"></div>
+                <div class="col-md-10">
+                    <div class="modal-body">
+                        <h3>   At Cowry Solutions we believe in flexible pricing options and offer 3 different payment options for your Business Central system:</h3>
+                        <h4>
+                            <b>Monthly</b>
+                            <br />                           
+                            Monthly payment includes the following:
+                            <ul>
+                                <li>User Licenses (Full and Team (if applicable)).</li>
+                                <li>PowerApps Licenses (No Cost).</li>
+                                <li>Required Support Package.</li>
+                                <li>Any additional services charges incurred during setup and configuration – billed conveniently over a 12 month period.</li>                                
+                            </ul>
+                            <br />
+                            <b>Annuity</b>
+                            <br />                            
+                            Annuity payments include the following:                            
+                            <br />
+                            <ul>
+                                <li>Monthly payments for any/all Licenses as found in ‘Monthly’</li>
+                                <li>Any additional service charges incurred during setup and configuration – billed conveniently over a 12 month period.</li>                                
+                            </ul>
+                            <br />                        
+                            <b>Annual</b>                            
+                            <br />
+                            Annual Payments include the following;                          
+                            <br />
+                            <ul>
+                                <li>One-Time charge (billed annually) for all licenses, support and setup/configuration services – no monthly payments to deal with!</li>                                
+                            </ul>
+                        </h4>
+                    </div>
+                </div>
+                <div class="col-md-1"></div>
+            </div>
+            <div class="modal-footer" style="background: #17BCD0;">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function ShowCowryCurrecny() {
+        window.location.href = "/CowryCurrency/CowryCurrency";
+    }
+
+    function ShowPricingOption() {
+        debugger
+        $("#tabPricingOpt").show();
+        $("#tabSupportOpt").hide();
+        $("#tabOtherOptions").hide();
+        $("#tabPaymentOpt").hide();
+        $("#tabPersonalInfo").hide();
+        $("#tabCompanyInfo").hide();
+        $("#tabMicrosoftInfo").hide();
+        $("#tabMakePayment").hide();
+        $("#tabFinalPage").hide();
+
+        $("#pricing").addClass("active");
+        $("#support").removeClass("active");
+        $("#config").removeClass("active");
+        $("#summary").removeClass("active");
+        $("#payment").removeClass("active");
+        $("#finish").removeClass("active");
+    }
+
+    function ShowSupportOption() {
+        debugger;
+        var pricingvalided = ToCheckPricingValues();
+        if (pricingvalided) {
+            $("#tabPricingOpt").hide();
+            $("#tabSupportOpt").show();
+            $("#tabOtherOptions").hide();
+            $("#tabPaymentOpt").hide();
+            $("#tabNewCustomerSignUp").hide();
+            $("#tabMakePayment").hide();
+            $("#tabFinalPage").hide();
+
+            $("#support").addClass("active");
+            $("#config").removeClass("active");
+            $("#pricing").removeClass("active");
+            $("#summary").removeClass("active");
+            $("#payment").removeClass("active");
+            $("#finish").removeClass("active");
+        }
+
+    }
+
+    function ShowTabOtherOptions() {
+        debugger
+        var pricingvalided = ToCheckPricingValues();
+        if (pricingvalided) {
+            $("#tabPricingOpt").hide();
+            $("#tabSupportOpt").hide();
+            $("#tabOtherOptions").show();
+            $("#tabPaymentOpt").hide();
+            $("#tabNewCustomerSignUp").hide();
+            $("#tabMakePayment").hide();
+            $("#tabFinalPage").hide();
+            $("#support").removeClass('active');
+            $("#pricing").removeClass('active');
+            $("#config").removeClass('active');
+            $("#summary").addClass("active");
+            $("#payment").removeClass("active");
+            $("#finish").removeClass('active');
+        }
+    }
+
+    function ShowTabPaymentOpt() {
+        debugger
+        var pricingvalided = ToCheckPricingValues();
+        if (pricingvalided) {
+            $("#tabPricingOpt").hide();
+            $("#tabSupportOpt").hide();
+            $("#tabOtherOptions").hide();
+            $("#tabPaymentOpt").show();
+            $("#tabNewCustomerSignUp").hide();
+            $("#tabMakePayment").hide();
+            $("#tabFinalPage").hide();
+            $("#support").removeClass('active');
+            $("#pricing").removeClass('active');
+            $("#config").removeClass('active');
+            $("#summary").removeClass("active");
+            $("#payment").addClass("active");
+            $("#finish").removeClass('active');
+        }
+    }
+
+    function ShowTabNewSignUp() {
+        debugger
+        var pricingvalided = ToCheckPricingValues();
+        if (pricingvalided) {
+            $("#tabPricingOpt").hide();
+            $("#tabSupportOpt").hide();
+            $("#tabOtherOptions").hide();
+            $("#tabPaymentOpt").hide();
+            $("#tabNewCustomerSignUp").show();
+            $("#tabMakePayment").hide();
+            $("#tabFinalPage").hide();
+            $("#support").removeClass('active');
+            $("#pricing").removeClass('active');
+            $("#config").removeClass('active');
+            $("#summary").removeClass("active");
+            $("#payment").removeClass("active");
+            $("#finish").addClass('active');
+        }
+    }
+
+    function ShowTabMakepayment() {
+        debugger
+        $("#tabPricingOpt").hide();
+        $("#tabSupportOpt").hide();
+        $("#tabOtherOptions").hide();
+        $("#tabPaymentOpt").hide();
+        $("#tabNewCustomerSignUp").hide();
+        $("#tabMakePayment").show();
+        $("#tabFinalPage").hide();
+        $("#support").removeClass('active');
+        $("#pricing").removeClass('active');
+        $("#config").removeClass('active');
+        $("#summary").removeClass("active");
+        $("#payment").removeClass("active");
+        $("#finish").addClass('active');
+    }
+
+    function ShowTabFinalPage() {
+        debugger;
+        $("#tabPricingOpt").hide();
+        $("#tabSupportOpt").hide();
+        $("#tabOtherOptions").hide();
+        $("#tabPaymentOpt").hide();
+        $("#tabNewCustomerSignUp").hide();
+        $("#tabMakePayment").hide();
+        $("#tabFinalPage").show();
+        $("#breadcrumb").hide();
+
+
+    }
+
+    function ToCheckPricingValues() {
+        if ($("#premiumUsers").val() == "0" && $("#essentialUsers").val() == "0") {
+            Swal.fire({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Premium Or Essential Users Cannot Be 0!',
+                footer: '<a href>Why do I have this issue?</a>'
+            })
+            return false;
+        }
+        else {
+            return true;
+        }
+    }
+
+
+</script>

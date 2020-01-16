@@ -11,7 +11,7 @@ namespace WebApplication8
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            Session["Type"] = null;
         }
 
         protected void Button1_Click(object sender, EventArgs e)
@@ -19,7 +19,15 @@ namespace WebApplication8
             string jsMethodName = "Message('Invalid','error')";
             if (!string.IsNullOrEmpty(txtPass.Text) && !string.IsNullOrEmpty(txtUser.Text))
             {
-                jsMethodName = "Message('Success','success')";
+                object obj = new object();
+                obj = DBConnection.SqlReturn("SELECT Type FROM Users where Name='" + txtUser.Text + "' and Password='" + txtPass.Text + "'");
+                if (obj != null)
+                {
+                    obj=obj.ToString().Replace(" ", string.Empty);
+                    int type = Int32.Parse(obj.ToString());
+                    Session["Type"] = type;
+                    Response.Redirect("Work.aspx");
+                }                
             }
             else
             {

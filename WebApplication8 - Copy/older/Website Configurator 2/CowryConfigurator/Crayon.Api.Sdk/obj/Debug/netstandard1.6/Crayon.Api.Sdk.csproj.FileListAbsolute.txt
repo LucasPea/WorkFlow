@@ -1,0 +1,4 @@
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\netstandard1.6\Crayon.Api.Sdk.csprojAssemblyReference.cache
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\netstandard1.6\Crayon.Api.Sdk.csproj.CoreCompileInputs.cache
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\netstandard1.6\Crayon.Api.Sdk.AssemblyInfoInputs.cache
+C:\CowrySolutions\Devops\Website Configurator 2\CowryConfigurator\Crayon.Api.Sdk\obj\Debug\netstandard1.6\Crayon.Api.Sdk.AssemblyInfo.cs
